@@ -57,6 +57,8 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
 
         $this->registerBlade();
 
+        $this->registerHelpers();
+
         if ($this->app->runningInConsole()) {
             $this->registerArtisanCommands();
         }
@@ -89,6 +91,20 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
         Blade::directive('app_version', function () {
             return "<?php echo resolve('app.version.manager')->formatted(); ?>";
         });
+
+        Blade::directive('app_build', function () {
+            return "<?php echo resolve('app.version.manager')->build(); ?>";
+        });
+    }
+
+    /**
+     * Register package helpers.
+     *
+     * @return void
+     */
+    protected function registerHelpers()
+    {
+        require __DIR__ . '/helpers.php';
     }
 
     /**

@@ -22,8 +22,7 @@ class BladeRenderTest extends AbstractTestCase
 
         view()->addNamespace('stubs', __DIR__ . '/stubs/view');
 
-        $rendered = view('stubs::app_version')->render();
-
-        $this->assertEquals("Application version: {$manager->formatted()}", $rendered);
+        $this->assertEquals("Application version: {$manager->formatted()}", view('stubs::app_version')->render());
+        $this->assertEquals("Build version: {$manager->build()}", view('stubs::app_build')->render());
     }
 }
