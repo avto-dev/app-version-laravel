@@ -75,4 +75,17 @@ return [
     */
     'compiled_path' => (string) env('APP_VERSION_COMPILED_PATH', storage_path('app/APP_VERSION')),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Build Metadata File Path
+    |--------------------------------------------------------------------------
+    |
+    | Build metadata will be stored into own file. So, we can change it in
+    | runtime.
+    |
+    | Also you can read it in any another applications.
+    |
+    */
+    'build_metadata_path' => (string) env('APP_VERSION_BUILD_METADATA_PATH', storage_path('app/APP_BUILD')),
+
 ];

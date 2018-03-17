@@ -3,7 +3,7 @@
 namespace AvtoDev\AppVersion;
 
 use Illuminate\Contracts\Foundation\Application;
-use AvtoDev\AppVersion\Contracts\AppVersionRepositoryContract;
+use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
 /**
@@ -11,6 +11,11 @@ use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
  */
 class AppVersionServiceProvider extends IlluminateServiceProvider
 {
+    /**
+     * Versions manager DI bind alias.
+     */
+    const VERSION_MANAGER_ALIAS = 'app.version.manager';
+
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -47,25 +52,30 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
     {
         $this->initializeConfigs();
 
-        $this->registerQueueManager();
+        $this->registerAppVersionManager();
+
+        if ($this->app->runningInConsole()) {
+            $this->registerArtisanCommands();
+        }
     }
 
     /**
-     * Register queues manager.
+     * Register version manager instance.
      *
      * @return void
      */
-    protected function registerQueueManager()
+    protected function registerAppVersionManager()
     {
-        $this->app->singleton(AppVersionRepository::class, function (Application $app) {
+        $this->app->singleton(AppVersionManager::class, function (Application $app) {
             $config = (array) $app
                 ->make('config')
                 ->get(static::getConfigRootKeyName());
 
-            return new AppVersionRepository($config);
+            return new AppVersionManager($config);
         });
 
-        $this->app->bind(AppVersionRepositoryContract::class, AppVersionRepository::class);
+        $this->app->bind(AppVersionManagerContract::class, AppVersionManager::class);
+        $this->app->bind(static::VERSION_MANAGER_ALIAS, AppVersionManagerContract::class);
     }
 
     /**
@@ -80,5 +90,17 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
         $this->publishes([
             realpath(static::getConfigPath()) => config_path(basename(static::getConfigPath())),
         ], 'config');
+    }
+
+    /**
+     * Register artisan commands.
+     *
+     * @return void
+     */
+    protected function registerArtisanCommands()
+    {
+        $this->commands([
+            //
+        ]);
     }
 }

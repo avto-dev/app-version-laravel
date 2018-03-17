@@ -38,13 +38,17 @@
         }
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit --no-coverage"
+        "test": "@php ./vendor/bin/phpunit --no-coverage",
+        "test-cover": "@php ./vendor/bin/phpunit"
     },
     "extra": {
         "laravel": {
             "providers": [
                 "AvtoDev\\AppVersion\\AppVersionServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "AppVersionFacade": "AvtoDev\\AppVersion\\AppVersionFacade"
+            }
         }
     },
     "support": {
