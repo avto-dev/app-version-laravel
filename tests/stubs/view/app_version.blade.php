@@ -1,1 +1,1 @@
-Application version: @app_version()
+Application version: @app_version

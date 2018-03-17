@@ -1,1 +1,1 @@
-Build version: @app_build()
+Build version: @app_build
