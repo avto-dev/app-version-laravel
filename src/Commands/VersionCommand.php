@@ -2,9 +2,9 @@
 
 namespace AvtoDev\AppVersion\Commands;
 
-use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
+use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
 /**
  * Class VersionCommand.

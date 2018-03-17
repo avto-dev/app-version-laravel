@@ -2,8 +2,8 @@
 
 namespace AvtoDev\AppVersion;
 
-use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 use Illuminate\Filesystem\Filesystem;
+use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
 /**
  * Class AppVersionManager.
@@ -160,7 +160,7 @@ class AppVersionManager implements AppVersionManagerContract
     protected function putIntoFile($file_path, $data)
     {
         if ($this->files->isDirectory($this->files->dirname($file_path))) {
-            $data = str_replace(["\n","\r"], '', trim((string) $data));
+            $data = str_replace(["\n", "\r"], '', trim((string) $data));
 
             return $this->files->put($file_path, $data, $this->use_locking) > 0;
         }

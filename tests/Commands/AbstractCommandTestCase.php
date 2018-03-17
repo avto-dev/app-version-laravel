@@ -4,7 +4,6 @@ namespace AvtoDev\AppVersion\Tests\Commands;
 
 use Illuminate\Contracts\Console\Kernel;
 use AvtoDev\AppVersion\Tests\AbstractTestCase;
-use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 /**
  * Class AbstractCommandTestCase.

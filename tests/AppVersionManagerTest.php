@@ -10,6 +10,19 @@ use AvtoDev\AppVersion\AppVersionManager;
 class AppVersionManagerTest extends AbstractTestCase
 {
     /**
+     * {@inheritdoc}
+     */
+    protected function tearDown()
+    {
+        // Make clear
+        foreach (glob(storage_path('app/APP*')) as $file_path) {
+            unlink($file_path);
+        }
+
+        parent::tearDown();
+    }
+
+    /**
      * Test constructor.
      *
      * @return void
@@ -75,18 +88,5 @@ class AppVersionManagerTest extends AbstractTestCase
         $this->assertFileExists($compiled_path);
         $this->assertFileExists($build_path);
         $this->assertEquals($build, file_get_contents($build_path));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown()
-    {
-        // Make clear
-        foreach (glob(storage_path('app/APP*')) as $file_path) {
-            unlink($file_path);
-        }
-
-        parent::tearDown();
     }
 }

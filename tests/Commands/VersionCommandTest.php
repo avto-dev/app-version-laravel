@@ -12,9 +12,14 @@ class VersionCommandTest extends AbstractCommandTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getCommandSignature()
+    protected function tearDown()
     {
-        return 'version';
+        // Make clear
+        foreach (glob(storage_path('app/APP*')) as $file_path) {
+            unlink($file_path);
+        }
+
+        parent::tearDown();
     }
 
     /**
@@ -50,13 +55,8 @@ class VersionCommandTest extends AbstractCommandTestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function getCommandSignature()
     {
-        // Make clear
-        foreach (glob(storage_path('app/APP*')) as $file_path) {
-            unlink($file_path);
-        }
-
-        parent::tearDown();
+        return 'version';
     }
 }
