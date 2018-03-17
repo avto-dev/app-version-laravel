@@ -2,8 +2,6 @@
 
 namespace AvtoDev\AppVersion\Tests\Bootstrap;
 
-use Illuminate\Contracts\Console\Kernel;
-
 /**
  * Class TestsBootstraper.
  */
