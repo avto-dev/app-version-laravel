@@ -2,8 +2,8 @@
 
 namespace AvtoDev\AppVersion;
 
-use Illuminate\Filesystem\Filesystem;
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
+use Illuminate\Filesystem\Filesystem;
 
 /**
  * Class AppVersionManager.
@@ -16,11 +16,11 @@ class AppVersionManager implements AppVersionManagerContract
      * @var array
      */
     protected $config = [
-        'major'               => null,
-        'minor'               => null,
-        'patch'               => null,
-        'build'               => null,
-        'format'              => null,
+        'major'               => 0,
+        'minor'               => 0,
+        'patch'               => 0,
+        'build'               => 0,
+        'format'              => '{{major}}.{{minor}}.{{patch}}-{{build}}',
         'compiled_path'       => null,
         'build_metadata_path' => null,
     ];
@@ -35,7 +35,7 @@ class AppVersionManager implements AppVersionManagerContract
      *
      * @var bool
      */
-    protected $use_locking = false;
+    protected $use_locking = true;
 
     /**
      * AppVersionManager constructor.
@@ -63,9 +63,7 @@ class AppVersionManager implements AppVersionManagerContract
     }
 
     /**
-     * Get major version value.
-     *
-     * @return int|null
+     * {@inheritdoc}
      */
     public function major()
     {
@@ -73,9 +71,7 @@ class AppVersionManager implements AppVersionManagerContract
     }
 
     /**
-     * Get minor version value.
-     *
-     * @return int|null
+     * {@inheritdoc}
      */
     public function minor()
     {
@@ -83,9 +79,7 @@ class AppVersionManager implements AppVersionManagerContract
     }
 
     /**
-     * Get patch version value.
-     *
-     * @return int|null
+     * {@inheritdoc}
      */
     public function patch()
     {
@@ -113,14 +107,22 @@ class AppVersionManager implements AppVersionManagerContract
     /**
      * {@inheritdoc}
      */
+    public function refresh()
+    {
+        $this->clearCompiled();
+
+        $this->setBuild($this->build());
+        $this->setFormatted($this->formatted());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setBuild($value)
     {
-        $result                = false;
         $this->config['build'] = ($value = (string) $value);
 
-        if ($this->files->isDirectory($this->files->dirname($file_path = $this->config['build_metadata_path']))) {
-            $result = $this->files->put($this->config['build_metadata_path'], $value, $this->use_locking) > 0;
-        }
+        $result = $this->putIntoFile($this->config['build_metadata_path'], $value);
 
         $this->clearCompiled();
 
@@ -130,34 +132,51 @@ class AppVersionManager implements AppVersionManagerContract
     /**
      * {@inheritdoc}
      */
-    public function formatted($format = null)
+    public function formatted()
     {
         if ($this->files->exists($compiled_path = $this->config['compiled_path'])) {
             return $this->files->get($compiled_path);
         }
 
-        $format = (is_string($format) && ! empty($format))
-            ? $format
-            : $this->config['format'];
-
         $result = (string) str_replace(
             ['{{major}}', '{{minor}}', '{{patch}}', '{{build}}'],
             [$this->config['major'], $this->config['minor'], $this->config['patch'], $this->build()],
-            $format
+            $this->config['format']
         );
+
+        $this->setFormatted($result);
 
         return $result;
     }
 
     /**
-     * {@inheritdoc}
+     * Write the contents of a file.
+     *
+     * @param string $file_path
+     * @param string $data
+     *
+     * @return bool
      */
-    public function setFormatted($formatted)
+    protected function putIntoFile($file_path, $data)
     {
-        if ($this->files->isDirectory($this->files->dirname($file_path = $this->config['compiled_path']))) {
-            return $this->files->put($this->config['compiled_path'], (string) $formatted, $this->use_locking) > 0;
+        if ($this->files->isDirectory($this->files->dirname($file_path))) {
+            $data = str_replace(["\n","\r"], '', trim((string) $data));
+
+            return $this->files->put($file_path, $data, $this->use_locking) > 0;
         }
 
         return false;
+    }
+
+    /**
+     * Set formatted version value and store it onto file.
+     *
+     * @param string $formatted
+     *
+     * @return bool
+     */
+    protected function setFormatted($formatted)
+    {
+        return $this->putIntoFile($this->config['compiled_path'], $formatted);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace AvtoDev\AppVersion;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Contracts\Foundation\Application;
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
@@ -54,6 +55,8 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
 
         $this->registerAppVersionManager();
 
+        $this->registerBlade();
+
         if ($this->app->runningInConsole()) {
             $this->registerArtisanCommands();
         }
@@ -79,6 +82,16 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
     }
 
     /**
+     * Register Blade directives.
+     */
+    protected function registerBlade()
+    {
+        Blade::directive('app_version', function () {
+            return "<?php echo resolve('app.version.manager')->formatted(); ?>";
+        });
+    }
+
+    /**
      * Initialize configs.
      *
      * @return void
@@ -100,7 +113,7 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
     protected function registerArtisanCommands()
     {
         $this->commands([
-            //
+            Commands\VersionCommand::class,
         ]);
     }
 }

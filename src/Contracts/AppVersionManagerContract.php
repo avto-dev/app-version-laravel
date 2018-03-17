@@ -43,6 +43,13 @@ interface AppVersionManagerContract
     public function clearCompiled();
 
     /**
+     * Put values into files.
+     *
+     * @return void
+     */
+    public function refresh();
+
+    /**
      * Set build metadata value and store it onto file.
      *
      * @param string $value
@@ -54,18 +61,7 @@ interface AppVersionManagerContract
     /**
      * Returns formatted version value.
      *
-     * @param null|string $format
-     *
      * @return string
      */
-    public function formatted($format = null);
-
-    /**
-     * Set formatted version value and store it onto file.
-     *
-     * @param string $formatted
-     *
-     * @return bool
-     */
-    public function setFormatted($formatted);
+    public function formatted();
 }
