@@ -2,8 +2,8 @@
 
 namespace AvtoDev\AppVersion;
 
-use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 use Illuminate\Support\Facades\Facade;
+use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
 /**
  * Class AppVersionFacade.

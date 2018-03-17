@@ -2,8 +2,8 @@
 
 namespace AvtoDev\AppVersion\Tests\Traits;
 
-use AvtoDev\AppVersion\Tests\Bootstrap\TestsBootstraper;
 use Illuminate\Contracts\Console\Kernel;
+use AvtoDev\AppVersion\Tests\Bootstrap\TestsBootstraper;
 
 trait CreatesApplicationTrait
 {
