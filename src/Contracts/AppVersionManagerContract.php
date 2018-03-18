@@ -59,9 +59,25 @@ interface AppVersionManagerContract
     public function setBuild($value);
 
     /**
+     * Get hashed version value.
+     *
+     * @param int $length
+     *
+     * @return string
+     */
+    public function hashed($length = 6);
+
+    /**
      * Returns formatted version value.
      *
      * @return string
      */
     public function formatted();
+
+    /**
+     * Returns formatted version value (alias for `formatted()` method).
+     *
+     * @return string
+     */
+    public function version();
 }

@@ -25,3 +25,17 @@ if (! function_exists('app_build')) {
         return resolve(AppVersionManagerContract::class)->build();
     }
 }
+
+if (! function_exists('app_version_hash')) {
+    /**
+     * Returns hashed application version.
+     *
+     * @param int $length
+     *
+     * @return string
+     */
+    function app_version_hash($length = 6)
+    {
+        return resolve(AppVersionManagerContract::class)->hashed($length);
+    }
+}

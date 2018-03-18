@@ -23,5 +23,8 @@ class HelpersTest extends AbstractTestCase
         $this->assertEquals("1.0.0-{$build}", app_version());
 
         $this->assertEquals("{$build}", app_build());
+
+        $this->assertEquals("{$manager->hashed()}", app_version_hash());
+        $this->assertEquals("{$manager->hashed(16)}", app_version_hash(16));
     }
 }

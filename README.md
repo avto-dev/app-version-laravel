@@ -65,7 +65,7 @@ $ php artisan vendor:publish --provider="AvtoDev\\AppVersion\\AppVersionServiceP
 
 Пути к файлам вы, разумеется, можете переопределить на произвольные. Так же вы можете установить произвольный формат вывода версии (`1.0.0-beta` или `ver. 1.0.0 (build beta)`) - как только пожелаете.
 
-Для использования менеджера версии приложения в DI - просто запросите реализацию по интерфейсу `AvtoDev\AppVersion\Contracts\AppVersionManagerContract`. Пример использования:
+Для использования менеджера версии приложения в DI - просто запросите реализацию по интерфейсу `AvtoDev\AppVersion\Contracts\AppVersionManagerContract`. Реализованные методы также можете посмотреть в данном интерфейсе. Пример использования в DI:
 
 ```php
 <?php
@@ -115,6 +115,7 @@ class SomeCommand extends \Illuminate\Console\Command
 ```smarty
 Application version: @app_version
 Build version: @app_build
+Application version hash: @app_version_hash
 ```
 
 ### Хэлперы
@@ -126,6 +127,7 @@ Build version: @app_build
 
 app_version(); // 1.0.0-alpha2
 app_build(); // alpha2
+app_version_hash(); // 965c6f
 ```
 
 ### Тестирование

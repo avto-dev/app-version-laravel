@@ -62,9 +62,11 @@ class AppVersionManagerTest extends AbstractTestCase
 
         $another_manager = new AppVersionManager($config);
         $this->assertEquals($build = 'alpha1.4 pre', $another_manager->build());
-        $this->assertEquals("{$major}.{$minor}.0-{$build}", $manager->formatted());
+        $this->assertEquals("{$major}.{$minor}.0-{$build}", $formatted = $manager->formatted());
         $this->assertEquals("{$major}.{$minor}.0-{$build}", $manager->formatted()); // just for coverage
         $this->assertFileExists($compiled_path);
+
+        $this->assertEquals($manager->version(), $formatted);
     }
 
     /**
@@ -88,5 +90,22 @@ class AppVersionManagerTest extends AbstractTestCase
         $this->assertFileExists($compiled_path);
         $this->assertFileExists($build_path);
         $this->assertEquals($build, file_get_contents($build_path));
+    }
+
+    /**
+     * Test hashed method.
+     *
+     * @return void
+     */
+    public function testHashed()
+    {
+        $manager = new AppVersionManager();
+
+        $this->assertRegExp('~[a-z0-9]{5}~', $manager->hashed(5));
+
+        $this->assertTrue(mb_strlen($manager->hashed()) === 6);
+        $this->assertTrue(mb_strlen($manager->hashed(8)) === 8);
+        $this->assertTrue(mb_strlen($manager->hashed(2)) === 2);
+        $this->assertTrue(mb_strlen($manager->hashed(666)) === 40);
     }
 }

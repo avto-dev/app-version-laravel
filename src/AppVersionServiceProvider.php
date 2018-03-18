@@ -95,6 +95,10 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
         Blade::directive('app_build', function () {
             return "<?php echo resolve('app.version.manager')->build(); ?>";
         });
+
+        Blade::directive('app_version_hash', function ($length = 6) {
+            return "<?php echo resolve('app.version.manager')->hashed({$length}); ?>";
+        });
     }
 
     /**

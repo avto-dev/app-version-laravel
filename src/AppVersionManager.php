@@ -2,8 +2,9 @@
 
 namespace AvtoDev\AppVersion;
 
-use Illuminate\Filesystem\Filesystem;
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 
 /**
  * Class AppVersionManager.
@@ -43,7 +44,7 @@ class AppVersionManager implements AppVersionManagerContract
      * @param array $config
      * @param bool  $use_locking
      */
-    public function __construct(array $config, $use_locking = true)
+    public function __construct(array $config = [], $use_locking = true)
     {
         $this->config = array_replace_recursive($this->config, $config);
 
@@ -147,6 +148,27 @@ class AppVersionManager implements AppVersionManagerContract
         $this->setFormatted($result);
 
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function version(...$arguments)
+    {
+        return $this->formatted(...$arguments);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hashed($length = 6)
+    {
+        $length = (int) $length;
+        $hash   = sha1($this->formatted());
+
+        return Str::substr($hash, 0, $length > Str::length($hash)
+            ? null
+            : $length);
     }
 
     /**
