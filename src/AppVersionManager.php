@@ -2,9 +2,9 @@
 
 namespace AvtoDev\AppVersion;
 
-use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
+use Illuminate\Filesystem\Filesystem;
+use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
 /**
  * Class AppVersionManager.
