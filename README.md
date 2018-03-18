@@ -65,6 +65,38 @@ $ php artisan vendor:publish --provider="AvtoDev\\AppVersion\\AppVersionServiceP
 
 Пути к файлам вы, разумеется, можете переопределить на произвольные. Так же вы можете установить произвольный формат вывода версии (`1.0.0-beta` или `ver. 1.0.0 (build beta)`) - как только пожелаете.
 
+Для использования менеджера версии приложения в DI - просто запросите реализацию по интерфейсу `AvtoDev\AppVersion\Contracts\AppVersionManagerContract`. Пример использования:
+
+```php
+<?php
+
+namespace App\Console\Commands;
+
+use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
+
+class SomeCommand extends \Illuminate\Console\Command
+{
+    /**
+     * The console command name.
+     *
+     * @var string
+     */
+    protected $name = 'some:command';
+    
+    /**
+     * Execute the console command.
+     *
+     * @param AppVersionManagerContract $manager
+     *
+     * @return void
+     */
+    public function handle(AppVersionManagerContract $manager)
+    {
+        $manager->formatted(); // 1.0.0-alpha2
+    }
+}
+```
+
 ### Artisan-команды
 
 При использовании данного пакета вам доступны следующие artisan-команды и их аргументы:
