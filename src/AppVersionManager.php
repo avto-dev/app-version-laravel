@@ -2,9 +2,9 @@
 
 namespace AvtoDev\AppVersion;
 
-use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
+use Illuminate\Filesystem\Filesystem;
+use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
 /**
  * Class AppVersionManager.
@@ -104,18 +104,6 @@ class AppVersionManager implements AppVersionManagerContract
     }
 
     /**
-     * Get build value from metadata file.
-     *
-     * @return null|string
-     */
-    protected function buildStored()
-    {
-        return $this->files->exists($file_path = $this->config['build_metadata_path'])
-            ? $this->files->get($file_path, $this->use_locking)
-            : null;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function setBuild($value)
@@ -142,20 +130,6 @@ class AppVersionManager implements AppVersionManagerContract
     }
 
     /**
-     * Forget stored formatted value.
-     *
-     * @return bool
-     */
-    protected function forgetFormatted()
-    {
-        if ($this->files->exists($compiled_path = $this->config['compiled_path'])) {
-            return $this->files->delete($compiled_path);
-        }
-
-        return false;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function formatted()
@@ -165,18 +139,6 @@ class AppVersionManager implements AppVersionManagerContract
             [$this->config['major'], $this->config['minor'], $this->config['patch'], $this->build()],
             $this->config['format']
         );
-    }
-
-    /**
-     * Set formatted version value and store it onto file.
-     *
-     * @param string $formatted
-     *
-     * @return bool
-     */
-    protected function setFormatted($formatted)
-    {
-        return $this->putIntoFile($this->config['compiled_path'], $formatted);
     }
 
     /**
@@ -198,6 +160,44 @@ class AppVersionManager implements AppVersionManagerContract
         return Str::substr($hash, 0, $length > Str::length($hash)
             ? null
             : $length);
+    }
+
+    /**
+     * Get build value from metadata file.
+     *
+     * @return null|string
+     */
+    protected function buildStored()
+    {
+        return $this->files->exists($file_path = $this->config['build_metadata_path'])
+            ? $this->files->get($file_path, $this->use_locking)
+            : null;
+    }
+
+    /**
+     * Forget stored formatted value.
+     *
+     * @return bool
+     */
+    protected function forgetFormatted()
+    {
+        if ($this->files->exists($compiled_path = $this->config['compiled_path'])) {
+            return $this->files->delete($compiled_path);
+        }
+
+        return false;
+    }
+
+    /**
+     * Set formatted version value and store it onto file.
+     *
+     * @param string $formatted
+     *
+     * @return bool
+     */
+    protected function setFormatted($formatted)
+    {
+        return $this->putIntoFile($this->config['compiled_path'], $formatted);
     }
 
     /**

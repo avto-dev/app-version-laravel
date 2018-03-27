@@ -10,18 +10,6 @@ use AvtoDev\AppVersion\AppVersionManager;
 class AppVersionManagerTest extends AbstractTestCase
 {
     /**
-     * Get path for storage files.
-     *
-     * @param string $additional_path
-     *
-     * @return string
-     */
-    protected function getStoragePath($additional_path = '')
-    {
-        return storage_path($additional_path);
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function tearDown()
@@ -238,5 +226,17 @@ class AppVersionManagerTest extends AbstractTestCase
         $this->assertFileExists($build_path);
         $this->assertEquals($new_build, $manager->build());
         $this->assertStringEqualsFile($build_path, $manager->build());
+    }
+
+    /**
+     * Get path for storage files.
+     *
+     * @param string $additional_path
+     *
+     * @return string
+     */
+    protected function getStoragePath($additional_path = '')
+    {
+        return storage_path($additional_path);
     }
 }
