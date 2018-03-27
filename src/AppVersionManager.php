@@ -2,9 +2,9 @@
 
 namespace AvtoDev\AppVersion;
 
-use Illuminate\Support\Str;
-use Illuminate\Filesystem\Filesystem;
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 
 /**
  * Class AppVersionManager.
@@ -20,7 +20,7 @@ class AppVersionManager implements AppVersionManagerContract
         'major'               => 0,
         'minor'               => 0,
         'patch'               => 0,
-        'build'               => 0,
+        'build'               => '0',
         'format'              => '{{major}}.{{minor}}.{{patch}}-{{build}}',
         'compiled_path'       => null,
         'build_metadata_path' => null,
@@ -48,7 +48,7 @@ class AppVersionManager implements AppVersionManagerContract
     {
         $this->config = array_replace_recursive($this->config, $config);
 
-        // Make minimalistic normalization for versions values
+        // Make minimalistic normalization/typing for versions values
         foreach (['major', 'minor', 'patch'] as $key) {
             if (is_int($value = $this->config[$key])) {
                 if ($value < 0) {
@@ -57,6 +57,10 @@ class AppVersionManager implements AppVersionManagerContract
             } else {
                 $this->config[$key] = (int) preg_replace('/[^0-9]/', '', (string) $value);
             }
+        }
+
+        if (isset($config['build'])) {
+            $this->config['build'] = (string) $config['build'];
         }
 
         $this->use_locking = (bool) $use_locking;
@@ -68,7 +72,7 @@ class AppVersionManager implements AppVersionManagerContract
      */
     public function major()
     {
-        return $this->config['major'];
+        return (int) $this->config['major'];
     }
 
     /**
@@ -76,7 +80,7 @@ class AppVersionManager implements AppVersionManagerContract
      */
     public function minor()
     {
-        return $this->config['minor'];
+        return (int) $this->config['minor'];
     }
 
     /**
@@ -84,7 +88,7 @@ class AppVersionManager implements AppVersionManagerContract
      */
     public function patch()
     {
-        return $this->config['patch'];
+        return (int) $this->config['patch'];
     }
 
     /**
@@ -92,28 +96,23 @@ class AppVersionManager implements AppVersionManagerContract
      */
     public function build()
     {
-        return $this->files->exists($build_metadata_path = $this->config['build_metadata_path'])
-            ? $this->files->get($build_metadata_path)
-            : $this->config['build'];
+        if (is_string($from_file = $this->buildStored()) && ! empty($from_file)) {
+            return $from_file;
+        }
+
+        return (string) $this->config['build'];
     }
 
     /**
-     * {@inheritdoc}
+     * Get build value from metadata file.
+     *
+     * @return null|string
      */
-    public function clearCompiled()
+    protected function buildStored()
     {
-        $this->files->delete($this->config['compiled_path']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function refresh()
-    {
-        $this->clearCompiled();
-
-        $this->setBuild($this->build());
-        $this->setFormatted($this->formatted());
+        return $this->files->exists($file_path = $this->config['build_metadata_path'])
+            ? $this->files->get($file_path, $this->use_locking)
+            : null;
     }
 
     /**
@@ -121,13 +120,39 @@ class AppVersionManager implements AppVersionManagerContract
      */
     public function setBuild($value)
     {
-        $this->config['build'] = ($value = (string) $value);
+        $value = (string) $value;
 
-        $result = $this->putIntoFile($this->config['build_metadata_path'], $value);
+        if ($this->config['build'] !== $value && $this->buildStored() !== $value) {
+            $this->putIntoFile($this->config['build_metadata_path'], $value);
+            $this->setFormatted($this->formatted());
+        }
 
-        $this->clearCompiled();
+        $this->config['build'] = $value;
+    }
 
-        return $result;
+    /**
+     * {@inheritdoc}
+     */
+    public function refresh()
+    {
+        $this->setBuild($this->build());
+
+        $this->forgetFormatted();
+        $this->setFormatted($this->formatted());
+    }
+
+    /**
+     * Forget stored formatted value.
+     *
+     * @return bool
+     */
+    protected function forgetFormatted()
+    {
+        if ($this->files->exists($compiled_path = $this->config['compiled_path'])) {
+            return $this->files->delete($compiled_path);
+        }
+
+        return false;
     }
 
     /**
@@ -135,27 +160,31 @@ class AppVersionManager implements AppVersionManagerContract
      */
     public function formatted()
     {
-        if ($this->files->exists($compiled_path = $this->config['compiled_path'])) {
-            return $this->files->get($compiled_path);
-        }
-
-        $result = (string) str_replace(
+        return str_replace(
             ['{{major}}', '{{minor}}', '{{patch}}', '{{build}}'],
             [$this->config['major'], $this->config['minor'], $this->config['patch'], $this->build()],
             $this->config['format']
         );
+    }
 
-        $this->setFormatted($result);
-
-        return $result;
+    /**
+     * Set formatted version value and store it onto file.
+     *
+     * @param string $formatted
+     *
+     * @return bool
+     */
+    protected function setFormatted($formatted)
+    {
+        return $this->putIntoFile($this->config['compiled_path'], $formatted);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function version(...$arguments)
+    public function version()
     {
-        return $this->formatted(...$arguments);
+        return $this->formatted();
     }
 
     /**
@@ -188,17 +217,5 @@ class AppVersionManager implements AppVersionManagerContract
         }
 
         return false;
-    }
-
-    /**
-     * Set formatted version value and store it onto file.
-     *
-     * @param string $formatted
-     *
-     * @return bool
-     */
-    protected function setFormatted($formatted)
-    {
-        return $this->putIntoFile($this->config['compiled_path'], $formatted);
     }
 }

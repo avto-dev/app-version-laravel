@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.2
+
+### Fixed
+- Fix bug with stored in file build value [#1].
+
+### Removed
+- Method `->clearCompiled()` removed *(without previous depreciation)*.
+
 ## v1.1
 
 ### Added

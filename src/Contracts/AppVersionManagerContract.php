@@ -36,14 +36,7 @@ interface AppVersionManagerContract
     public function build();
 
     /**
-     * Remove compiled file.
-     *
-     * @return void
-     */
-    public function clearCompiled();
-
-    /**
-     * Put values into files.
+     * Refresh values, stored in files (recreate files if needed).
      *
      * @return void
      */
@@ -54,7 +47,7 @@ interface AppVersionManagerContract
      *
      * @param string $value
      *
-     * @return bool
+     * @return void
      */
     public function setBuild($value);
 
