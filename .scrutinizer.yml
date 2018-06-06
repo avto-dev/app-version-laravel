@@ -1,6 +1,8 @@
 filter:
   excluded_paths:
-    - 'tests/*'
+    - tests/
+  dependency_paths:
+    - vendor/
 
 checks:
   php:
@@ -18,47 +20,61 @@ build:
     neo4j: false
     rabbitmq: false
 
+  tests:
+    override:
+      -
+        command: 'vendor/bin/phpunit --coverage-clover=clover-file'
+        coverage:
+          file: 'clover-file'
+          format: 'clover'
+    after:
+      - php-scrutinizer-run --enable-security-analysis
+
+  dependencies:
+    override:
+      - composer update --no-interaction
+
   nodes:
+    php56-lowest:
+      environment:
+        php: 5.6
+      dependencies:
+        override:
+          - composer update --no-interaction --prefer-lowest
+
     php56:
       environment:
         php: 5.6
-      tests:
+
+    php70-lowest:
+      environment:
+        php: 7.0
+      dependencies:
         override:
-          -
-            command: 'vendor/bin/phpunit --coverage-clover=clover-file'
-            coverage:
-              file: 'clover-file'
-              format: 'clover'
+          - composer update --no-interaction --prefer-lowest
 
     php70:
       environment:
         php: 7.0
-      tests:
+
+    php71-lowest:
+      environment:
+        php: 7.1
+      dependencies:
         override:
-          -
-            command: 'vendor/bin/phpunit --coverage-clover=clover-file'
-            coverage:
-              file: 'clover-file'
-              format: 'clover'
+          - composer update --no-interaction --prefer-lowest
 
     php71:
       environment:
         php: 7.1
-      tests:
+
+    php72-lowest:
+      environment:
+        php: 7.2
+      dependencies:
         override:
-          -
-            command: 'vendor/bin/phpunit --coverage-clover=clover-file'
-            coverage:
-              file: 'clover-file'
-              format: 'clover'
+          - composer update --no-interaction --prefer-lowest
 
     php72:
       environment:
         php: 7.2
-      tests:
-        override:
-          -
-            command: 'vendor/bin/phpunit --coverage-clover=clover-file'
-            coverage:
-              file: 'clover-file'
-              format: 'clover'
