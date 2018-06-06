@@ -21,7 +21,7 @@
     },
     "require-dev": {
         "laravel/laravel": ">=5.4.0 <5.7.0",
-        "phpunit/phpunit": "~5.7 || ^6.4 || ~7.0",
+        "phpunit/phpunit": "~5.7.10 || ^6.4 || ~7.0",
         "mockery/mockery": "0.9.* || ~1.0",
         "symfony/var-dumper": "~3.2 || ^4.0"
     },
