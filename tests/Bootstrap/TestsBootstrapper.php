@@ -2,12 +2,12 @@
 
 namespace AvtoDev\AppVersion\Tests\Bootstrap;
 
-use AvtoDev\AppVersion\Tests\Traits\CreatesApplicationTrait;
 use Exception;
+use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Str;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use AvtoDev\AppVersion\Tests\Traits\CreatesApplicationTrait;
 
 class TestsBootstrapper
 {
@@ -27,16 +27,6 @@ class TestsBootstrapper
      * @var Filesystem
      */
     protected $files;
-
-    /**
-     * Returns path to the storage storage directory (for tests).
-     *
-     * @return string
-     */
-    public static function getStorageDirectoryPath()
-    {
-        return __DIR__ . '/../temp/storage';
-    }
 
     /**
      * Constructor.
@@ -64,6 +54,16 @@ class TestsBootstrapper
         }
 
         $this->log(null);
+    }
+
+    /**
+     * Returns path to the storage storage directory (for tests).
+     *
+     * @return string
+     */
+    public static function getStorageDirectoryPath()
+    {
+        return __DIR__ . '/../temp/storage';
     }
 
     /**
