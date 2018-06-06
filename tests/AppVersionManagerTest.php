@@ -4,9 +4,6 @@ namespace AvtoDev\AppVersion\Tests;
 
 use AvtoDev\AppVersion\AppVersionManager;
 
-/**
- * Class AppVersionManagerTest.
- */
 class AppVersionManagerTest extends AbstractTestCase
 {
     /**

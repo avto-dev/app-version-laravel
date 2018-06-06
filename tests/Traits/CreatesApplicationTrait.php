@@ -2,8 +2,9 @@
 
 namespace AvtoDev\AppVersion\Tests\Traits;
 
+use AvtoDev\AppVersion\AppVersionServiceProvider;
 use Illuminate\Contracts\Console\Kernel;
-use AvtoDev\AppVersion\Tests\Bootstrap\TestsBootstraper;
+use AvtoDev\AppVersion\Tests\Bootstrap\TestsBootstrapper;
 
 trait CreatesApplicationTrait
 {
@@ -17,9 +18,11 @@ trait CreatesApplicationTrait
         /** @var \Illuminate\Foundation\Application $app */
         $app = require __DIR__ . '/../../vendor/laravel/laravel/bootstrap/app.php';
 
-        $app->useStoragePath(TestsBootstraper::getStorageDirectoryPath());
+        $app->useStoragePath(TestsBootstrapper::getStorageDirectoryPath());
 
         $app->make(Kernel::class)->bootstrap();
+
+        $app->register(AppVersionServiceProvider::class);
 
         return $app;
     }

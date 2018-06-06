@@ -2,9 +2,6 @@
 
 namespace AvtoDev\AppVersion\Contracts;
 
-/**
- * Interface AppVersionManagerContract.
- */
 interface AppVersionManagerContract
 {
     /**

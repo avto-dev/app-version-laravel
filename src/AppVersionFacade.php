@@ -5,9 +5,6 @@ namespace AvtoDev\AppVersion;
 use Illuminate\Support\Facades\Facade;
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
-/**
- * Class AppVersionFacade.
- */
 class AppVersionFacade extends Facade
 {
     /**

@@ -2,27 +2,16 @@
 
 namespace AvtoDev\AppVersion;
 
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Contracts\Foundation\Application;
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
-/**
- * Class AppVersionServiceProvider.
- */
 class AppVersionServiceProvider extends IlluminateServiceProvider
 {
     /**
      * Versions manager DI bind alias.
      */
     const VERSION_MANAGER_ALIAS = 'app.version.manager';
-
-    /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = false;
 
     /**
      * Get config root key name.
@@ -55,9 +44,9 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
 
         $this->registerAppVersionManager();
 
-        $this->registerBlade();
-
         $this->registerHelpers();
+
+        $this->registerBlade();
 
         if ($this->app->runningInConsole()) {
             $this->registerArtisanCommands();
@@ -88,16 +77,19 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
      */
     protected function registerBlade()
     {
-        Blade::directive('app_version', function () {
-            return "<?php echo resolve('app.version.manager')->formatted(); ?>";
+        /** @var \Illuminate\View\Compilers\BladeCompiler $blade */
+        $blade = $this->app->make('view')->getEngineResolver()->resolve('blade')->getCompiler();
+
+        $blade->directive('app_version', function () {
+            return "<?php echo resolve('" . AppVersionManagerContract::class . "')->formatted(); ?>";
         });
 
-        Blade::directive('app_build', function () {
-            return "<?php echo resolve('app.version.manager')->build(); ?>";
+        $blade->directive('app_build', function () {
+            return "<?php echo resolve('" . AppVersionManagerContract::class . "')->build(); ?>";
         });
 
-        Blade::directive('app_version_hash', function ($length = 6) {
-            return "<?php echo resolve('app.version.manager')->hashed({$length}); ?>";
+        $blade->directive('app_version_hash', function ($length = 6) {
+            return "<?php echo resolve('" . AppVersionManagerContract::class . "')->hashed({$length}); ?>";
         });
     }
 
@@ -108,7 +100,7 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
      */
     protected function registerHelpers()
     {
-        require __DIR__ . '/helpers.php';
+        require_once __DIR__ . '/helpers.php';
     }
 
     /**

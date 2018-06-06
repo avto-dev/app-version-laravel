@@ -7,9 +7,6 @@ use AvtoDev\AppVersion\AppVersionManager;
 use AvtoDev\AppVersion\AppVersionServiceProvider;
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
-/**
- * Class AppVersionServiceProviderTest.
- */
 class AppVersionServiceProviderTest extends AbstractTestCase
 {
     /**

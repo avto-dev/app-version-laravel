@@ -4,9 +4,6 @@ namespace AvtoDev\AppVersion\Tests;
 
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
-/**
- * Class BladeRenderTest.
- */
 class BladeRenderTest extends AbstractTestCase
 {
     /**

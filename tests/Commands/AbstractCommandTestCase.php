@@ -5,9 +5,6 @@ namespace AvtoDev\AppVersion\Tests\Commands;
 use Illuminate\Contracts\Console\Kernel;
 use AvtoDev\AppVersion\Tests\AbstractTestCase;
 
-/**
- * Class AbstractCommandTestCase.
- */
 abstract class AbstractCommandTestCase extends AbstractTestCase
 {
     /**

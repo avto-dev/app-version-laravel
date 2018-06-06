@@ -2,17 +2,14 @@
 
 namespace AvtoDev\AppVersion\Tests\Bootstrap;
 
+use AvtoDev\AppVersion\Tests\Traits\CreatesApplicationTrait;
 use Exception;
-use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use AvtoDev\AppVersion\Tests\Traits\CreatesApplicationTrait;
 
-/**
- * Class AbstractTestsBootstraper.
- */
-abstract class AbstractTestsBootstraper
+class TestsBootstrapper
 {
     use CreatesApplicationTrait;
 
@@ -32,6 +29,16 @@ abstract class AbstractTestsBootstraper
     protected $files;
 
     /**
+     * Returns path to the storage storage directory (for tests).
+     *
+     * @return string
+     */
+    public static function getStorageDirectoryPath()
+    {
+        return __DIR__ . '/../temp/storage';
+    }
+
+    /**
      * Constructor.
      *
      * @throws Exception
@@ -47,7 +54,7 @@ abstract class AbstractTestsBootstraper
             // Если метод начинается с подстроки 'boot'
             if (Str::startsWith($method_name, static::MAGIC_METHODS_PREFIX)) {
                 // То вызываем метод, передавая ему на вход массив коллекций (хотя передавать не обязательно)
-                if (call_user_func_array([$this, $method_name], []) !== true) {
+                if (\call_user_func_array([$this, $method_name], []) !== true) {
                     throw new Exception(sprintf(
                         'Bootstrap method "%s" has non-true result. So, we cannot start tests for this reason',
                         $method_name
@@ -74,9 +81,35 @@ abstract class AbstractTestsBootstraper
             $output = $this->app->make(ConsoleOutput::class);
         }
 
-        $output->writeln(empty($message)
+        $output->writeln($message === null
             ? ''
             : sprintf('<%1$s>> Bootstrap:</%1$s> <%2$s>%3$s</%2$s>', 'comment', $style, $message)
         );
+    }
+
+    /**
+     * Make storage directory preparations.
+     *
+     * @return bool
+     */
+    protected function bootPrepareStorageDirectory()
+    {
+        $this->log('Prepare storage directory');
+
+        if ($this->files->isDirectory($storage = static::getStorageDirectoryPath())) {
+            if ($this->files->deleteDirectory($storage)) {
+                $this->log('Previous storage directory deleted successfully');
+            } else {
+                $this->log(sprintf('Cannot delete directory "%s"', $storage));
+
+                return false;
+            }
+        } else {
+            $this->files->makeDirectory($storage, 0755, true);
+        }
+
+        $this->files->copyDirectory(__DIR__ . '/../../vendor/laravel/laravel/storage', $storage);
+
+        return true;
     }
 }

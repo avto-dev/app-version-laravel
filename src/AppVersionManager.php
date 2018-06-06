@@ -6,9 +6,6 @@ use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
-/**
- * Class AppVersionManager.
- */
 class AppVersionManager implements AppVersionManagerContract
 {
     /**
@@ -46,16 +43,16 @@ class AppVersionManager implements AppVersionManagerContract
      */
     public function __construct(array $config = [], $use_locking = true)
     {
-        $this->config = array_replace_recursive($this->config, $config);
+        $this->config = \array_replace_recursive($this->config, $config);
 
         // Make minimalistic normalization/typing for versions values
         foreach (['major', 'minor', 'patch'] as $key) {
-            if (is_int($value = $this->config[$key])) {
+            if (\is_int($value = $this->config[$key])) {
                 if ($value < 0) {
                     $this->config[$key] = 0;
                 }
             } else {
-                $this->config[$key] = (int) preg_replace('/[^0-9]/', '', (string) $value);
+                $this->config[$key] = (int) preg_replace('/\D/', '', (string) $value);
             }
         }
 
@@ -96,7 +93,9 @@ class AppVersionManager implements AppVersionManagerContract
      */
     public function build()
     {
-        if (is_string($from_file = $this->buildStored()) && ! empty($from_file)) {
+        $from_file = $this->buildStored();
+
+        if (\is_string($from_file) && ! empty($from_file)) {
             return $from_file;
         }
 
@@ -216,6 +215,8 @@ class AppVersionManager implements AppVersionManagerContract
             return $this->files->put($file_path, $data, $this->use_locking) > 0;
         }
 
+        // @codeCoverageIgnoreStart
         return false;
+        // @codeCoverageIgnoreEnd
     }
 }

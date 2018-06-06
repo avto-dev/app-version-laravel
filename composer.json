@@ -2,10 +2,8 @@
     "name": "avto-dev/app-version-laravel",
     "description": "Laravel applications versioning",
     "keywords": [
-        "some",
-        "keywords",
-        "goes",
-        "here"
+        "laravel",
+        "version"
     ],
     "type": "library",
     "license": "MIT",

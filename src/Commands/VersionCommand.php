@@ -6,9 +6,6 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
-/**
- * Class VersionCommand.
- */
 class VersionCommand extends Command
 {
     /**
