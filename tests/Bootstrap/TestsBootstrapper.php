@@ -38,7 +38,6 @@ class TestsBootstrapper
         $this->app = $this->createApplication();
 
         $this->files = $this->app->make('files');
-
         // Перебираем все имена методов собственного класса
         foreach (get_class_methods(static::class) as $method_name) {
             // Если метод начинается с подстроки 'boot'

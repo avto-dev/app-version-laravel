@@ -3,7 +3,6 @@
 namespace AvtoDev\AppVersion\Tests\Traits;
 
 use Illuminate\Contracts\Console\Kernel;
-use AvtoDev\AppVersion\AppVersionServiceProvider;
 use AvtoDev\AppVersion\Tests\Bootstrap\TestsBootstrapper;
 
 trait CreatesApplicationTrait
@@ -21,8 +20,6 @@ trait CreatesApplicationTrait
         $app->useStoragePath(TestsBootstrapper::getStorageDirectoryPath());
 
         $app->make(Kernel::class)->bootstrap();
-
-        $app->register(AppVersionServiceProvider::class);
 
         return $app;
     }
