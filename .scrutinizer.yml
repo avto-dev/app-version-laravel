@@ -9,6 +9,10 @@ checks:
     code_rating: true
     duplication: true
 
+build_failure_conditions:
+  - 'elements.rating(<= D).exists'                                # No classes/methods with a rating of D or worse
+  - 'project.metric_change("scrutinizer.test_coverage", < -0.05)' # Coverage decreased from prev. inspection > 5%
+
 build:
   environment:
     mysql: false
@@ -27,8 +31,6 @@ build:
         coverage:
           file: 'clover-file'
           format: 'clover'
-    after:
-      - php-scrutinizer-run --enable-security-analysis
 
   dependencies:
     override:
@@ -78,3 +80,8 @@ build:
     php72:
       environment:
         php: 7.2
+
+    analysis:
+      tests:
+        override:
+          - php-scrutinizer-run --enable-security-analysis
