@@ -1,8 +1,8 @@
 filter:
   excluded_paths:
-    - tests/
+  - tests/
   dependency_paths:
-    - vendor/
+  - vendor/
 
 checks:
   php:
@@ -10,8 +10,8 @@ checks:
     duplication: true
 
 build_failure_conditions:
-  - 'elements.rating(<= D).exists'                                # No classes/methods with a rating of D or worse
-  - 'project.metric_change("scrutinizer.test_coverage", < -0.05)' # Coverage decreased from prev. inspection > 5%
+- 'elements.rating(<= D).exists'                                # No classes/methods with a rating of D or worse
+- 'project.metric_change("scrutinizer.test_coverage", < -0.05)' # Coverage decreased from prev. inspection > 5%
 
 build:
   environment:
@@ -26,15 +26,14 @@ build:
 
   tests:
     override:
-      -
-        command: 'vendor/bin/phpunit --coverage-clover=clover-file'
-        coverage:
-          file: 'clover-file'
-          format: 'clover'
+    - command: 'vendor/bin/phpunit --coverage-clover=clover-file'
+      coverage:
+        file: 'clover-file'
+        format: 'clover'
 
   dependencies:
     override:
-      - composer update --no-interaction
+    - composer update --no-interaction
 
   nodes:
     php56-lowest:
@@ -42,7 +41,7 @@ build:
         php: 5.6
       dependencies:
         override:
-          - composer update --no-interaction --prefer-lowest
+        - composer update --no-interaction --prefer-lowest
 
     php56:
       environment:
@@ -53,7 +52,7 @@ build:
         php: 7.0
       dependencies:
         override:
-          - composer update --no-interaction --prefer-lowest
+        - composer update --no-interaction --prefer-lowest
 
     php70:
       environment:
@@ -64,7 +63,15 @@ build:
         php: 7.1
       dependencies:
         override:
-          - composer update --no-interaction --prefer-lowest
+        - composer update --no-interaction --prefer-lowest
+
+    php71-laravel56:
+      environment:
+        php: 7.1
+      dependencies:
+        override:
+        - php -r "\$c=json_decode(file_get_contents(\$f='./composer.json'),true);\$c['require']['laravel/framework']='5.6.*';file_put_contents(\$f,json_encode(\$c));";
+        - composer update --no-interaction
 
     php71:
       environment:
@@ -75,7 +82,15 @@ build:
         php: 7.2
       dependencies:
         override:
-          - composer update --no-interaction --prefer-lowest
+        - composer update --no-interaction --prefer-lowest
+
+    php72-laravel56:
+      environment:
+        php: 7.2
+      dependencies:
+        override:
+        - php -r "\$c=json_decode(file_get_contents(\$f='./composer.json'),true);\$c['require']['laravel/framework']='5.6.*';file_put_contents(\$f,json_encode(\$c));";
+        - composer update --no-interaction
 
     php72:
       environment:
@@ -84,4 +99,4 @@ build:
     analysis:
       tests:
         override:
-          - php-scrutinizer-run --enable-security-analysis
+        - php-scrutinizer-run --enable-security-analysis

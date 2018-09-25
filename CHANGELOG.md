@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.3.0
+
+### Changed
+
+- Up maximal `laravel` package version (`5.7.*`)
+- Tests and CI config for `laravel` `5.7.*`
+
 ## v1.2.1
 
 ### Changed
