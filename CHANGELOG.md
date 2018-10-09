@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.3.1
+
+### Fixed
+
+- Getter for blade compiler [Issue #3][issue-3]
+
+[issue-3]:https://github.com/avto-dev/app-version-laravel/issues/3
+
 ## v1.3.0
 
 ### Changed

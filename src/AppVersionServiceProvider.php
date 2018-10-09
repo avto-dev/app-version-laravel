@@ -2,6 +2,7 @@
 
 namespace AvtoDev\AppVersion;
 
+use Illuminate\View\Compilers\BladeCompiler;
 use Illuminate\Contracts\Foundation\Application;
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
@@ -77,19 +78,18 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
      */
     protected function registerBlade()
     {
-        /** @var \Illuminate\View\Compilers\BladeCompiler $blade */
-        $blade = $this->app->make('view')->getEngineResolver()->resolve('blade')->getCompiler();
+        $this->app->afterResolving('blade.compiler', function (BladeCompiler $blade) {
+            $blade->directive('app_version', function () {
+                return "<?php echo resolve('" . AppVersionManagerContract::class . "')->formatted(); ?>";
+            });
 
-        $blade->directive('app_version', function () {
-            return "<?php echo resolve('" . AppVersionManagerContract::class . "')->formatted(); ?>";
-        });
+            $blade->directive('app_build', function () {
+                return "<?php echo resolve('" . AppVersionManagerContract::class . "')->build(); ?>";
+            });
 
-        $blade->directive('app_build', function () {
-            return "<?php echo resolve('" . AppVersionManagerContract::class . "')->build(); ?>";
-        });
-
-        $blade->directive('app_version_hash', function ($length = 6) {
-            return "<?php echo resolve('" . AppVersionManagerContract::class . "')->hashed({$length}); ?>";
+            $blade->directive('app_version_hash', function ($length = 6) {
+                return "<?php echo resolve('" . AppVersionManagerContract::class . "')->hashed({$length}); ?>";
+            });
         });
     }
 
