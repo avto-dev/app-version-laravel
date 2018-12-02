@@ -11,6 +11,8 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
 {
     /**
      * Versions manager DI bind alias.
+     *
+     * @deprecated
      */
     const VERSION_MANAGER_ALIAS = 'app.version.manager';
 
