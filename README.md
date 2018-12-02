@@ -5,14 +5,13 @@
 
 # AppVersion for Laravel applications
 
-[![Version][badge_version]][link_packagist]
+[![Version][badge_packagist_version]][link_packagist]
+[![Version][badge_php_version]][link_packagist]
 [![Build Status][badge_build_status]][link_build_status]
-[![StyleCI][badge_styleci]][link_styleci]
 [![Coverage][badge_coverage]][link_coverage]
-[![Code Quality][badge_quality]][link_coverage]
-[![Issues][badge_issues]][link_issues]
-[![License][badge_license]][link_license]
+[![Code quality][badge_code_quality]][link_code_quality]
 [![Downloads count][badge_downloads_count]][link_packagist]
+[![License][badge_license]][link_license]
 
 ![screenshot](https://hsto.org/webt/1k/1o/hb/1k1ohba9ap2oy5e0kq4t0rulpls.png)
 
@@ -130,9 +129,9 @@ app_build(); // alpha2
 app_version_hash(); // 965c6f
 ```
 
-### Тестирование
+### Testing
 
-Для тестирования данного пакета используется фреймворк `phpunit`. Для запуска тестов выполните в терминале:
+For package testing we use `phpunit` framework. Just write into your terminal:
 
 ```shell
 $ git clone git@github.com:avto-dev/app-version-laravel.git ./app-version-laravel && cd $_
@@ -140,28 +139,48 @@ $ composer install
 $ composer test
 ```
 
-## Поддержка и развитие
+## Changes log
 
-Если у вас возникли какие-либо проблемы по работе с данным пакетом, пожалуйста, создайте соответствующий `issue` в данном репозитории.
+[![Release date][badge_release_date]][link_releases]
+[![Commits since latest release][badge_commits_since_release]][link_commits]
 
-Если вы способны самостоятельно реализовать тот функционал, что вам необходим - создайте PR с соответствующими изменениями. Крайне желательно сопровождать PR соответствующими тестами, фиксирующими работу ваших изменений. После проверки и принятия изменений будет опубликована новая минорная версия.
+Changes log can be [found here][link_changes_log].
 
-## Лицензирование
+## Support
 
-Код данного пакета распространяется под лицензией [MIT][link_license].
+[![Issues][badge_issues]][link_issues]
+[![Issues][badge_pulls]][link_pulls]
 
-[badge_version]:https://img.shields.io/packagist/v/avto-dev/app-version-laravel.svg?style=flat&maxAge=30
-[badge_downloads_count]:https://img.shields.io/packagist/dt/avto-dev/app-version-laravel.svg?style=flat&maxAge=30
-[badge_license]:https://img.shields.io/packagist/l/avto-dev/app-version-laravel.svg?style=flat&maxAge=30
-[badge_build_status]:https://scrutinizer-ci.com/g/avto-dev/app-version-laravel/badges/build.png?b=master
-[badge_styleci]:https://styleci.io/repos/125632078/shield
-[badge_coverage]:https://scrutinizer-ci.com/g/avto-dev/app-version-laravel/badges/coverage.png?b=master
-[badge_quality]:https://scrutinizer-ci.com/g/avto-dev/app-version-laravel/badges/quality-score.png?b=master
-[badge_issues]:https://img.shields.io/github/issues/avto-dev/app-version-laravel.svg?style=flat&maxAge=30
+If you will find any package errors, please, [make an issue][link_create_issue] in current repository.
+
+## License
+
+This is open-sourced software licensed under the [MIT License][link_license].
+
+[badge_packagist_version]:https://img.shields.io/packagist/v/avto-dev/app-version-laravel.svg?maxAge=180
+[badge_php_version]:https://img.shields.io/packagist/php-v/avto-dev/app-version-laravel.svg?longCache=true
+[badge_build_status]:https://travis-ci.org/avto-dev/app-version-laravel.svg?branch=master
+[badge_code_quality]:https://img.shields.io/scrutinizer/g/avto-dev/app-version-laravel.svg?maxAge=180
+[badge_coverage]:https://img.shields.io/codecov/c/github/avto-dev/app-version-laravel/master.svg?maxAge=60
+[badge_downloads_count]:https://img.shields.io/packagist/dt/avto-dev/app-version-laravel.svg?maxAge=180
+[badge_license]:https://img.shields.io/packagist/l/avto-dev/app-version-laravel.svg?longCache=true
+[badge_release_date]:https://img.shields.io/github/release-date/avto-dev/app-version-laravel.svg?style=flat-square&maxAge=180
+[badge_commits_since_release]:https://img.shields.io/github/commits-since/avto-dev/app-version-laravel/latest.svg?style=flat-square&maxAge=180
+[badge_issues]:https://img.shields.io/github/issues/avto-dev/app-version-laravel.svg?style=flat-square&maxAge=180
+[badge_pulls]:https://img.shields.io/github/issues-pr/avto-dev/app-version-laravel.svg?style=flat-square&maxAge=180
+[link_releases]:https://github.com/avto-dev/app-version-laravel/releases
 [link_packagist]:https://packagist.org/packages/avto-dev/app-version-laravel
-[link_styleci]:https://styleci.io/repos/125632078/
-[link_license]:https://github.com/avto-dev/app-version-laravel/blob/master/LICENSE
-[link_build_status]:https://scrutinizer-ci.com/g/avto-dev/app-version-laravel/build-status/master
-[link_coverage]:https://scrutinizer-ci.com/g/avto-dev/app-version-laravel/?branch=master
+[link_build_status]:https://travis-ci.org/avto-dev/app-version-laravel
+[link_coverage]:https://codecov.io/gh/avto-dev/app-version-laravel/
+[link_changes_log]:https://github.com/avto-dev/app-version-laravel/blob/master/CHANGELOG.md
+[link_code_quality]:https://scrutinizer-ci.com/g/avto-dev/app-version-laravel/
 [link_issues]:https://github.com/avto-dev/app-version-laravel/issues
+[link_create_issue]:https://github.com/avto-dev/app-version-laravel/issues/new/choose
+[link_commits]:https://github.com/avto-dev/app-version-laravel/commits
+[link_pulls]:https://github.com/avto-dev/app-version-laravel/pulls
+[link_license]:https://github.com/avto-dev/app-version-laravel/blob/master/LICENSE
+[smspilot_home]:https://smspilot.ru/
+[smspilot_get_api_key]:https://smspilot.ru/my-settings.php#api
+[smspilot_sender_names]:https://smspilot.ru/my-sender.php
+[laravel_notifications]:https://laravel.com/docs/5.5/notifications
 [getcomposer]:https://getcomposer.org/download/

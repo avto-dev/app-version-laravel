@@ -7,13 +7,6 @@ use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 class VersionCommandTest extends AbstractCommandTestCase
 {
     /**
-     * Indicates if the console output should be mocked.
-     *
-     * @var bool
-     */
-    public $mockConsoleOutput = false;
-
-    /**
      * {@inheritdoc}
      */
     protected function tearDown()

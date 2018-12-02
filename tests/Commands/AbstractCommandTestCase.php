@@ -8,6 +8,13 @@ use AvtoDev\AppVersion\Tests\AbstractTestCase;
 abstract class AbstractCommandTestCase extends AbstractTestCase
 {
     /**
+     * Indicates if the console output should be mocked.
+     *
+     * @var bool
+     */
+    public $mockConsoleOutput = false;
+
+    /**
      * Basic command test.
      *
      * @return void

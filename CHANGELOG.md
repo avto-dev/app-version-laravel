@@ -1,5 +1,18 @@
 # Changelog
 
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
+
+## v1.4.0
+
+### Changed
+
+- Maximal PHP version now is undefined
+- Maximal Laravel version now is `5.7.*`
+- CI changed to [Travis CI][travis]
+- [CodeCov][codecov] integrated
+
 ## v1.3.1
 
 ### Fixed
@@ -44,3 +57,6 @@
 
 - Method `->hashed()` now available with manager, helper and blade
 - Alias `->version()` for method `->formatted()`
+
+[keepachangelog]:https://keepachangelog.com/en/1.0.0/
+[semver]:https://semver.org/spec/v2.0.0.html
