@@ -13,6 +13,9 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 - CI changed to [Travis CI][travis]
 - [CodeCov][codecov] integrated
 
+[travis]:https://travis-ci.org/
+[codecov]:https://codecov.io/
+
 ## v1.3.1
 
 ### Fixed
