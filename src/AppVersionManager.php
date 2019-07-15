@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\AppVersion;
 
 use Illuminate\Support\Str;
@@ -43,7 +45,7 @@ class AppVersionManager implements AppVersionManagerContract
      */
     public function __construct(array $config = [], $use_locking = true)
     {
-        $this->config = \array_replace_recursive($this->config, $config);
+        $this->config = (array) \array_replace_recursive($this->config, $config);
 
         // Make minimalistic normalization/typing for versions values
         foreach (['major', 'minor', 'patch'] as $key) {
@@ -52,7 +54,7 @@ class AppVersionManager implements AppVersionManagerContract
                     $this->config[$key] = 0;
                 }
             } else {
-                $this->config[$key] = (int) preg_replace('/\D/', '', (string) $value);
+                $this->config[$key] = (int) \preg_replace('/\D/', '', (string) $value);
             }
         }
 
@@ -67,7 +69,7 @@ class AppVersionManager implements AppVersionManagerContract
     /**
      * {@inheritdoc}
      */
-    public function major()
+    public function major(): int
     {
         return (int) $this->config['major'];
     }
@@ -75,7 +77,7 @@ class AppVersionManager implements AppVersionManagerContract
     /**
      * {@inheritdoc}
      */
-    public function minor()
+    public function minor(): int
     {
         return (int) $this->config['minor'];
     }
@@ -83,7 +85,7 @@ class AppVersionManager implements AppVersionManagerContract
     /**
      * {@inheritdoc}
      */
-    public function patch()
+    public function patch(): int
     {
         return (int) $this->config['patch'];
     }
@@ -91,7 +93,7 @@ class AppVersionManager implements AppVersionManagerContract
     /**
      * {@inheritdoc}
      */
-    public function build()
+    public function build(): string
     {
         $from_file = $this->buildStored();
 
@@ -105,10 +107,8 @@ class AppVersionManager implements AppVersionManagerContract
     /**
      * {@inheritdoc}
      */
-    public function setBuild($value)
+    public function setBuild(string $value): void
     {
-        $value = (string) $value;
-
         if ($this->config['build'] !== $value && $this->buildStored() !== $value) {
             $this->putIntoFile($this->config['build_metadata_path'], $value);
             $this->setFormatted($this->formatted());
@@ -120,7 +120,7 @@ class AppVersionManager implements AppVersionManagerContract
     /**
      * {@inheritdoc}
      */
-    public function refresh()
+    public function refresh(): void
     {
         $this->setBuild($this->build());
 
@@ -131,9 +131,9 @@ class AppVersionManager implements AppVersionManagerContract
     /**
      * {@inheritdoc}
      */
-    public function formatted()
+    public function formatted(): string
     {
-        return str_replace(
+        return \str_replace(
             ['{{major}}', '{{minor}}', '{{patch}}', '{{build}}'],
             [$this->config['major'], $this->config['minor'], $this->config['patch'], $this->build()],
             $this->config['format']
@@ -143,7 +143,7 @@ class AppVersionManager implements AppVersionManagerContract
     /**
      * {@inheritdoc}
      */
-    public function version()
+    public function version(): string
     {
         return $this->formatted();
     }
@@ -151,10 +151,9 @@ class AppVersionManager implements AppVersionManagerContract
     /**
      * {@inheritdoc}
      */
-    public function hashed($length = 6)
+    public function hashed(int $length = 6): string
     {
-        $length = (int) $length;
-        $hash   = sha1($this->formatted());
+        $hash = \sha1($this->formatted());
 
         return Str::substr($hash, 0, $length > Str::length($hash)
             ? null
@@ -166,7 +165,7 @@ class AppVersionManager implements AppVersionManagerContract
      *
      * @return null|string
      */
-    protected function buildStored()
+    protected function buildStored(): ?string
     {
         return $this->files->exists($file_path = $this->config['build_metadata_path'])
             ? $this->files->get($file_path, $this->use_locking)
@@ -178,7 +177,7 @@ class AppVersionManager implements AppVersionManagerContract
      *
      * @return bool
      */
-    protected function forgetFormatted()
+    protected function forgetFormatted(): bool
     {
         if ($this->files->exists($compiled_path = $this->config['compiled_path'])) {
             return $this->files->delete($compiled_path);
@@ -194,7 +193,7 @@ class AppVersionManager implements AppVersionManagerContract
      *
      * @return bool
      */
-    protected function setFormatted($formatted)
+    protected function setFormatted($formatted): bool
     {
         return $this->putIntoFile($this->config['compiled_path'], $formatted);
     }
@@ -207,10 +206,10 @@ class AppVersionManager implements AppVersionManagerContract
      *
      * @return bool
      */
-    protected function putIntoFile($file_path, $data)
+    protected function putIntoFile($file_path, $data): bool
     {
         if ($this->files->isDirectory($this->files->dirname($file_path))) {
-            $data = str_replace(["\n", "\r"], '', trim((string) $data));
+            $data = \str_replace(["\n", "\r"], '', \trim((string) $data));
 
             return $this->files->put($file_path, $data, $this->use_locking) > 0;
         }

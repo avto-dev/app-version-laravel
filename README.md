@@ -9,7 +9,6 @@
 [![Version][badge_php_version]][link_packagist]
 [![Build Status][badge_build_status]][link_build_status]
 [![Coverage][badge_coverage]][link_coverage]
-[![Code quality][badge_code_quality]][link_code_quality]
 [![Downloads count][badge_downloads_count]][link_packagist]
 [![License][badge_license]][link_license]
 
@@ -36,14 +35,14 @@ $ composer require avto-dev/app-version-laravel "^1.0"
 > ```php
 > 'providers' => [
 >     // ...
->     AvtoDev\AppVersion\AppVersionServiceProvider::class,
+>     AvtoDev\AppVersion\ServiceProvider::class,
 > ]
 > ```
 
 После этого "опубликуйте" конфигурационный файл:
 
 ```shell
-$ php artisan vendor:publish --provider="AvtoDev\\AppVersion\\AppVersionServiceProvider"
+$ php artisan vendor:publish --provider="AvtoDev\\AppVersion\\ServiceProvider"
 ```
 
 И произведите необходимые настройки в файле `./config/version.php`. Каждое значение в конфигурационном файле имеет подробное описание.
@@ -160,7 +159,6 @@ This is open-sourced software licensed under the [MIT License][link_license].
 [badge_packagist_version]:https://img.shields.io/packagist/v/avto-dev/app-version-laravel.svg?maxAge=180
 [badge_php_version]:https://img.shields.io/packagist/php-v/avto-dev/app-version-laravel.svg?longCache=true
 [badge_build_status]:https://travis-ci.org/avto-dev/app-version-laravel.svg?branch=master
-[badge_code_quality]:https://img.shields.io/scrutinizer/g/avto-dev/app-version-laravel.svg?maxAge=180
 [badge_coverage]:https://img.shields.io/codecov/c/github/avto-dev/app-version-laravel/master.svg?maxAge=60
 [badge_downloads_count]:https://img.shields.io/packagist/dt/avto-dev/app-version-laravel.svg?maxAge=180
 [badge_license]:https://img.shields.io/packagist/l/avto-dev/app-version-laravel.svg?longCache=true
@@ -173,7 +171,6 @@ This is open-sourced software licensed under the [MIT License][link_license].
 [link_build_status]:https://travis-ci.org/avto-dev/app-version-laravel
 [link_coverage]:https://codecov.io/gh/avto-dev/app-version-laravel/
 [link_changes_log]:https://github.com/avto-dev/app-version-laravel/blob/master/CHANGELOG.md
-[link_code_quality]:https://scrutinizer-ci.com/g/avto-dev/app-version-laravel/
 [link_issues]:https://github.com/avto-dev/app-version-laravel/issues
 [link_create_issue]:https://github.com/avto-dev/app-version-laravel/issues/new/choose
 [link_commits]:https://github.com/avto-dev/app-version-laravel/commits

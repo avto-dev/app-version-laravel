@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\AppVersion\Commands;
 
-use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
-class VersionCommand extends Command
+class VersionCommand extends \Illuminate\Console\Command
 {
     /**
      * The console command name.
@@ -29,7 +30,7 @@ class VersionCommand extends Command
      *
      * @return void
      */
-    public function handle(AppVersionManagerContract $manager)
+    public function handle(AppVersionManagerContract $manager): void
     {
         if ($this->option('refresh')) {
             $manager->refresh();
@@ -51,9 +52,9 @@ class VersionCommand extends Command
     /**
      * Get the console command options.
      *
-     * @return array
+     * @return array[]
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         return [
             ['build', 'b', InputOption::VALUE_NONE, 'Display build value only.'],

@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\AppVersion\Tests;
 
-use AvtoDev\AppVersion\AppVersionServiceProvider;
+use AvtoDev\AppVersion\ServiceProvider;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class AbstractTestCase extends BaseTestCase
@@ -12,10 +14,10 @@ abstract class AbstractTestCase extends BaseTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->app->register(AppVersionServiceProvider::class);
+        $this->app->register(ServiceProvider::class);
     }
 }
