@@ -42,5 +42,5 @@ abstract class AbstractCommandTestCase extends AbstractTestCase
      *
      * @return string
      */
-    abstract protected function getCommandSignature(): string ;
+    abstract protected function getCommandSignature(): string;
 }
