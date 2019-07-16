@@ -36,17 +36,37 @@ class VersionCommand extends \Illuminate\Console\Command
             $manager->refresh();
 
             $this->info('Stored in files values updated, files recreated');
-        } elseif ($build = $this->option('set-build')) {
+        } elseif ($build = $this->getBuildValue()) {
             $manager->setBuild($build);
 
             $this->info(sprintf('Application build version changed to "%s"', $build));
         } else {
             $this->output->writeln(
-                $this->option('build')
-                    ? $manager->build()
+                $this->getBuild()
+                    ? (string) $manager->build()
                     : $manager->formatted()
             );
         }
+    }
+
+    /**
+     * @return string|null
+     */
+    protected function getBuildValue(): ?string
+    {
+        $set_build = $this->option('set-build');
+
+        return \is_string($set_build) && $set_build !== ''
+            ? $set_build
+            : null;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function getBuild(): bool
+    {
+        return $this->option('build') === true;
     }
 
     /**
