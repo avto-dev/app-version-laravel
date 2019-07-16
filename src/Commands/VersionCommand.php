@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\AppVersion\Commands;
 
-use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
-class VersionCommand extends Command
+class VersionCommand extends \Illuminate\Console\Command
 {
     /**
      * The console command name.
@@ -29,31 +30,43 @@ class VersionCommand extends Command
      *
      * @return void
      */
-    public function handle(AppVersionManagerContract $manager)
+    public function handle(AppVersionManagerContract $manager): void
     {
         if ($this->option('refresh')) {
             $manager->refresh();
 
             $this->info('Stored in files values updated, files recreated');
-        } elseif ($build = $this->option('set-build')) {
+        } elseif ($build = $this->getBuildValue()) {
             $manager->setBuild($build);
 
             $this->info(sprintf('Application build version changed to "%s"', $build));
         } else {
             $this->output->writeln(
-                $this->option('build')
-                    ? $manager->build()
+                ((bool) $this->option('build')) === true
+                    ? (string) $manager->build()
                     : $manager->formatted()
             );
         }
     }
 
     /**
+     * @return string|null
+     */
+    protected function getBuildValue(): ?string
+    {
+        $set_build = $this->option('set-build');
+
+        return \is_string($set_build) && $set_build !== ''
+            ? $set_build
+            : null;
+    }
+
+    /**
      * Get the console command options.
      *
-     * @return array
+     * @return array[]
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         return [
             ['build', 'b', InputOption::VALUE_NONE, 'Display build value only.'],

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\AppVersion\Tests\Commands;
 
 use Illuminate\Contracts\Console\Kernel;
@@ -19,7 +21,7 @@ abstract class AbstractCommandTestCase extends AbstractTestCase
      *
      * @return void
      */
-    public function testHelpCommand()
+    public function testHelpCommand(): void
     {
         $this->assertNotFalse(
             $this->artisan($signature = $this->getCommandSignature(), ['--help']),
@@ -40,5 +42,5 @@ abstract class AbstractCommandTestCase extends AbstractTestCase
      *
      * @return string
      */
-    abstract protected function getCommandSignature();
+    abstract protected function getCommandSignature(): string;
 }

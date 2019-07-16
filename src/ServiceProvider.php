@@ -1,29 +1,23 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\AppVersion;
 
 use Illuminate\View\Compilers\BladeCompiler;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Container\Container;
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
-use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
-class AppVersionServiceProvider extends IlluminateServiceProvider
+class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
-    /**
-     * Versions manager DI bind alias.
-     *
-     * @deprecated
-     */
-    const VERSION_MANAGER_ALIAS = 'app.version.manager';
-
     /**
      * Get config root key name.
      *
      * @return string
      */
-    public static function getConfigRootKeyName()
+    public static function getConfigRootKeyName(): string
     {
-        return basename(static::getConfigPath(), '.php');
+        return \basename(static::getConfigPath(), '.php');
     }
 
     /**
@@ -31,7 +25,7 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
      *
      * @return string
      */
-    public static function getConfigPath()
+    public static function getConfigPath(): string
     {
         return env('APP_VERSION_CONFIG_PATH', __DIR__ . '/config/version.php');
     }
@@ -41,14 +35,12 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->initializeConfigs();
 
         $this->registerAppVersionManager();
-
         $this->registerHelpers();
-
         $this->registerBlade();
 
         if ($this->app->runningInConsole()) {
@@ -61,9 +53,9 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
      *
      * @return void
      */
-    protected function registerAppVersionManager()
+    protected function registerAppVersionManager(): void
     {
-        $this->app->singleton(AppVersionManager::class, function (Application $app) {
+        $this->app->singleton(AppVersionManager::class, function (Container $app) {
             $config = (array) $app
                 ->make('config')
                 ->get(static::getConfigRootKeyName());
@@ -72,24 +64,25 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
         });
 
         $this->app->bind(AppVersionManagerContract::class, AppVersionManager::class);
-        $this->app->bind(static::VERSION_MANAGER_ALIAS, AppVersionManagerContract::class);
     }
 
     /**
      * Register Blade directives.
+     *
+     * @return void
      */
-    protected function registerBlade()
+    protected function registerBlade(): void
     {
         $this->app->afterResolving('blade.compiler', function (BladeCompiler $blade) {
-            $blade->directive('app_version', function () {
+            $blade->directive('app_version', function (): string {
                 return "<?php echo resolve('" . AppVersionManagerContract::class . "')->formatted(); ?>";
             });
 
-            $blade->directive('app_build', function () {
+            $blade->directive('app_build', function (): string {
                 return "<?php echo resolve('" . AppVersionManagerContract::class . "')->build(); ?>";
             });
 
-            $blade->directive('app_version_hash', function ($length = 6) {
+            $blade->directive('app_version_hash', function ($length = 6): string {
                 return "<?php echo resolve('" . AppVersionManagerContract::class . "')->hashed({$length}); ?>";
             });
         });
@@ -100,7 +93,7 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
      *
      * @return void
      */
-    protected function registerHelpers()
+    protected function registerHelpers(): void
     {
         require_once __DIR__ . '/helpers.php';
     }
@@ -110,7 +103,7 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
      *
      * @return void
      */
-    protected function initializeConfigs()
+    protected function initializeConfigs(): void
     {
         $this->mergeConfigFrom(static::getConfigPath(), static::getConfigRootKeyName());
 
@@ -124,7 +117,7 @@ class AppVersionServiceProvider extends IlluminateServiceProvider
      *
      * @return void
      */
-    protected function registerArtisanCommands()
+    protected function registerArtisanCommands(): void
     {
         $this->commands([
             Commands\VersionCommand::class,

@@ -1,0 +1,7 @@
+parameters:
+  level: 'max'
+  autoload_files:
+    - %currentWorkingDirectory%/src/helpers.php
+  reportUnmatchedIgnoredErrors: false
+  paths:
+    - src

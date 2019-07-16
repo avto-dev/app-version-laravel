@@ -1,19 +1,24 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\AppVersion\Tests;
 
 use AvtoDev\AppVersion\AppVersionManager;
 
+/**
+ * @covers \AvtoDev\AppVersion\AppVersionManager<extended>
+ */
 class AppVersionManagerTest extends AbstractTestCase
 {
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // Make clear
-        foreach (glob($this->getStoragePath('app/APP*')) as $file_path) {
-            unlink($file_path);
+        foreach (\glob($this->getStoragePath('app/APP*')) as $file_path) {
+            \unlink($file_path);
         }
 
         parent::tearDown();
@@ -24,7 +29,7 @@ class AppVersionManagerTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $manager = new AppVersionManager([
             'major'  => $major = 1,
@@ -46,7 +51,7 @@ class AppVersionManagerTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testValuesStoring()
+    public function testValuesStoring(): void
     {
         $this->assertFileNotExists($build_path = $this->getStoragePath('app/APP_BUILD'));
         $manager = new AppVersionManager($config = [
@@ -76,7 +81,7 @@ class AppVersionManagerTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testFilesIO()
+    public function testFilesIO(): void
     {
         $manager = new AppVersionManager($config = [
             'compiled_path'       => $compiled_path = $this->getStoragePath('app/APP_VERSION_TEST'),
@@ -99,7 +104,7 @@ class AppVersionManagerTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testHashed()
+    public function testHashed(): void
     {
         $manager = new AppVersionManager;
 
@@ -116,12 +121,12 @@ class AppVersionManagerTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testVersionFilesNotCreatedOnSettingSameValue()
+    public function testVersionFilesNotCreatedOnSettingSameValue(): void
     {
         $manager = new AppVersionManager([
             'build'               => $build = 'alpha-1',
-            'compiled_path'       => $compiled_path = $this->getStoragePath('app/APP_VERSION_' . mt_rand(0, 999)),
-            'build_metadata_path' => $build_path = $this->getStoragePath('app/APP_BUILD_' . mt_rand(0, 999)),
+            'compiled_path'       => $compiled_path = $this->getStoragePath('app/APP_VERSION_' . \random_int(0, 999)),
+            'build_metadata_path' => $build_path = $this->getStoragePath('app/APP_BUILD_' . \random_int(0, 999)),
         ]);
 
         $this->assertFileNotExists($compiled_path);
@@ -140,19 +145,19 @@ class AppVersionManagerTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testBuildFilesCreatedOnSettingDifferentBuildValue()
+    public function testBuildFilesCreatedOnSettingDifferentBuildValue(): void
     {
         $manager = new AppVersionManager([
             'build'               => $build = 'alpha-2',
-            'compiled_path'       => $compiled_path = $this->getStoragePath('app/APP_VERSION_' . mt_rand(0, 999)),
-            'build_metadata_path' => $build_path = $this->getStoragePath('app/APP_BUILD_' . mt_rand(0, 999)),
+            'compiled_path'       => $compiled_path = $this->getStoragePath('app/APP_VERSION_' . \random_int(0, 999)),
+            'build_metadata_path' => $build_path = $this->getStoragePath('app/APP_BUILD_' . \random_int(0, 999)),
         ]);
 
         $this->assertFileNotExists($compiled_path);
         $this->assertFileNotExists($build_path);
 
         // Set self new (different) build value
-        $manager->setBuild($new_build = $build . mt_rand(1, 99));
+        $manager->setBuild($new_build = $build . \random_int(1, 99));
 
         $this->assertEquals($new_build, $manager->build());
 
@@ -166,7 +171,7 @@ class AppVersionManagerTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testCreatingVersionsFilesOnRefresh()
+    public function testCreatingVersionsFilesOnRefresh(): void
     {
         $manager = new AppVersionManager([
             'major'               => 1,
@@ -174,8 +179,8 @@ class AppVersionManagerTest extends AbstractTestCase
             'patch'               => 3,
             'format'              => '{{major}}.{{minor}}.{{patch}}_{{build}}',
             'build'               => $build = 'alpha-3',
-            'compiled_path'       => $compiled_path = $this->getStoragePath('app/APP_VERSION_' . mt_rand(0, 999)),
-            'build_metadata_path' => $build_path = $this->getStoragePath('app/APP_BUILD_' . mt_rand(0, 999)),
+            'compiled_path'       => $compiled_path = $this->getStoragePath('app/APP_VERSION_' . \random_int(0, 999)),
+            'build_metadata_path' => $build_path = $this->getStoragePath('app/APP_BUILD_' . \random_int(0, 999)),
         ]);
 
         $this->assertFileNotExists($compiled_path);
@@ -197,12 +202,12 @@ class AppVersionManagerTest extends AbstractTestCase
         $this->assertStringEqualsFile($compiled_path, $new_formatted);
     }
 
-    public function testBuildValueCanBeChangedByConfiguration()
+    public function testBuildValueCanBeChangedByConfiguration(): void
     {
         $manager = new AppVersionManager([
             'build'               => $build = 'alpha-1',
-            'compiled_path'       => $compiled_path = $this->getStoragePath('app/APP_VERSION_' . mt_rand(0, 999)),
-            'build_metadata_path' => $build_path = $this->getStoragePath('app/APP_BUILD_' . mt_rand(0, 999)),
+            'compiled_path'       => $compiled_path = $this->getStoragePath('app/APP_VERSION_' . \random_int(0, 999)),
+            'build_metadata_path' => $build_path = $this->getStoragePath('app/APP_BUILD_' . \random_int(0, 999)),
         ]);
 
         $this->assertEquals($build, $manager->build());
@@ -232,7 +237,7 @@ class AppVersionManagerTest extends AbstractTestCase
      *
      * @return string
      */
-    protected function getStoragePath($additional_path = '')
+    protected function getStoragePath($additional_path = ''): string
     {
         return storage_path($additional_path);
     }

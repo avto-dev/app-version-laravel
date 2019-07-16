@@ -4,12 +4,15 @@ namespace AvtoDev\AppVersion\Tests\Commands;
 
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
+/**
+ * @covers \AvtoDev\AppVersion\Commands\VersionCommand<extended>
+ */
 class VersionCommandTest extends AbstractCommandTestCase
 {
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // Make clear
         foreach (glob(storage_path('app/APP*')) as $file_path) {
@@ -24,7 +27,7 @@ class VersionCommandTest extends AbstractCommandTestCase
      *
      * @return void
      */
-    public function testExecution()
+    public function testExecution(): void
     {
         /** @var AppVersionManagerContract $manager */
         $manager = $this->app->make(AppVersionManagerContract::class);
@@ -52,7 +55,7 @@ class VersionCommandTest extends AbstractCommandTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getCommandSignature()
+    protected function getCommandSignature(): string
     {
         return 'version';
     }

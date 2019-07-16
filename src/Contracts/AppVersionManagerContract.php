@@ -9,35 +9,35 @@ interface AppVersionManagerContract
      *
      * @return int|null
      */
-    public function major();
+    public function major(): ?int;
 
     /**
      * Get minor version value.
      *
      * @return int|null
      */
-    public function minor();
+    public function minor(): ?int;
 
     /**
      * Get patch version value.
      *
      * @return int|null
      */
-    public function patch();
+    public function patch(): ?int;
 
     /**
      * Get build metadata value.
      *
      * @return string|null
      */
-    public function build();
+    public function build(): ?string;
 
     /**
      * Refresh values, stored in files (recreate files if needed).
      *
      * @return void
      */
-    public function refresh();
+    public function refresh(): void;
 
     /**
      * Set build metadata value and store it onto file.
@@ -46,7 +46,7 @@ interface AppVersionManagerContract
      *
      * @return void
      */
-    public function setBuild($value);
+    public function setBuild(string $value): void;
 
     /**
      * Get hashed version value.
@@ -55,19 +55,19 @@ interface AppVersionManagerContract
      *
      * @return string
      */
-    public function hashed($length = 6);
+    public function hashed(int $length = 6): string;
 
     /**
      * Returns formatted version value.
      *
      * @return string
      */
-    public function formatted();
+    public function formatted(): string;
 
     /**
      * Returns formatted version value (alias for `formatted()` method).
      *
      * @return string
      */
-    public function version();
+    public function version(): string;
 }

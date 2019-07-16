@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## v2.0.0
+
+### Added
+
+- Docker-based environment for development
+- Project `Makefile`
+
+### Changed
+
+- Minimal `PHP` version now is `^7.1.3`
+- Minimal `Laravel` version now is `5.5.x`
+- Maximal `Laravel` version now is `5.8.x`
+- Dependency `laravel/framework` changed to `illuminate/*`
+- Composer scripts
+- `\AvtoDev\AppVersion\AppVersionServiceProvider` &rarr; `AvtoDev\AppVersion\ServiceProvider`
+- `AppVersionManagerContract` method signatures
+- Helpers (`app_versio`, `app_build`, `app_version_hash`) type-hints
+
+### Removed
+
+- DI binding `app.version.manager`
+
 ## v1.4.0
 
 ### Changed

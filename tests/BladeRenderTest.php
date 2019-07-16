@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\AppVersion\Tests;
 
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
@@ -9,9 +11,11 @@ class BladeRenderTest extends AbstractTestCase
     /**
      * Rendering test.
      *
+     * @covers \AvtoDev\AppVersion\ServiceProvider::registerBlade
+     *
      * @return void
      */
-    public function testRendering()
+    public function testRendering(): void
     {
         /** @var AppVersionManagerContract $manager */
         $manager = $this->app->make(AppVersionManagerContract::class);

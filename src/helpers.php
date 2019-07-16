@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
 if (! function_exists('app_version')) {
@@ -8,7 +10,7 @@ if (! function_exists('app_version')) {
      *
      * @return string
      */
-    function app_version()
+    function app_version(): string
     {
         return resolve(AppVersionManagerContract::class)->formatted();
     }
@@ -18,9 +20,9 @@ if (! function_exists('app_build')) {
     /**
      * Returns application build (only) version.
      *
-     * @return string
+     * @return string|null
      */
-    function app_build()
+    function app_build(): ?string
     {
         return resolve(AppVersionManagerContract::class)->build();
     }
@@ -34,7 +36,7 @@ if (! function_exists('app_version_hash')) {
      *
      * @return string
      */
-    function app_version_hash($length = 6)
+    function app_version_hash($length = 6): string
     {
         return resolve(AppVersionManagerContract::class)->hashed($length);
     }
