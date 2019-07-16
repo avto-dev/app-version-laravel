@@ -42,7 +42,7 @@ class VersionCommand extends \Illuminate\Console\Command
             $this->info(sprintf('Application build version changed to "%s"', $build));
         } else {
             $this->output->writeln(
-                $this->getBuild()
+                ((bool) $this->option('build')) === true
                     ? (string) $manager->build()
                     : $manager->formatted()
             );
@@ -59,14 +59,6 @@ class VersionCommand extends \Illuminate\Console\Command
         return \is_string($set_build) && $set_build !== ''
             ? $set_build
             : null;
-    }
-
-    /**
-     * @return bool
-     */
-    protected function getBuild(): bool
-    {
-        return $this->option('build') === true;
     }
 
     /**

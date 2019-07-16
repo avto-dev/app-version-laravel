@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 ### Changed
 
 - Minimal `PHP` version now is `^7.1.3`
+- Minimal `Laravel` version now is `5.5.x`
 - Maximal `Laravel` version now is `5.8.x`
 - Dependency `laravel/framework` changed to `illuminate/*`
 - Composer scripts

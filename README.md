@@ -15,57 +15,64 @@
 
 > Picture taken from `antonioribeiro/version` repository
 
-По умолчанию Laravel не имеет встроенного механизма для работы со значением версии приложения, и данный пакет предназначен восполнить данный недостаток. Используя его вы сможете в произвольном месте вашего кода получать значение версии приложения, хранить его в отдельном файле (для реализации возможности его чтения, например - другими приложениями), и обновлять версию сборки при необходимости прямо во время работы приложения, или консоли.
+Laravel does not have included mechanism for a working with application version, and this package can fix this flaw.
 
-## Установка
+## Install
 
-Для установки данного пакета выполните в терминале следующую команду:
+Require this package with composer using the following command:
 
 ```shell
-$ composer require avto-dev/app-version-laravel "^1.0"
+$ composer require avto-dev/app-version-laravel "^2.0"
 ```
 
-> Для этого необходим установленный `composer`. Для его установки перейдите по [данной ссылке][getcomposer].
+> Installed `composer` is required ([how to install composer][getcomposer]).
 
-> Обратите внимание на то, что необходимо фиксировать мажорную версию устанавливаемого пакета.
+> You need to fix the major version of package.
 
-> Если вы используете Laravel версии 5.5 и выше, то сервис-провайдер данного пакета будет зарегистрирован автоматически. В противном случае вам необходимо самостоятельно зарегистрировать сервис-провайдер в секции `providers` файла `./config/app.php`:
-> 
-> ```php
-> 'providers' => [
->     // ...
->     AvtoDev\AppVersion\ServiceProvider::class,
-> ]
+> If you wants to disable package service-provider auto discover, just add into your `composer.json` next lines:
+>
+> ```json
+> {
+>     "extra": {
+>         "laravel": {
+>             "dont-discover": [
+>                 "avto-dev/app-version-laravel"
+>             ]
+>         }
+>     }
+> }
 > ```
 
-После этого "опубликуйте" конфигурационный файл:
+After that you should "publish" configuration file (`./config/version.php`) using next command:
 
-```shell
+```bash
 $ php artisan vendor:publish --provider="AvtoDev\\AppVersion\\ServiceProvider"
 ```
 
-И произведите необходимые настройки в файле `./config/version.php`. Каждое значение в конфигурационном файле имеет подробное описание.
-
-Для того, чтоб файл со значением версии обновлялся автоматически, добавьте следующую строку в секцию `post-autoload-dump` файла `composer.json` вашего приложения:
+And don't forget to add next line into your `composer.json` file:
 
 ```json
-"post-autoload-dump": [
-    "@php artisan version --refresh"
-]
+{
+    "scripts": {
+        "post-autoload-dump": [
+            "@php artisan version --refresh"
+        ]
+    }
+}
 ```
 
-## Использование
+## Usage
 
-В целях оптимизации и возможности доступа ко значению версии другими приложениями данные версии и сборки (билда) приложения по умолчанию хранятся в файлах `./storage/app/APP_VERSION` и `./storage/app/APP_BUILD` соответственно (находятся **не** под гитом).
+For application performance and sharing access to the version values - they stored not only in configuration file, but in `./storage/app/APP_VERSION` and `./storage/app/APP_BUILD` also (**not** under git, of course).
 
-> Помните, что при ручном обновлении конфигурационного файла с версией вам будет выполнить команду `php artisan version --refresh`.
+> You should remember to execute `php artisan version --refresh` command after manual version changing in configuration file.
 
-Пути к файлам вы, разумеется, можете переопределить на произвольные. Так же вы можете установить произвольный формат вывода версии (`1.0.0-beta` или `ver. 1.0.0 (build beta)`) - как только пожелаете.
+Of course, you can set own paths to these files and use your own format (`1.0.0-beta` or `ver. 1.0.0 (build beta)`, for example).
 
-Для использования менеджера версии приложения в DI - просто запросите реализацию по интерфейсу `AvtoDev\AppVersion\Contracts\AppVersionManagerContract`. Реализованные методы также можете посмотреть в данном интерфейсе. Пример использования в DI:
+If you wanna get access to the version manager using DI - just request `AvtoDev\AppVersion\Contracts\AppVersionManagerContract`:
 
 ```php
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Console\Commands;
 
@@ -87,27 +94,25 @@ class SomeCommand extends \Illuminate\Console\Command
      *
      * @return void
      */
-    public function handle(AppVersionManagerContract $manager)
+    public function handle(AppVersionManagerContract $manager): void
     {
         $manager->formatted(); // 1.0.0-alpha2
     }
 }
 ```
 
-### Artisan-команды
+### Artisan commands
 
-При использовании данного пакета вам доступны следующие artisan-команды и их аргументы:
-
-Сигнатура команды | Описание
------------------ | --------
-`version` | Выводит значение версии приложения
-`version --build` | Выводит только значение сборки приложения
-`version --set-build=alpha2` | Устанавливает значение сборки приложения равное `alpha2`
-`version --refresh` | Обновляет (пересоздаёт) файлы со значениями версий
+Command signature            | Description
+---------------------------- | -----------------------------
+`version`                    | Shows application version
+`version --build`            | Shown only build value
+`version --set-build=alpha2` | Set build value `alpha2`
+`version --refresh`          | Refresh build values in files
 
 ### Blade
 
-В ваших blade-шаблонах вы можете использовать следующие конструкции:
+Blade compiler allows next directives:
 
 ```smarty
 Application version: @app_version
@@ -115,9 +120,9 @@ Build version: @app_build
 Application version hash: @app_version_hash
 ```
 
-### Хэлперы
+### Helpers
 
-Так же вам доступны следующие хэлперы:
+Also you can use next helpers:
 
 ```php
 <?php
@@ -129,12 +134,12 @@ app_version_hash(); // 965c6f
 
 ### Testing
 
-For package testing we use `phpunit` framework. Just write into your terminal:
+For package testing we use `phpunit` framework and `docker-ce` + `docker-compose` as develop environment. So, just write into your terminal after repository cloning:
 
-```shell
-$ git clone git@github.com:avto-dev/app-version-laravel.git ./app-version-laravel && cd $_
-$ composer install
-$ composer test
+```bash
+$ make build
+$ make latest # or 'make lowest'
+$ make test
 ```
 
 ## Changes log
@@ -175,8 +180,4 @@ This is open-sourced software licensed under the [MIT License][link_license].
 [link_commits]:https://github.com/avto-dev/app-version-laravel/commits
 [link_pulls]:https://github.com/avto-dev/app-version-laravel/pulls
 [link_license]:https://github.com/avto-dev/app-version-laravel/blob/master/LICENSE
-[smspilot_home]:https://smspilot.ru/
-[smspilot_get_api_key]:https://smspilot.ru/my-settings.php#api
-[smspilot_sender_names]:https://smspilot.ru/my-sender.php
-[laravel_notifications]:https://laravel.com/docs/5.5/notifications
 [getcomposer]:https://getcomposer.org/download/

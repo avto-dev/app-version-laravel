@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace AvtoDev\AppVersion;
 
 use Illuminate\View\Compilers\BladeCompiler;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Container\Container;
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -55,7 +55,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function registerAppVersionManager(): void
     {
-        $this->app->singleton(AppVersionManager::class, function (Application $app) {
+        $this->app->singleton(AppVersionManager::class, function (Container $app) {
             $config = (array) $app
                 ->make('config')
                 ->get(static::getConfigRootKeyName());
