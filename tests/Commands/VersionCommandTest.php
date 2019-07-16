@@ -4,6 +4,9 @@ namespace AvtoDev\AppVersion\Tests\Commands;
 
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
+/**
+ * @covers \AvtoDev\AppVersion\Commands\VersionCommand<extended>
+ */
 class VersionCommandTest extends AbstractCommandTestCase
 {
     /**

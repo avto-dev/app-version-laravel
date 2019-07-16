@@ -10,10 +10,15 @@ use AvtoDev\AppVersion\AppVersionFacade;
 use AvtoDev\AppVersion\AppVersionManager;
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
+/**
+ * @covers \AvtoDev\AppVersion\ServiceProvider<extended>
+ */
 class ServiceProviderTest extends AbstractTestCase
 {
     /**
      * Test Laravel DI.
+     *
+     * @covers \AvtoDev\AppVersion\AppVersionFacade
      *
      * @return void
      */

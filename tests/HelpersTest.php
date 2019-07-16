@@ -6,6 +6,11 @@ namespace AvtoDev\AppVersion\Tests;
 
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
+/**
+ * @covers ::app_version
+ * @covers ::app_build
+ * @covers ::app_version_hash
+ */
 class HelpersTest extends AbstractTestCase
 {
     /**

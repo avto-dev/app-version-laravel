@@ -11,6 +11,8 @@ class BladeRenderTest extends AbstractTestCase
     /**
      * Rendering test.
      *
+     * @covers \AvtoDev\AppVersion\ServiceProvider::registerBlade
+     *
      * @return void
      */
     public function testRendering(): void
