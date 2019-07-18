@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## v2.0.1
+
+### Fixed
+
+- DI binding (register using interface instead implementation)
+
 ## v2.0.0
 
 ### Added

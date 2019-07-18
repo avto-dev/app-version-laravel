@@ -55,15 +55,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function registerAppVersionManager(): void
     {
-        $this->app->singleton(AppVersionManager::class, function (Container $app) {
-            $config = (array) $app
-                ->make('config')
-                ->get(static::getConfigRootKeyName());
-
-            return new AppVersionManager($config);
+        $this->app->singleton(AppVersionManagerContract::class, function (Container $app): AppVersionManagerContract {
+            return new AppVersionManager($app->make('config')->get(static::getConfigRootKeyName()));
         });
-
-        $this->app->bind(AppVersionManagerContract::class, AppVersionManager::class);
     }
 
     /**

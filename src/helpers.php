@@ -2,9 +2,10 @@
 
 declare(strict_types = 1);
 
+use Illuminate\Container\Container;
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
-if (! function_exists('app_version')) {
+if (! \function_exists('app_version')) {
     /**
      * Returns application version.
      *
@@ -12,11 +13,11 @@ if (! function_exists('app_version')) {
      */
     function app_version(): string
     {
-        return resolve(AppVersionManagerContract::class)->formatted();
+        return Container::getInstance()->make(AppVersionManagerContract::class)->formatted();
     }
 }
 
-if (! function_exists('app_build')) {
+if (! \function_exists('app_build')) {
     /**
      * Returns application build (only) version.
      *
@@ -24,11 +25,11 @@ if (! function_exists('app_build')) {
      */
     function app_build(): ?string
     {
-        return resolve(AppVersionManagerContract::class)->build();
+        return Container::getInstance()->make(AppVersionManagerContract::class)->build();
     }
 }
 
-if (! function_exists('app_version_hash')) {
+if (! \function_exists('app_version_hash')) {
     /**
      * Returns hashed application version.
      *
@@ -38,6 +39,6 @@ if (! function_exists('app_version_hash')) {
      */
     function app_version_hash($length = 6): string
     {
-        return resolve(AppVersionManagerContract::class)->hashed($length);
+        return Container::getInstance()->make(AppVersionManagerContract::class)->hashed($length);
     }
 }
