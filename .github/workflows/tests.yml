@@ -79,3 +79,4 @@ jobs:
           file: ./coverage/clover.xml
           flags: phpunit
           name: PHP ${{ matrix.php }}, ${{ matrix.setup }} setup, Laravel ${{ matrix.laravel }})
+
