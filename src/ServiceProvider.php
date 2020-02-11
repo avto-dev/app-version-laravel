@@ -27,7 +27,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public static function getConfigPath(): string
     {
-        return env('APP_VERSION_CONFIG_PATH', __DIR__ . '/config/version.php');
+        return __DIR__ . '/../config/version.php';
     }
 
     /**
@@ -67,16 +67,16 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function registerBlade(): void
     {
-        $this->app->afterResolving('blade.compiler', function (BladeCompiler $blade) {
-            $blade->directive('app_version', function (): string {
+        $this->app->afterResolving('blade.compiler', static function (BladeCompiler $blade) {
+            $blade->directive('app_version', static function (): string {
                 return "<?php echo resolve('" . AppVersionManagerContract::class . "')->formatted(); ?>";
             });
 
-            $blade->directive('app_build', function (): string {
+            $blade->directive('app_build', static function (): string {
                 return "<?php echo resolve('" . AppVersionManagerContract::class . "')->build(); ?>";
             });
 
-            $blade->directive('app_version_hash', function ($length = 6): string {
+            $blade->directive('app_version_hash', static function ($length = 6): string {
                 return "<?php echo resolve('" . AppVersionManagerContract::class . "')->hashed({$length}); ?>";
             });
         });
@@ -102,7 +102,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->mergeConfigFrom(static::getConfigPath(), static::getConfigRootKeyName());
 
         $this->publishes([
-            realpath(static::getConfigPath()) => config_path(basename(static::getConfigPath())),
+            \realpath(static::getConfigPath()) => config_path(basename(static::getConfigPath())),
         ], 'config');
     }
 

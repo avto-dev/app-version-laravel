@@ -16,7 +16,7 @@ about: Create a report to help us improve
 
 > Tell us what happens instead.
 
-### Steps to reproduce the behavior:
+### Steps to reproduce the behavior
 
 > Put some code example:
 >

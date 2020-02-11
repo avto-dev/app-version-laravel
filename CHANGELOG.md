@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## v3.0.0
+
+### Added
+
+- PHP `7.4` supports
+
+### Changed
+
+- Config file location (`./src/config/version.php` &rarr; `./config/version.php`)
+
+### Removed
+
+- Facade `AvtoDev\AppVersion\AppVersionFacade`
+- Environment `APP_VERSION_CONFIG_PATH` supports
+
 ## v2.1.0
 
 ### Changed

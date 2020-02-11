@@ -4,20 +4,22 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AppVersion\Tests;
 
-use AvtoDev\AppVersion\ServiceProvider;
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-
-abstract class AbstractTestCase extends BaseTestCase
+abstract class AbstractTestCase extends \Illuminate\Foundation\Testing\TestCase
 {
-    use Traits\CreatesApplicationTrait;
-
     /**
-     * {@inheritdoc}
+     * Creates the application.
+     *
+     * @return \Illuminate\Foundation\Application
      */
-    protected function setUp(): void
+    public function createApplication()
     {
-        parent::setUp();
+        /** @var \Illuminate\Foundation\Application $app */
+        $app = require __DIR__ . '/../vendor/laravel/laravel/bootstrap/app.php';
 
-        $this->app->register(ServiceProvider::class);
+        $app->useStoragePath(__DIR__ . '/temp/storage');
+        $app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+        $app->register(\AvtoDev\AppVersion\ServiceProvider::class);
+
+        return $app;
     }
 }

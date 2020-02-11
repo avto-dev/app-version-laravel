@@ -6,19 +6,16 @@ namespace AvtoDev\AppVersion\Tests;
 
 use Illuminate\Support\Arr;
 use AvtoDev\AppVersion\ServiceProvider;
-use AvtoDev\AppVersion\AppVersionFacade;
 use AvtoDev\AppVersion\AppVersionManager;
 use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
 
 /**
- * @covers \AvtoDev\AppVersion\ServiceProvider<extended>
+ * @covers \AvtoDev\AppVersion\ServiceProvider
  */
 class ServiceProviderTest extends AbstractTestCase
 {
     /**
      * Test Laravel DI.
-     *
-     * @covers \AvtoDev\AppVersion\AppVersionFacade
      *
      * @return void
      */
@@ -28,8 +25,6 @@ class ServiceProviderTest extends AbstractTestCase
 
         $this->assertInstanceOf(AppVersionManagerContract::class, $manager);
         $this->assertInstanceOf(AppVersionManager::class, $manager);
-
-        $this->assertInstanceOf(AppVersionManager::class, AppVersionFacade::shouldReceive('true')->getMock());
     }
 
     /**

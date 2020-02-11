@@ -22,26 +22,12 @@ Laravel does not have included mechanism for a working with application version,
 Require this package with composer using the following command:
 
 ```shell
-$ composer require avto-dev/app-version-laravel "^2.0"
+$ composer require avto-dev/app-version-laravel "^3.0"
 ```
 
 > Installed `composer` is required ([how to install composer][getcomposer]).
 
 > You need to fix the major version of package.
-
-> If you wants to disable package service-provider auto discover, just add into your `composer.json` next lines:
->
-> ```json
-> {
->     "extra": {
->         "laravel": {
->             "dont-discover": [
->                 "avto-dev/app-version-laravel"
->             ]
->         }
->     }
-> }
-> ```
 
 After that you should "publish" configuration file (`./config/version.php`) using next command:
 
