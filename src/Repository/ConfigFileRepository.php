@@ -41,7 +41,7 @@ class ConfigFileRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getMajor(): ?int
     {
@@ -51,7 +51,7 @@ class ConfigFileRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws \RuntimeException Always
      */
@@ -61,7 +61,7 @@ class ConfigFileRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getMinor(): ?int
     {
@@ -71,7 +71,7 @@ class ConfigFileRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws \RuntimeException Always
      */
@@ -81,7 +81,7 @@ class ConfigFileRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getPath(): ?int
     {
@@ -91,7 +91,7 @@ class ConfigFileRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws \RuntimeException Always
      */
@@ -101,7 +101,7 @@ class ConfigFileRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws \RuntimeException If file was not found
      */
@@ -125,9 +125,9 @@ class ConfigFileRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
-     * @throws \RuntimeException If file cannot be written
+     * @throws \RuntimeException         If file cannot be written
      * @throws \InvalidArgumentException If wrong build value passed
      */
     public function setBuild(string $build): void

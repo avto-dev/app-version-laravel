@@ -49,6 +49,22 @@ final class Version
     }
 
     /**
+     * Get formatted version value (e.g.: `1.0.0-beta+build.1`, `0.0.1`).
+     *
+     * Format: `{major}.{minor}.{path}[-{build_with_meta}]`
+     */
+    public function __toString(): string
+    {
+        $version = \implode('.', [$this->major ?? 0, $this->minor ?? 0, $this->path ?? 0]);
+
+        if ($this->build !== null) {
+            $version .= "-{$this->build}";
+        }
+
+        return $version;
+    }
+
+    /**
      * Create a new version instance using rav version string representation.
      *
      * @param string $raw_value
@@ -118,22 +134,6 @@ final class Version
         }
 
         return true;
-    }
-
-    /**
-     * Get formatted version value (e.g.: `1.0.0-beta+build.1`, `0.0.1`).
-     *
-     * Format: `{major}.{minor}.{path}[-{build_with_meta}]`
-     */
-    public function __toString(): string
-    {
-        $version = \implode('.', [$this->major ?? 0, $this->minor ?? 0, $this->path ?? 0]);
-
-        if ($this->build !== null) {
-            $version .= "-{$this->build}";
-        }
-
-        return $version;
     }
 
     /**

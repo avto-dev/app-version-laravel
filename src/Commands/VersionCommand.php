@@ -13,14 +13,19 @@ use AvtoDev\AppVersion\Repository\RepositoryInterface;
 class VersionCommand extends \Illuminate\Console\Command
 {
     protected const
-        OPTION_GET_SEGMENT = 'get-segment',
-        OPTION_SET_BUILD = 'set-build',
+        OPTION_GET_SEGMENT = 'get-segment';
+    protected const
+        OPTION_SET_BUILD = 'set-build';
+    protected const
         OPTION_SET_VERSION = 'set-version';
 
     protected const
-        SEGMENT_MAJOR = 'major',
-        SEGMENT_MINOR = 'minor',
-        SEGMENT_PATH = 'path',
+        SEGMENT_MAJOR = 'major';
+    protected const
+        SEGMENT_MINOR = 'minor';
+    protected const
+        SEGMENT_PATH = 'path';
+    protected const
         SEGMENT_BUILD = 'build';
 
     /**
@@ -78,6 +83,7 @@ class VersionCommand extends \Illuminate\Console\Command
      * @param RepositoryInterface $repository
      *
      * @throws InvalidArgumentException
+     *
      * @return int|string|null
      */
     protected function getVersionSegment(string $segment, RepositoryInterface $repository)
@@ -104,6 +110,7 @@ class VersionCommand extends \Illuminate\Console\Command
      * @param RepositoryInterface $repository
      *
      * @throws InvalidArgumentException
+     *
      * @return void
      */
     protected function setNewVersionRaw(string $raw_version, RepositoryInterface $repository): void

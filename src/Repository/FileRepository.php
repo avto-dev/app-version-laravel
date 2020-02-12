@@ -33,7 +33,7 @@ class FileRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getMajor(): ?int
     {
@@ -41,7 +41,7 @@ class FileRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setMajor(int $major): void
     {
@@ -49,7 +49,7 @@ class FileRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getMinor(): ?int
     {
@@ -57,7 +57,7 @@ class FileRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setMinor(int $minor): void
     {
@@ -65,7 +65,7 @@ class FileRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getPath(): ?int
     {
@@ -73,7 +73,7 @@ class FileRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setPath(int $path): void
     {
@@ -81,7 +81,7 @@ class FileRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getBuild(): ?string
     {
@@ -89,7 +89,7 @@ class FileRepository implements RepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setBuild(string $build): void
     {
@@ -115,7 +115,7 @@ class FileRepository implements RepositoryInterface
     /**
      * @param Version $version
      *
-     * @throws \RuntimeException If file cannot be written
+     * @throws \RuntimeException         If file cannot be written
      * @throws \InvalidArgumentException If version is not valid
      *
      * @return void
