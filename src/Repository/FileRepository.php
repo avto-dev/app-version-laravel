@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace AvtoDev\AppVersion\Repository;
 
 use Illuminate\Filesystem\Filesystem;
+use AvtoDev\AppVersion\Support\Version;
 
 class FileRepository implements RepositoryInterface
 {
@@ -32,6 +33,8 @@ class FileRepository implements RepositoryInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @throws \RuntimeException
      */
     public function getMajor(): ?int
     {
@@ -40,6 +43,8 @@ class FileRepository implements RepositoryInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @throws \RuntimeException
      */
     public function setMajor(int $major): void
     {
@@ -48,6 +53,8 @@ class FileRepository implements RepositoryInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @throws \RuntimeException
      */
     public function getMinor(): ?int
     {
@@ -56,6 +63,8 @@ class FileRepository implements RepositoryInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @throws \RuntimeException
      */
     public function setMinor(int $minor): void
     {
@@ -64,6 +73,8 @@ class FileRepository implements RepositoryInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @throws \RuntimeException
      */
     public function getPath(): ?int
     {
@@ -72,6 +83,8 @@ class FileRepository implements RepositoryInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @throws \RuntimeException
      */
     public function setPath(int $path): void
     {
@@ -80,6 +93,8 @@ class FileRepository implements RepositoryInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @throws \RuntimeException
      */
     public function getBuild(): ?string
     {
@@ -88,6 +103,8 @@ class FileRepository implements RepositoryInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @throws \RuntimeException
      */
     public function setBuild(string $build): void
     {
@@ -101,37 +118,13 @@ class FileRepository implements RepositoryInterface
      */
     protected function getVersionInfo(): Version
     {
-        // @link <https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string>
-        static $regexp = '/^' .
-                         '(?P<major>0|[1-9]\d*)\.' .
-                         '(?P<minor>0|[1-9]\d*)\.' .
-                         '(?P<patch>0|[1-9]\d*)(?:-' .
-                         '(?P<pre>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)' .
-                         '(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))' .
-                         '*))?(?:\+' .
-                         '(?P<meta>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$' .
-                         '/m';
-
         try {
-            \preg_match($regexp, $this->file_system->get($this->file_location, true), $matches);
+            $content = $this->file_system->get($this->file_location, true);
         } catch (\Illuminate\Contracts\Filesystem\FileNotFoundException $e) {
-            throw new \RuntimeException("File does not exist at path {$this->file_location}");
+            throw new \RuntimeException("File does not exist at path [{$this->file_location}]");
         }
 
-        return new Version(
-            isset($matches['major']) && \filter_var($matches['major'], \FILTER_VALIDATE_INT) !== false
-                ? (int) $matches['major']
-                : null,
-            isset($matches['minor']) && \filter_var($matches['minor'], \FILTER_VALIDATE_INT) !== false
-                ? (int) $matches['minor']
-                : null,
-            isset($matches['patch']) && \filter_var($matches['patch'], \FILTER_VALIDATE_INT) !== false
-                ? (int) $matches['patch']
-                : null,
-            isset($matches['pre']) || isset($matches['meta'])
-                ? \implode('+', \array_filter([$matches['pre'] ?? null, $matches['meta'] ?? null], '\\is_string'))
-                : null
-        );
+        return Version::parse($content);
     }
 
     /**
@@ -150,7 +143,7 @@ class FileRepository implements RepositoryInterface
         }
 
         if ($this->file_system->put($this->file_location, $value, true) <= 0) {
-            throw new \RuntimeException("File {$this->file_location} cannot be written");
+            throw new \RuntimeException("File [{$this->file_location}] cannot be written");
         }
     }
 }

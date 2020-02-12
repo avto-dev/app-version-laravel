@@ -5,56 +5,64 @@ namespace AvtoDev\AppVersion\Repository;
 interface RepositoryInterface
 {
     /**
+     * Get major version value.
+     *
      * @return int|null
      */
     public function getMajor(): ?int;
 
     /**
-     * @param int $major
+     * Set major version value.
      *
-     * @throws \Exception
+     * @param int $major
      *
      * @return void
      */
     public function setMajor(int $major): void;
 
     /**
+     * Get minor version value.
+     *
      * @return int|null
      */
     public function getMinor(): ?int;
 
     /**
-     * @param int $minor
+     * Set minor version value.
      *
-     * @throws \Exception
+     * @param int $minor
      *
      * @return void
      */
     public function setMinor(int $minor): void;
 
     /**
+     * Get patch version value.
+     *
      * @return int|null
      */
     public function getPath(): ?int;
 
     /**
-     * @param int $path
+     * Set patch version value.
      *
-     * @throws \Exception
+     * @param int $path
      *
      * @return void
      */
     public function setPath(int $path): void;
 
     /**
+     * Get build metadata value.
+     *
      * @return string|null
      */
     public function getBuild(): ?string;
 
     /**
-     * @param string $build
+     * Set build metadata value.
      *
-     * @throws \Exception
+     * @param string $build
      *
      * @return void
      */
