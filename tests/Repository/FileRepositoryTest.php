@@ -28,7 +28,7 @@ class FileRepositoryTest extends AbstractTestCase
     /**
      * @return void
      */
-    public function testVersionSegmentGettersWithFilesystemData(): void
+    public function testVersionSegmentGettersWithData(): void
     {
         $major = \random_int(1, 20);
         $minor = \random_int(21, 40);
@@ -56,7 +56,7 @@ class FileRepositoryTest extends AbstractTestCase
     /**
      * @return void
      */
-    public function testVersionSegmentGettersWithoutFilesystemData(): void
+    public function testVersionSegmentGettersWithEmptyData(): void
     {
         /** @var m\MockInterface|Filesystem $fs_mock */
         $fs_mock = m::mock(Filesystem::class)
@@ -200,41 +200,18 @@ class FileRepositoryTest extends AbstractTestCase
     public function testValuesGettersWithValidData(): void
     {
         $data_sets = [
-            '0.0.4'                                                  => [0, 0, 4, null],
-            '1.2.3'                                                  => [1, 2, 3, null],
-            '10.20.30'                                               => [10, 20, 30, null],
-            '1.1.2-prerelease+meta'                                  => [1, 1, 2, 'prerelease+meta'],
-            '1.1.2+meta'                                             => [1, 1, 2, 'meta'],
-            '1.1.2+meta-valid'                                       => [1, 1, 2, 'meta-valid'],
-            '1.0.0-alpha'                                            => [1, 0, 0, 'alpha'],
-            '1.0.0-beta'                                             => [1, 0, 0, 'beta'],
-            '1.0.0-alpha.beta'                                       => [1, 0, 0, 'alpha.beta'],
-            '1.0.0-alpha.beta.1'                                     => [1, 0, 0, 'alpha.beta.1'],
-            '1.0.0-alpha.1'                                          => [1, 0, 0, 'alpha.1'],
-            '1.0.0-alpha0.valid'                                     => [1, 0, 0, 'alpha0.valid'],
-            '1.0.0-alpha.0valid'                                     => [1, 0, 0, 'alpha.0valid'],
-            '1.0.0-alpha-a.b-c-somethinglong+build.1-aef.1-its-okay' => [
-                1, 0, 0, 'alpha-a.b-c-somethinglong+build.1-aef.1-its-okay',
-            ],
-            '1.0.0-rc.1+build.1'                                     => [1, 0, 0, 'rc.1+build.1'],
-            '2.0.0-rc.1+build.123'                                   => [2, 0, 0, 'rc.1+build.123'],
-            '1.2.3-beta'                                             => [1, 2, 3, 'beta'],
-            '10.2.3-DEV-SNAPSHOT'                                    => [10, 2, 3, 'DEV-SNAPSHOT'],
-            '1.2.3-SNAPSHOT-123'                                     => [1, 2, 3, 'SNAPSHOT-123'],
-            '1.0.0'                                                  => [1, 0, 0, null],
-            '2.0.0'                                                  => [2, 0, 0, null],
-            '1.1.7'                                                  => [1, 1, 7, null],
-            '2.0.0+build.1848'                                       => [2, 0, 0, 'build.1848'],
-            '2.0.1-alpha.1227'                                       => [2, 0, 1, 'alpha.1227'],
-            '1.0.0-alpha+beta'                                       => [1, 0, 0, 'alpha+beta'],
-            '1.2.3----RC-SNAPSHOT.12.9.1--.12+788'                   => [1, 2, 3, '---RC-SNAPSHOT.12.9.1--.12+788'],
-            '1.2.3----R-S.12.9.1--.12+meta'                          => [1, 2, 3, '---R-S.12.9.1--.12+meta'],
-            '1.2.3----RC-SNAPSHOT.12.9.1--.12'                       => [1, 2, 3, '---RC-SNAPSHOT.12.9.1--.12'],
-            '1.0.0+0.build.1-rc.10000aaa-kk-0.1'                     => [1, 0, 0, '0.build.1-rc.10000aaa-kk-0.1'],
-            '9999999999999.999999999999.99999999999'                 => [
-                9999999999999, 999999999999, 99999999999, null,
-            ],
-            '1.0.0-0A.is.legal'                                      => [1, 0, 0, '0A.is.legal'],
+            '0.0.4'                 => [0, 0, 4, null],
+            '1.2.3'                 => [1, 2, 3, null],
+            '10.20.30'              => [10, 20, 30, null],
+            '0.0.0-0'               => [0, 0, 0, '0'],
+            '1.1.2-prerelease+meta' => [1, 1, 2, 'prerelease+meta'],
+            '1.1.2+meta'            => [1, 1, 2, 'meta'],
+            '1.0.0-rc.1+build.1'    => [1, 0, 0, 'rc.1+build.1'],
+            '2.0.0-rc.1+build.123'  => [2, 0, 0, 'rc.1+build.123'],
+            '1.2.3-beta'            => [1, 2, 3, 'beta'],
+            '10.2.3-DEV-SNAPSHOT'   => [10, 2, 3, 'DEV-SNAPSHOT'],
+            '1.2.3-SNAPSHOT-123'    => [1, 2, 3, 'SNAPSHOT-123'],
+            '1.0.0-0A.is.legal'     => [1, 0, 0, '0A.is.legal'],
         ];
 
         foreach ($data_sets as $version_data => $segments) {
@@ -266,16 +243,6 @@ class FileRepositoryTest extends AbstractTestCase
             '1.2.3-0123',
             '1.2.3-0123.0123',
             '1.1.2+.123',
-            '+invalid',
-            '-invalid',
-            '-invalid+invalid',
-            '-invalid.01',
-            '   -invalid.01',
-            'alpha',
-            'alpha.beta',
-            'alpha.beta.1',
-            'alpha.1',
-            'alpha+beta',
             'alpha_beta',
             'alpha.',
             'alpha..',
@@ -284,24 +251,12 @@ class FileRepositoryTest extends AbstractTestCase
             '-alpha.',
             '1.0.0-alpha..',
             '1.0.0-alpha..1',
-            '1.0.0-alpha...1',
-            '1.0.0-alpha....1',
-            '1.0.0-alpha.....1',
-            '1.0.0-alpha......1',
-            '1.0.0-alpha.......1',
             '01.1.1',
             '1.01.1',
             '1.1.01',
             '1.2',
             '1.2.3.DEV',
             '1.2-SNAPSHOT',
-            '1.2.31.2.3----RC-SNAPSHOT.12.09.1--..12+788',
-            '1.2-RC-SNAPSHOT',
-            '-1.0.3-gamma+b7718',
-            '+justmeta',
-            '9.8.7+meta+meta',
-            '9.8.7-whatever+meta+meta',
-            '999999999999999999999.9999999999999999.999999999999999----RC-SNAPSHOT.12.09.1---------------------..12',
         ];
 
         foreach ($data_sets as $version_data) {
@@ -320,6 +275,43 @@ class FileRepositoryTest extends AbstractTestCase
             $this->assertNull($repository->getPath(), $message);
             $this->assertNull($repository->getBuild(), $message);
         }
+    }
+
+    /**
+     * @return void
+     */
+    public function testSetBuildThrowsExceptionOnInvalidValuePassed(): void
+    {
+        $values = [
+            'foo bar',
+            'build~1',
+            'build@v1',
+            '11.22 33',
+            'foo-bar...1=4',
+            'built:never',
+        ];
+
+        /** @var m\MockInterface|Filesystem $fs_mock */
+        $fs_mock = m::mock(Filesystem::class)
+            ->expects('get')
+            ->times(\count($values))
+            ->withAnyArgs()
+            ->andReturn('1.2.3-4')
+            ->getMock();
+
+        $repository  = new FileRepository(Str::random(), $fs_mock);
+        $catch_count = 0;
+
+        foreach ($values as $value) {
+            try {
+                $repository->setBuild($value);
+            } catch (\InvalidArgumentException $e) {
+                $this->assertRegExp('~Wrong.*version~i', $e->getMessage());
+                $catch_count++;
+            }
+        }
+
+        $this->assertCount($catch_count, $values);
     }
 
     /**

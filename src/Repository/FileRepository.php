@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AppVersion\Repository;
 
+use InvalidArgumentException;
 use Illuminate\Filesystem\Filesystem;
 use AvtoDev\AppVersion\Support\Version;
 
@@ -33,8 +34,6 @@ class FileRepository implements RepositoryInterface
 
     /**
      * {@inheritDoc}
-     *
-     * @throws \RuntimeException
      */
     public function getMajor(): ?int
     {
@@ -43,8 +42,6 @@ class FileRepository implements RepositoryInterface
 
     /**
      * {@inheritDoc}
-     *
-     * @throws \RuntimeException
      */
     public function setMajor(int $major): void
     {
@@ -53,8 +50,6 @@ class FileRepository implements RepositoryInterface
 
     /**
      * {@inheritDoc}
-     *
-     * @throws \RuntimeException
      */
     public function getMinor(): ?int
     {
@@ -63,8 +58,6 @@ class FileRepository implements RepositoryInterface
 
     /**
      * {@inheritDoc}
-     *
-     * @throws \RuntimeException
      */
     public function setMinor(int $minor): void
     {
@@ -73,8 +66,6 @@ class FileRepository implements RepositoryInterface
 
     /**
      * {@inheritDoc}
-     *
-     * @throws \RuntimeException
      */
     public function getPath(): ?int
     {
@@ -83,8 +74,6 @@ class FileRepository implements RepositoryInterface
 
     /**
      * {@inheritDoc}
-     *
-     * @throws \RuntimeException
      */
     public function setPath(int $path): void
     {
@@ -93,8 +82,6 @@ class FileRepository implements RepositoryInterface
 
     /**
      * {@inheritDoc}
-     *
-     * @throws \RuntimeException
      */
     public function getBuild(): ?string
     {
@@ -103,8 +90,6 @@ class FileRepository implements RepositoryInterface
 
     /**
      * {@inheritDoc}
-     *
-     * @throws \RuntimeException
      */
     public function setBuild(string $build): void
     {
@@ -131,18 +116,19 @@ class FileRepository implements RepositoryInterface
      * @param Version $version
      *
      * @throws \RuntimeException If file cannot be written
+     * @throws \InvalidArgumentException If version is not valid
      *
      * @return void
      */
     protected function setVersionInfo(Version $version): void
     {
-        $value = \implode('.', [$version->getMajor() ?? 0, $version->getMinor() ?? 0, $version->getPath() ?? 0]);
+        $as_string = (string) $version;
 
-        if ($version->getBuild() !== null) {
-            $value .= "-{$version->getBuild()}";
+        if ($version->isValid() !== true) {
+            throw new InvalidArgumentException("Wrong version value ({$as_string}) cannot be written");
         }
 
-        if ($this->file_system->put($this->file_location, $value, true) <= 0) {
+        if ($this->file_system->put($this->file_location, $as_string, true) <= 0) {
             throw new \RuntimeException("File [{$this->file_location}] cannot be written");
         }
     }

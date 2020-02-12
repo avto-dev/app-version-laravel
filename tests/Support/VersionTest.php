@@ -36,7 +36,7 @@ class VersionTest extends AbstractTestCase
      */
     public function testSetters(): void
     {
-        $version = new Version();
+        $version = new Version;
 
         $this->assertNull($version->getMajor());
         $this->assertNull($version->getMinor());
@@ -68,6 +68,7 @@ class VersionTest extends AbstractTestCase
     {
         $data_sets = [
             '0.0.4'                                                  => [0, 0, 4, null],
+            '0.0.0-0'                                                => [0, 0, 0, '0'],
             '1.2.3'                                                  => [1, 2, 3, null],
             '10.20.30'                                               => [10, 20, 30, null],
             '1.1.2-prerelease+meta'                                  => [1, 1, 2, 'prerelease+meta'],
@@ -174,6 +175,109 @@ class VersionTest extends AbstractTestCase
             $this->assertNull($version->getBuild(), $message);
 
             $this->assertFalse($version->isValid());
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function testIsValidUsingCorrectValues(): void
+    {
+        $values = [
+            [0, 0, 0, null],
+            [0, 0, 1, 'foo'],
+            [0, 0, 1, 'foo+bar'],
+            [1, 0, 1, 'foo+bar123'],
+            [999999, 999999999, 9999999999999999, 'bar--baz+blah.123'],
+        ];
+
+        foreach ($values as $value) {
+            $version = (new Version)
+                ->setMajor($value[0])
+                ->setMinor($value[1])
+                ->setPath($value[2])
+                ->setBuild($value[3]);
+
+            $this->assertTrue($version->isValid());
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function testIsValidUsingIncorrectValues(): void
+    {
+        $values = [
+            [-1, 0, 0, null],
+            [0, 0, 1, 'foo bar'],
+            [0, 0, -1, 'foo+bar'],
+            [1, 0, 1, 'foo@bar123'],
+            [999999, -1, 9999999999999999, 'bar--baz+blah.123'],
+        ];
+
+        foreach ($values as $value) {
+            $version = (new Version)
+                ->setMajor($value[0])
+                ->setMinor($value[1])
+                ->setPath($value[2])
+                ->setBuild($value[3]);
+
+            $this->assertFalse($version->isValid());
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function testToStringCasting(): void
+    {
+        $data_sets = [
+            '0.0.4'                                                  => [0, 0, 4, null],
+            '0.0.0-0'                                                => [0, 0, 0, '0'],
+            '1.2.3'                                                  => [1, 2, 3, null],
+            '10.20.30'                                               => [10, 20, 30, null],
+            '1.1.2-prerelease+meta'                                  => [1, 1, 2, 'prerelease+meta'],
+            '1.1.2-meta'                                             => [1, 1, 2, 'meta'],
+            '1.1.2-meta-valid'                                       => [1, 1, 2, 'meta-valid'],
+            '1.0.0-alpha'                                            => [1, 0, 0, 'alpha'],
+            '1.0.0-beta'                                             => [1, 0, 0, 'beta'],
+            '1.0.0-alpha.beta'                                       => [1, 0, 0, 'alpha.beta'],
+            '1.0.0-alpha.beta.1'                                     => [1, 0, 0, 'alpha.beta.1'],
+            '1.0.0-alpha.1'                                          => [1, 0, 0, 'alpha.1'],
+            '1.0.0-alpha0.valid'                                     => [1, 0, 0, 'alpha0.valid'],
+            '1.0.0-alpha.0valid'                                     => [1, 0, 0, 'alpha.0valid'],
+            '1.0.0-alpha-a.b-c-somethinglong+build.1-aef.1-its-okay' => [
+                1, 0, 0, 'alpha-a.b-c-somethinglong+build.1-aef.1-its-okay',
+            ],
+            '1.0.0-rc.1+build.1'                                     => [1, 0, 0, 'rc.1+build.1'],
+            '2.0.0-rc.1+build.123'                                   => [2, 0, 0, 'rc.1+build.123'],
+            '1.2.3-beta'                                             => [1, 2, 3, 'beta'],
+            '10.2.3-DEV-SNAPSHOT'                                    => [10, 2, 3, 'DEV-SNAPSHOT'],
+            '1.2.3-SNAPSHOT-123'                                     => [1, 2, 3, 'SNAPSHOT-123'],
+            '1.0.0'                                                  => [1, 0, 0, null],
+            '2.0.0'                                                  => [2, 0, 0, null],
+            '1.1.7'                                                  => [1, 1, 7, null],
+            '2.0.0-build.1848'                                       => [2, 0, 0, 'build.1848'],
+            '2.0.1-alpha.1227'                                       => [2, 0, 1, 'alpha.1227'],
+            '1.0.0-alpha+beta'                                       => [1, 0, 0, 'alpha+beta'],
+            '1.2.3----RC-SNAPSHOT.12.9.1--.12+788'                   => [1, 2, 3, '---RC-SNAPSHOT.12.9.1--.12+788'],
+            '1.2.3----R-S.12.9.1--.12+meta'                          => [1, 2, 3, '---R-S.12.9.1--.12+meta'],
+            '1.2.3----RC-SNAPSHOT.12.9.1--.12'                       => [1, 2, 3, '---RC-SNAPSHOT.12.9.1--.12'],
+            '1.0.0-0.build.1-rc.10000aaa-kk-0.1'                     => [1, 0, 0, '0.build.1-rc.10000aaa-kk-0.1'],
+            '9999999999999.999999999999.99999999999'                 => [
+                9999999999999, 999999999999, 99999999999, null,
+            ],
+            '1.0.0-0A.is.legal'                                      => [1, 0, 0, '0A.is.legal'],
+        ];
+
+        foreach ($data_sets as $expected => $value) {
+            $version = (new Version)
+                ->setMajor($value[0])
+                ->setMinor($value[1])
+                ->setPath($value[2])
+                ->setBuild($value[3]);
+
+            $this->assertSame($expected, (string) $version);
         }
     }
 }

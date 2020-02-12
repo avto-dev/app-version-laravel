@@ -4,11 +4,25 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AppVersion\Commands;
 
+use InvalidArgumentException;
+use AvtoDev\AppVersion\Support\Version;
 use Symfony\Component\Console\Input\InputOption;
-use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
+use AvtoDev\AppVersion\AppVersionManagerInterface;
+use AvtoDev\AppVersion\Repository\RepositoryInterface;
 
 class VersionCommand extends \Illuminate\Console\Command
 {
+    protected const
+        OPTION_GET_SEGMENT = 'get-segment',
+        OPTION_SET_BUILD = 'set-build',
+        OPTION_SET_VERSION = 'set-version';
+
+    protected const
+        SEGMENT_MAJOR = 'major',
+        SEGMENT_MINOR = 'minor',
+        SEGMENT_PATH = 'path',
+        SEGMENT_BUILD = 'build';
+
     /**
      * The console command name.
      *
@@ -21,57 +35,117 @@ class VersionCommand extends \Illuminate\Console\Command
      *
      * @var string
      */
-    protected $description = 'Display this application (not framework) version';
+    protected $description = 'Display this application <options=bold>(not framework)</> version';
 
     /**
      * Execute the console command.
      *
-     * @param AppVersionManagerContract $manager
+     * @param AppVersionManagerInterface $manager
      *
+     * @return int
+     */
+    public function handle(AppVersionManagerInterface $manager): int
+    {
+        $repository = $manager->repository();
+
+        // Get single version segment
+        if (\is_string($segment = $this->option(static::OPTION_GET_SEGMENT))) {
+            $this->output->writeln($this->getVersionSegment($segment, $repository));
+
+            return 0;
+        }
+
+        // Complex version values set
+        if (\is_string($version = $this->option(static::OPTION_SET_VERSION))) {
+            $this->setNewVersionRaw($version, $repository);
+            $this->info('New version value is set!');
+
+            return 0;
+        }
+
+        if (\is_string($build = $this->option(static::OPTION_SET_BUILD))) {
+            $repository->setBuild($build);
+            $this->comment("Build version value successfully set to '{$build}'");
+        }
+
+        $this->output->writeln($manager->version());
+
+        return 0;
+    }
+
+    /**
+     * @param string              $segment
+     * @param RepositoryInterface $repository
+     *
+     * @throws InvalidArgumentException
+     * @return int|string|null
+     */
+    protected function getVersionSegment(string $segment, RepositoryInterface $repository)
+    {
+        switch ($segment) {
+            case self::SEGMENT_MAJOR:
+                return $repository->getMajor();
+
+            case self::SEGMENT_MINOR:
+                return $repository->getMinor();
+
+            case self::SEGMENT_PATH:
+                return $repository->getPath();
+
+            case self::SEGMENT_BUILD:
+                return $repository->getBuild();
+        }
+
+        throw new InvalidArgumentException('Unknown version segment passed');
+    }
+
+    /**
+     * @param string              $raw_version
+     * @param RepositoryInterface $repository
+     *
+     * @throws InvalidArgumentException
      * @return void
      */
-    public function handle(AppVersionManagerContract $manager): void
+    protected function setNewVersionRaw(string $raw_version, RepositoryInterface $repository): void
     {
-        if ($this->option('refresh')) {
-            $manager->refresh();
+        $version = Version::parse(\trim($raw_version, "vV \t\n\r"));
 
-            $this->info('Stored in files values updated, files recreated');
-        } elseif ($build = $this->getBuildValue()) {
-            $manager->setBuild($build);
-
-            $this->info(sprintf('Application build version changed to "%s"', $build));
-        } else {
-            $this->output->writeln(
-                ((bool) $this->option('build')) === true
-                    ? (string) $manager->build()
-                    : $manager->formatted()
-            );
+        if (! $version->isValid()) {
+            throw new InvalidArgumentException("Wrong version value ({$raw_version}) passed");
         }
+
+        $repository->setMajor($version->getMajor());
+        $repository->setMinor($version->getMinor());
+        $repository->setPath($version->getPath());
+        $repository->setBuild($version->getBuild());
     }
 
     /**
-     * @return string|null
+     * {@inheritdoc}
      */
-    protected function getBuildValue(): ?string
+    protected function specifyParameters(): void
     {
-        $set_build = $this->option('set-build');
+        parent::specifyParameters();
 
-        return \is_string($set_build) && $set_build !== ''
-            ? $set_build
-            : null;
-    }
-
-    /**
-     * Get the console command options.
-     *
-     * @return array[]
-     */
-    protected function getOptions(): array
-    {
-        return [
-            ['build', 'b', InputOption::VALUE_NONE, 'Display build value only.'],
-            ['set-build', null, InputOption::VALUE_OPTIONAL, 'Set new build version value.'],
-            ['refresh', 'r', InputOption::VALUE_NONE, 'Refresh stored in files version and build values.'],
-        ];
+        $this->addOption(
+            static::OPTION_GET_SEGMENT,
+            null,
+            InputOption::VALUE_OPTIONAL,
+            'Display one version segment and exit. Allowed segments is: <comment>' . \implode(
+                ', ', [self::SEGMENT_MAJOR, self::SEGMENT_MINOR, self::SEGMENT_PATH, self::SEGMENT_BUILD]
+            ) . '</comment>'
+        );
+        $this->addOption(
+            static::OPTION_SET_BUILD,
+            null,
+            InputOption::VALUE_OPTIONAL,
+            'Set new <comment>build</comment> version value'
+        );
+        $this->addOption(
+            static::OPTION_SET_VERSION,
+            null,
+            InputOption::VALUE_OPTIONAL,
+            'Complex version setter'
+        );
     }
 }

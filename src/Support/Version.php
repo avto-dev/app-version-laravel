@@ -70,6 +70,10 @@ final class Version
                          '(?P<meta>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?' .
                          '$/m';
 
+        $checkCallback = static function ($value): bool {
+            return \is_string($value) && $value !== '';
+        };
+
         \preg_match($regexp, \trim($raw_value), $matches);
 
         return new self(
@@ -83,7 +87,7 @@ final class Version
                 ? (int) $matches['patch']
                 : null,
             isset($matches['pre']) || isset($matches['meta'])
-                ? \implode('+', \array_filter([$matches['pre'] ?? null, $matches['meta'] ?? null]))
+                ? \implode('+', \array_filter([$matches['pre'] ?? null, $matches['meta'] ?? null], $checkCallback))
                 : null
         );
     }
@@ -93,7 +97,43 @@ final class Version
      */
     public function isValid(): bool
     {
-        return \is_int($this->getMajor()) && \is_int($this->getMinor()) && \is_int($this->getPath());
+        // Validate build value
+        if (\is_string($this->build) && \preg_match('~^[a-zA-Z0-9-.+]+$~', $this->build) !== 1) {
+            return false;
+        }
+
+        // Validate major value
+        if (! \is_int($this->major) || $this->major < 0) {
+            return false;
+        }
+
+        // Validate minor value
+        if (! \is_int($this->minor) || $this->minor < 0) {
+            return false;
+        }
+
+        // Validate path value
+        if (! \is_int($this->path) || $this->path < 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get formatted version value (e.g.: `1.0.0-beta+build.1`, `0.0.1`).
+     *
+     * Format: `{major}.{minor}.{path}[-{build_with_meta}]`
+     */
+    public function __toString(): string
+    {
+        $version = \implode('.', [$this->major ?? 0, $this->minor ?? 0, $this->path ?? 0]);
+
+        if ($this->build !== null) {
+            $version .= "-{$this->build}";
+        }
+
+        return $version;
     }
 
     /**

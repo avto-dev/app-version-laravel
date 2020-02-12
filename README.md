@@ -62,7 +62,7 @@ If you wanna get access to the version manager using DI - just request `AvtoDev\
 
 namespace App\Console\Commands;
 
-use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
+use AvtoDev\AppVersion\Contracts\AppVersionManagerInterface;
 
 class SomeCommand extends \Illuminate\Console\Command
 {
@@ -76,11 +76,11 @@ class SomeCommand extends \Illuminate\Console\Command
     /**
      * Execute the console command.
      *
-     * @param AppVersionManagerContract $manager
+     * @param AppVersionManagerInterface $manager
      *
      * @return void
      */
-    public function handle(AppVersionManagerContract $manager): void
+    public function handle(AppVersionManagerInterface $manager): void
     {
         $manager->formatted(); // 1.0.0-alpha2
     }

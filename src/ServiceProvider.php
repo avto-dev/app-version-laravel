@@ -6,7 +6,8 @@ namespace AvtoDev\AppVersion;
 
 use Illuminate\View\Compilers\BladeCompiler;
 use Illuminate\Contracts\Container\Container;
-use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
+use AvtoDev\AppVersion\Repository\FileRepository;
+use AvtoDev\AppVersion\AppVersionManagerInterface as ManagerInterface;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -39,7 +40,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         $this->initializeConfigs();
 
-        $this->registerAppVersionManager();
+        $this->registerManager();
         $this->registerHelpers();
         $this->registerBlade();
 
@@ -53,10 +54,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      *
      * @return void
      */
-    protected function registerAppVersionManager(): void
+    protected function registerManager(): void
     {
-        $this->app->singleton(AppVersionManagerContract::class, function (Container $app): AppVersionManagerContract {
-            return new AppVersionManager($app->make('config')->get(static::getConfigRootKeyName()));
+        $this->app->singleton(ManagerInterface::class, static function (Container $app): ManagerInterface {
+            return new AppVersionManager(new FileRepository(__DIR__ . '/../VERSION', $app->make('files')));
         });
     }
 
@@ -69,15 +70,15 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         $this->app->afterResolving('blade.compiler', static function (BladeCompiler $blade) {
             $blade->directive('app_version', static function (): string {
-                return "<?php echo resolve('" . AppVersionManagerContract::class . "')->formatted(); ?>";
+                return "<?php echo resolve('" . ManagerInterface::class . "')->formatted(); ?>";
             });
 
             $blade->directive('app_build', static function (): string {
-                return "<?php echo resolve('" . AppVersionManagerContract::class . "')->build(); ?>";
+                return "<?php echo resolve('" . ManagerInterface::class . "')->build(); ?>";
             });
 
             $blade->directive('app_version_hash', static function ($length = 6): string {
-                return "<?php echo resolve('" . AppVersionManagerContract::class . "')->hashed({$length}); ?>";
+                return "<?php echo resolve('" . ManagerInterface::class . "')->hashed({$length}); ?>";
             });
         });
     }
@@ -89,7 +90,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function registerHelpers(): void
     {
-        require_once __DIR__ . '/helpers.php';
+        require_once __DIR__ . '/../helpers/helpers.php';
     }
 
     /**
