@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 ### Changed
 
 - Config file location (`./src/config/version.php` &rarr; `./config/version.php`)
+- Minimal `symfony/console` version now is `^4.4` _(reason: <https://github.com/symfony/symfony/issues/32750>)_
 
 ### Removed
 

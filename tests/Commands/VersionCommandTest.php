@@ -9,19 +9,13 @@ use InvalidArgumentException;
 use Illuminate\Contracts\Console\Kernel;
 use AvtoDev\AppVersion\AppVersionManager;
 use AvtoDev\AppVersion\Tests\AbstractTestCase;
+use Illuminate\Foundation\Testing\PendingCommand;
 
 /**
  * @covers \AvtoDev\AppVersion\Commands\VersionCommand
  */
 class VersionCommandTest extends AbstractTestCase
 {
-    /**
-     * Indicates if the console output should be mocked.
-     *
-     * @var bool
-     */
-    public $mockConsoleOutput = false;
-
     /**
      * @var AppVersionManager
      */
@@ -169,7 +163,10 @@ class VersionCommandTest extends AbstractTestCase
         /** @var Kernel $kernel */
         $kernel = $this->app->make(Kernel::class);
 
-        $this->assertSame($expected_exit_code, $this->artisan('version', $parameters));
+        // do NOT use `$this->>artisan(...)`
+        $result = $kernel->call('version', $parameters);
+
+        $this->assertSame($expected_exit_code, $result);
 
         return $kernel->output();
     }
