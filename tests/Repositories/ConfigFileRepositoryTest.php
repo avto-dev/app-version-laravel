@@ -30,7 +30,7 @@ class ConfigFileRepositoryTest extends AbstractTestCase
     protected $repository;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {

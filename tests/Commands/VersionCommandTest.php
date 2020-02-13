@@ -28,7 +28,7 @@ class VersionCommandTest extends AbstractTestCase
     protected $manager;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {
@@ -52,7 +52,7 @@ class VersionCommandTest extends AbstractTestCase
     public function testGetMajor(): void
     {
         $this->assertSame(
-            $this->manager->repository()->getMajor() . PHP_EOL,
+            $this->manager->repository()->getMajor() . \PHP_EOL,
             $this->execute(['--get-segment' => 'major'])
         );
     }
@@ -63,7 +63,7 @@ class VersionCommandTest extends AbstractTestCase
     public function testGetMinor(): void
     {
         $this->assertSame(
-            $this->manager->repository()->getMinor() . PHP_EOL,
+            $this->manager->repository()->getMinor() . \PHP_EOL,
             $this->execute(['--get-segment' => 'minor'])
         );
     }
@@ -74,7 +74,7 @@ class VersionCommandTest extends AbstractTestCase
     public function testGetPatch(): void
     {
         $this->assertSame(
-            $this->manager->repository()->getPatch() . PHP_EOL,
+            $this->manager->repository()->getPatch() . \PHP_EOL,
             $this->execute(['--get-segment' => 'patch'])
         );
     }
@@ -85,7 +85,7 @@ class VersionCommandTest extends AbstractTestCase
     public function testGetBuild(): void
     {
         $this->assertSame(
-            $this->manager->repository()->getBuild() . PHP_EOL,
+            $this->manager->repository()->getBuild() . \PHP_EOL,
             $this->execute(['--get-segment' => 'build'])
         );
     }
@@ -153,7 +153,7 @@ class VersionCommandTest extends AbstractTestCase
      */
     public function testExecutionWithoutArguments(): void
     {
-        $this->assertSame($this->manager->version() . PHP_EOL, $this->execute());
+        $this->assertSame($this->manager->version() . \PHP_EOL, $this->execute());
     }
 
     /**
