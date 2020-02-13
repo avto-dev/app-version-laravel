@@ -2,12 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace AvtoDev\AppVersion\Repository;
+namespace AvtoDev\AppVersion\Repositories;
 
 use InvalidArgumentException;
 use Illuminate\Filesystem\Filesystem;
 use AvtoDev\AppVersion\ServiceProvider;
-use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Contracts\Config\Repository as ConfigRepository;
 
 class ConfigFileRepository implements RepositoryInterface
 {
@@ -37,7 +37,7 @@ class ConfigFileRepository implements RepositoryInterface
     {
         $this->config              = $config;
         $this->build_file_location = $build_file_location;
-        $this->file_system         = $file_system;
+        $this->file_system         = $file_system ?? new Filesystem;
     }
 
     /**

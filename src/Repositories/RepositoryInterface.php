@@ -1,6 +1,6 @@
 <?php
 
-namespace AvtoDev\AppVersion\Repository;
+namespace AvtoDev\AppVersion\Repositories;
 
 interface RepositoryInterface
 {

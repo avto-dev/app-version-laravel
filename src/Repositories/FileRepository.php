@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace AvtoDev\AppVersion\Repository;
+namespace AvtoDev\AppVersion\Repositories;
 
 use InvalidArgumentException;
 use Illuminate\Filesystem\Filesystem;

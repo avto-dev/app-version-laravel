@@ -7,9 +7,9 @@ interface AppVersionManagerInterface
     /**
      * Get version repository.
      *
-     * @return Repository\RepositoryInterface
+     * @return Repositories\RepositoryInterface
      */
-    public function repository(): Repository\RepositoryInterface;
+    public function repository(): Repositories\RepositoryInterface;
 
     /**
      * Get hashed version value.

@@ -6,7 +6,8 @@ namespace AvtoDev\AppVersion;
 
 use Illuminate\View\Compilers\BladeCompiler;
 use Illuminate\Contracts\Container\Container;
-use AvtoDev\AppVersion\Repository\FileRepository;
+use AvtoDev\AppVersion\Drivers\DriverInterface;
+use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use AvtoDev\AppVersion\AppVersionManagerInterface as ManagerInterface;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -57,7 +58,12 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     protected function registerManager(): void
     {
         $this->app->singleton(ManagerInterface::class, static function (Container $app): ManagerInterface {
-            return new AppVersionManager(new FileRepository(__DIR__ . '/../VERSION', $app->make('files')));
+            /** @var ConfigRepository $config */
+            $config = $app->make(ConfigRepository::class);
+            /** @var DriverInterface $driver */
+            $driver = $app->make($config->get(static::getConfigRootKeyName() . '.driver'));
+
+            return new AppVersionManager($driver());
         });
     }
 

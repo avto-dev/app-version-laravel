@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use AvtoDev\AppVersion\Support\Version;
 use Symfony\Component\Console\Input\InputOption;
 use AvtoDev\AppVersion\AppVersionManagerInterface;
-use AvtoDev\AppVersion\Repository\RepositoryInterface;
+use AvtoDev\AppVersion\Repositories\RepositoryInterface;
 
 class VersionCommand extends \Illuminate\Console\Command
 {
@@ -115,7 +115,7 @@ class VersionCommand extends \Illuminate\Console\Command
      */
     protected function setNewVersionRaw(string $raw_version, RepositoryInterface $repository): void
     {
-        $version = Version::parse(\trim($raw_version, "vV \t\n\r"));
+        $version = Version::parse(\ltrim(\trim($raw_version), 'vV'));
 
         if (! $version->isValid()) {
             throw new InvalidArgumentException("Wrong version value ({$raw_version}) passed");

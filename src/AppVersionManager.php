@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AppVersion;
 
-use AvtoDev\AppVersion\Repository\RepositoryInterface;
+use AvtoDev\AppVersion\Repositories\RepositoryInterface;
 
 class AppVersionManager implements AppVersionManagerInterface
 {
@@ -40,6 +40,8 @@ class AppVersionManager implements AppVersionManagerInterface
 
         return $version;
     }
+
+    //formatted(string $format = "{major}.{minor}.{path}[-{build_with_meta}]")
 
     /**
      * {@inheritdoc}

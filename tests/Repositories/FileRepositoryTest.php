@@ -2,18 +2,18 @@
 
 declare(strict_types = 1);
 
-namespace AvtoDev\AppVersion\Tests\Repository;
+namespace AvtoDev\AppVersion\Tests\Repositories;
 
 use Mockery as m;
 use RuntimeException;
 use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 use AvtoDev\AppVersion\Tests\AbstractTestCase;
-use AvtoDev\AppVersion\Repository\FileRepository;
-use AvtoDev\AppVersion\Repository\RepositoryInterface;
+use AvtoDev\AppVersion\Repositories\FileRepository;
+use AvtoDev\AppVersion\Repositories\RepositoryInterface;
 
 /**
- * @covers \AvtoDev\AppVersion\Repository\FileRepository
+ * @covers \AvtoDev\AppVersion\Repositories\FileRepository
  */
 class FileRepositoryTest extends AbstractTestCase
 {
