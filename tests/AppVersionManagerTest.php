@@ -45,13 +45,13 @@ class AppVersionManagerTest extends AbstractTestCase
         $repository = $this->manager->repository();
 
         $this->assertSame(
-            "{$repository->getMajor()}.{$repository->getMinor()}.{$repository->getPath()}-{$repository->getBuild()}",
+            "{$repository->getMajor()}.{$repository->getMinor()}.{$repository->getPatch()}-{$repository->getBuild()}",
             $this->manager->version()
         );
 
         $repository->setBuild('');
         $this->assertSame(
-            "{$repository->getMajor()}.{$repository->getMinor()}.{$repository->getPath()}",
+            "{$repository->getMajor()}.{$repository->getMinor()}.{$repository->getPatch()}",
             $this->manager->version()
         );
     }
@@ -64,7 +64,7 @@ class AppVersionManagerTest extends AbstractTestCase
         $repository = $this->manager->repository();
 
         $this->assertSame(
-            "{$repository->getMajor()}.{$repository->getMinor()}.{$repository->getPath()}-{$repository->getBuild()}",
+            "{$repository->getMajor()}.{$repository->getMinor()}.{$repository->getPatch()}-{$repository->getBuild()}",
             $this->manager->formatted()
         );
 
@@ -74,8 +74,8 @@ class AppVersionManagerTest extends AbstractTestCase
         );
 
         $this->assertSame(
-            "{$repository->getBuild()}__{$repository->getPath()}++{$repository->getMinor()}=={$repository->getMajor()}",
-            $this->manager->formatted('{build}__{path}++{minor}=={major}')
+            "{$repository->getBuild()}__{$repository->getPatch()}++{$repository->getMinor()}=={$repository->getMajor()}",
+            $this->manager->formatted('{build}__{patch}++{minor}=={major}')
         );
     }
 

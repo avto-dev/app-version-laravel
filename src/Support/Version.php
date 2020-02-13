@@ -25,7 +25,7 @@ final class Version
     /**
      * @var int|null
      */
-    protected $path;
+    protected $patch;
 
     /**
      * @var string|null
@@ -37,14 +37,14 @@ final class Version
      *
      * @param int|null    $major
      * @param int|null    $minor
-     * @param int|null    $path
+     * @param int|null    $patch
      * @param string|null $build
      */
-    public function __construct(?int $major = null, ?int $minor = null, ?int $path = null, ?string $build = null)
+    public function __construct(?int $major = null, ?int $minor = null, ?int $patch = null, ?string $build = null)
     {
         $this->major = $major;
         $this->minor = $minor;
-        $this->path  = $path;
+        $this->patch = $patch;
         $this->build = $build;
     }
 
@@ -112,8 +112,8 @@ final class Version
             return false;
         }
 
-        // Validate path value
-        if (! \is_int($this->path) || $this->path < 0) {
+        // Validate pacth value
+        if (! \is_int($this->patch) || $this->patch < 0) {
             return false;
         }
 
@@ -123,11 +123,11 @@ final class Version
     /**
      * Get formatted version value (e.g.: `1.0.0-beta+build.1`, `0.0.1`).
      *
-     * Format: `{major}.{minor}.{path}[-{build_with_meta}]`
+     * Format: `{major}.{minor}.{patch}[-{build_with_meta}]`
      */
     public function format(): string
     {
-        $version = \implode('.', [$this->major ?? 0, $this->minor ?? 0, $this->path ?? 0]);
+        $version = \implode('.', [$this->major ?? 0, $this->minor ?? 0, $this->patch ?? 0]);
 
         if (\is_string($this->build) && $this->build !== '') {
             $version .= "-{$this->build}";
@@ -179,19 +179,19 @@ final class Version
     /**
      * @return int|null
      */
-    public function getPath(): ?int
+    public function getPatch(): ?int
     {
-        return $this->path;
+        return $this->patch;
     }
 
     /**
-     * @param int|null $path
+     * @param int|null $patch
      *
      * @return $this
      */
-    public function setPath(?int $path): self
+    public function setPatch(?int $patch): self
     {
-        $this->path = $path;
+        $this->patch = $patch;
 
         return $this;
     }

@@ -19,7 +19,7 @@ class NullRepository implements RepositoryInterface
     /**
      * @var int|null
      */
-    protected $path;
+    protected $patch;
 
     /**
      * @var string|null
@@ -61,17 +61,17 @@ class NullRepository implements RepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getPath(): ?int
+    public function getPatch(): ?int
     {
-        return $this->path;
+        return $this->patch;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setPath(int $path): void
+    public function setPatch(int $patch): void
     {
-        $this->path = $path;
+        $this->patch = $patch;
     }
 
     /**

@@ -20,7 +20,7 @@ class VersionCommand extends \Illuminate\Console\Command
     protected const
         SEGMENT_MAJOR = 'major',
         SEGMENT_MINOR = 'minor',
-        SEGMENT_PATH  = 'path',
+        SEGMENT_PATCH = 'patch',
         SEGMENT_BUILD = 'build';
 
     /**
@@ -67,7 +67,7 @@ class VersionCommand extends \Illuminate\Console\Command
 
         if (\is_string($build = $this->option(static::OPTION_SET_BUILD))) {
             /** @var string $build */
-            $repository->setBuild($build);
+            $repository->setBuild(\trim($build));
             $this->comment("Build version value successfully set to '{$build}'");
         }
 
@@ -93,8 +93,8 @@ class VersionCommand extends \Illuminate\Console\Command
             case self::SEGMENT_MINOR:
                 return $repository->getMinor();
 
-            case self::SEGMENT_PATH:
-                return $repository->getPath();
+            case self::SEGMENT_PATCH:
+                return $repository->getPatch();
 
             case self::SEGMENT_BUILD:
                 return $repository->getBuild();
@@ -121,7 +121,7 @@ class VersionCommand extends \Illuminate\Console\Command
 
         $repository->setMajor((int) $version->getMajor());
         $repository->setMinor((int) $version->getMinor());
-        $repository->setPath((int) $version->getPath());
+        $repository->setPatch((int) $version->getPatch());
 
         $build = $version->getBuild();
 
@@ -142,7 +142,7 @@ class VersionCommand extends \Illuminate\Console\Command
             null,
             InputOption::VALUE_OPTIONAL,
             'Display one version segment and exit. Allowed segments is: <comment>' . \implode(
-                ', ', [self::SEGMENT_MAJOR, self::SEGMENT_MINOR, self::SEGMENT_PATH, self::SEGMENT_BUILD]
+                ', ', [self::SEGMENT_MAJOR, self::SEGMENT_MINOR, self::SEGMENT_PATCH, self::SEGMENT_BUILD]
             ) . '</comment>'
         );
         $this->addOption(

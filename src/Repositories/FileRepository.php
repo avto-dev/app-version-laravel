@@ -67,17 +67,17 @@ class FileRepository implements RepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getPath(): ?int
+    public function getPatch(): ?int
     {
-        return $this->getVersionInfo()->getPath();
+        return $this->getVersionInfo()->getPatch();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setPath(int $path): void
+    public function setPatch(int $patch): void
     {
-        $this->setVersionInfo($this->getVersionInfo()->setPath($path));
+        $this->setVersionInfo($this->getVersionInfo()->setPatch($patch));
     }
 
     /**

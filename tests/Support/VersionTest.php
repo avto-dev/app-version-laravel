@@ -27,7 +27,7 @@ class VersionTest extends AbstractTestCase
 
         $this->assertSame($major, $version->getMajor());
         $this->assertSame($minor, $version->getMinor());
-        $this->assertSame($patch, $version->getPath());
+        $this->assertSame($patch, $version->getPatch());
         $this->assertSame($build, $version->getBuild());
     }
 
@@ -40,7 +40,7 @@ class VersionTest extends AbstractTestCase
 
         $this->assertNull($version->getMajor());
         $this->assertNull($version->getMinor());
-        $this->assertNull($version->getPath());
+        $this->assertNull($version->getPatch());
         $this->assertNull($version->getBuild());
 
         $major = \random_int(1, 20);
@@ -54,8 +54,8 @@ class VersionTest extends AbstractTestCase
         $this->assertInstanceOf(Version::class, $version->setMinor($minor));
         $this->assertSame($minor, $version->getMinor());
 
-        $this->assertInstanceOf(Version::class, $version->setPath($patch));
-        $this->assertSame($patch, $version->getPath());
+        $this->assertInstanceOf(Version::class, $version->setPatch($patch));
+        $this->assertSame($patch, $version->getPatch());
 
         $this->assertInstanceOf(Version::class, $version->setBuild($build));
         $this->assertSame($build, $version->getBuild());
@@ -110,7 +110,7 @@ class VersionTest extends AbstractTestCase
 
             $this->assertSame($segments[0], $version->getMajor(), $message = "Version value is [{$version_data}]");
             $this->assertSame($segments[1], $version->getMinor(), $message);
-            $this->assertSame($segments[2], $version->getPath(), $message);
+            $this->assertSame($segments[2], $version->getPatch(), $message);
             $this->assertSame($segments[3], $version->getBuild(), $message);
 
             $this->assertTrue($version->isValid());
@@ -171,7 +171,7 @@ class VersionTest extends AbstractTestCase
 
             $this->assertNull($version->getMajor(), $message = "Version value is [{$version_data}]");
             $this->assertNull($version->getMinor(), $message);
-            $this->assertNull($version->getPath(), $message);
+            $this->assertNull($version->getPatch(), $message);
             $this->assertNull($version->getBuild(), $message);
 
             $this->assertFalse($version->isValid());
@@ -195,7 +195,7 @@ class VersionTest extends AbstractTestCase
             $version = (new Version)
                 ->setMajor($value[0])
                 ->setMinor($value[1])
-                ->setPath($value[2])
+                ->setPatch($value[2])
                 ->setBuild($value[3]);
 
             $this->assertTrue($version->isValid());
@@ -219,7 +219,7 @@ class VersionTest extends AbstractTestCase
             $version = (new Version)
                 ->setMajor($value[0])
                 ->setMinor($value[1])
-                ->setPath($value[2])
+                ->setPatch($value[2])
                 ->setBuild($value[3]);
 
             $this->assertFalse($version->isValid());
@@ -274,7 +274,7 @@ class VersionTest extends AbstractTestCase
             $version = (new Version)
                 ->setMajor($value[0])
                 ->setMinor($value[1])
-                ->setPath($value[2])
+                ->setPatch($value[2])
                 ->setBuild($value[3]);
 
             $this->assertSame($expected, $version->format());

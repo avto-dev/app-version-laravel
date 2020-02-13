@@ -23,18 +23,18 @@ interface AppVersionManagerInterface
     /**
      * Get strict-formatted version value (e.g.: `1.0.0-beta+build.1`, `0.0.1`).
      *
-     * Format: `{major}.{minor}.{path}[-{build_with_meta}]`
+     * Format: `{major}.{minor}.{patch}[-{build_with_meta}]`
      *
      * @return string
      */
     public function version(): string;
 
     /**
-     * Get version value using user-defined format. Allowed tokens: `{major}`, `{minor}`, `{path}` and `{build}`.
+     * Get version value using user-defined format. Allowed tokens: `{major}`, `{minor}`, `{patch}` and `{build}`.
      *
      * @param string $format
      *
      * @return string
      */
-    public function formatted(string $format = '{major}.{minor}.{path}-{build}'): string;
+    public function formatted(string $format = '{major}.{minor}.{patch}-{build}'): string;
 }

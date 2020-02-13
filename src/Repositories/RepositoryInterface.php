@@ -41,16 +41,16 @@ interface RepositoryInterface
      *
      * @return int|null
      */
-    public function getPath(): ?int;
+    public function getPatch(): ?int;
 
     /**
      * Set patch version value.
      *
-     * @param int $path
+     * @param int $patch
      *
      * @return void
      */
-    public function setPath(int $path): void;
+    public function setPatch(int $patch): void;
 
     /**
      * Get build metadata value.

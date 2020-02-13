@@ -57,7 +57,7 @@ abstract class AbstractTestCase extends \Illuminate\Foundation\Testing\TestCase
 
         $repository->setMajor(\random_int(1, 20));
         $repository->setMinor(\random_int(21, 40));
-        $repository->setPath(\random_int(41, 60));
+        $repository->setPatch(\random_int(41, 60));
         $repository->setBuild(Str::random());
     }
 }

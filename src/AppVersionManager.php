@@ -31,7 +31,7 @@ class AppVersionManager implements AppVersionManagerInterface
         $version = \implode('.', [
             $this->repository->getMajor() ?? 0,
             $this->repository->getMinor() ?? 0,
-            $this->repository->getPath() ?? 0,
+            $this->repository->getPatch() ?? 0,
         ]);
 
         $build = $this->repository->getBuild();
@@ -46,12 +46,12 @@ class AppVersionManager implements AppVersionManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function formatted(string $format = '{major}.{minor}.{path}-{build}'): string
+    public function formatted(string $format = '{major}.{minor}.{patch}-{build}'): string
     {
-        return \str_replace(['{major}', '{minor}', '{path}', '{build}'], [
+        return \str_replace(['{major}', '{minor}', '{patch}', '{build}'], [
             $this->repository->getMajor() ?? 0,
             $this->repository->getMinor() ?? 0,
-            $this->repository->getPath() ?? 0,
+            $this->repository->getPatch() ?? 0,
             $this->repository->getBuild() ?? '',
         ], $format);
     }

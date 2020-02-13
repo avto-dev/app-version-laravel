@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AppVersion\Repositories;
 
-use InvalidArgumentException;
 use Illuminate\Filesystem\Filesystem;
 use AvtoDev\AppVersion\ServiceProvider;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
@@ -45,7 +44,7 @@ class ConfigFileRepository implements RepositoryInterface
      */
     public function getMajor(): ?int
     {
-        return \is_int($major = $this->config->get(ServiceProvider::getConfigRootKeyName() . '.major'))
+        return \is_int($major = $this->config->get(ServiceProvider::getConfigRootKeyName() . '.config.major'))
             ? $major
             : null;
     }
@@ -65,7 +64,7 @@ class ConfigFileRepository implements RepositoryInterface
      */
     public function getMinor(): ?int
     {
-        return \is_int($minor = $this->config->get(ServiceProvider::getConfigRootKeyName() . '.minor'))
+        return \is_int($minor = $this->config->get(ServiceProvider::getConfigRootKeyName() . '.config.minor'))
             ? $minor
             : null;
     }
@@ -83,9 +82,9 @@ class ConfigFileRepository implements RepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getPath(): ?int
+    public function getPatch(): ?int
     {
-        return \is_int($patch = $this->config->get(ServiceProvider::getConfigRootKeyName() . '.patch'))
+        return \is_int($patch = $this->config->get(ServiceProvider::getConfigRootKeyName() . '.config.patch'))
             ? $patch
             : null;
     }
@@ -95,9 +94,9 @@ class ConfigFileRepository implements RepositoryInterface
      *
      * @throws \RuntimeException Always
      */
-    public function setPath(int $path): void
+    public function setPatch(int $patch): void
     {
-        throw new \RuntimeException('Current repository cannot set path value');
+        throw new \RuntimeException('Current repository cannot set patch value');
     }
 
     /**
@@ -108,18 +107,14 @@ class ConfigFileRepository implements RepositoryInterface
     public function getBuild(): ?string
     {
         if ($this->file_system->exists($this->build_file_location)) {
-            try {
-                $content = \trim($this->file_system->get($this->build_file_location, true));
-            } catch (\Illuminate\Contracts\Filesystem\FileNotFoundException $e) {
-                throw new \RuntimeException("File does not exist at path [{$this->build_file_location}]");
-            }
+            $content = \trim($this->file_system->get($this->build_file_location, true));
 
             if ($content !== '') {
                 return $content;
             }
         }
 
-        return \is_string($build = $this->config->get(ServiceProvider::getConfigRootKeyName() . '.build'))
+        return \is_string($build = $this->config->get(ServiceProvider::getConfigRootKeyName() . '.config.build'))
             ? $build
             : null;
     }
@@ -134,7 +129,7 @@ class ConfigFileRepository implements RepositoryInterface
     {
         // Validate build value
         if (\preg_match('~^[a-zA-Z0-9-.+]+$~', $build) !== 1) {
-            throw new InvalidArgumentException("Wrong build value ({$build}) passed");
+            throw new \InvalidArgumentException("Wrong build value ({$build}) passed");
         }
 
         if ($this->file_system->put($this->build_file_location, $build, true) <= 0) {

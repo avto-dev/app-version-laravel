@@ -49,7 +49,7 @@ class FileRepositoryTest extends AbstractTestCase
 
         $this->assertSame($major, $repository->getMajor());
         $this->assertSame($minor, $repository->getMinor());
-        $this->assertSame($patch, $repository->getPath());
+        $this->assertSame($patch, $repository->getPatch());
         $this->assertSame($build, $repository->getBuild());
     }
 
@@ -70,7 +70,7 @@ class FileRepositoryTest extends AbstractTestCase
 
         $this->assertNull($repository->getMajor());
         $this->assertNull($repository->getMinor());
-        $this->assertNull($repository->getPath());
+        $this->assertNull($repository->getPatch());
         $this->assertNull($repository->getBuild());
     }
 
@@ -119,9 +119,9 @@ class FileRepositoryTest extends AbstractTestCase
     /**
      * @return void
      */
-    public function testSetPath(): void
+    public function testSetPatch(): void
     {
-        $path = \random_int(1, 100);
+        $patch = \random_int(1, 100);
 
         /** @var m\MockInterface|Filesystem $fs_mock */
         $fs_mock = m::mock(Filesystem::class)
@@ -130,11 +130,11 @@ class FileRepositoryTest extends AbstractTestCase
             ->andReturn('0.0.3-123')
             ->getMock()
             ->expects('put')
-            ->withArgs([$file_location, $new_version = "0.0.{$path}-123", true])
+            ->withArgs([$file_location, $new_version = "0.0.{$patch}-123", true])
             ->andReturn(\mb_strlen($new_version))
             ->getMock();
 
-        (new FileRepository($file_location, $fs_mock))->setPath($path);
+        (new FileRepository($file_location, $fs_mock))->setPatch($patch);
     }
 
     /**
@@ -189,7 +189,7 @@ class FileRepositoryTest extends AbstractTestCase
 
             $this->assertSame($major, $repository->getMajor());
             $this->assertSame($minor, $repository->getMinor());
-            $this->assertSame($patch, $repository->getPath());
+            $this->assertSame($patch, $repository->getPatch());
             $this->assertSame($build, $repository->getBuild());
         }
     }
@@ -227,7 +227,7 @@ class FileRepositoryTest extends AbstractTestCase
 
             $this->assertSame($segments[0], $repository->getMajor(), $message = "Version value is [{$version_data}]");
             $this->assertSame($segments[1], $repository->getMinor(), $message);
-            $this->assertSame($segments[2], $repository->getPath(), $message);
+            $this->assertSame($segments[2], $repository->getPatch(), $message);
             $this->assertSame($segments[3], $repository->getBuild(), $message);
         }
     }
@@ -272,7 +272,7 @@ class FileRepositoryTest extends AbstractTestCase
 
             $this->assertNull($repository->getMajor(), $message = "Version value is [{$version_data}]");
             $this->assertNull($repository->getMinor(), $message);
-            $this->assertNull($repository->getPath(), $message);
+            $this->assertNull($repository->getPatch(), $message);
             $this->assertNull($repository->getBuild(), $message);
         }
     }
@@ -361,23 +361,23 @@ class FileRepositoryTest extends AbstractTestCase
     /**
      * @return void
      */
-    public function testGetPathThrowsExceptionOnFilesystemGet(): void
+    public function testGetPatchThrowsExceptionOnFilesystemGet(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessageRegExp('~not exist~i');
 
-        (new FileRepository(Str::random(), $this->getFilesystemMockWithGetError()))->getPath();
+        (new FileRepository(Str::random(), $this->getFilesystemMockWithGetError()))->getPatch();
     }
 
     /**
      * @return void
      */
-    public function testSetPathThrowsExceptionOnFilesystemPutError(): void
+    public function testSetPatchThrowsExceptionOnFilesystemPutError(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessageRegExp('~cannot be written~i');
 
-        (new FileRepository(Str::random(), $this->getFilesystemMockWithPutError()))->setPath(\random_int(1, 100));
+        (new FileRepository(Str::random(), $this->getFilesystemMockWithPutError()))->setPatch(\random_int(1, 100));
     }
 
     /**
