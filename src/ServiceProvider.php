@@ -63,7 +63,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             /** @var DriverInterface $driver */
             $driver = $app->make($config->get(static::getConfigRootKeyName() . '.driver'));
 
-            return new AppVersionManager($driver());
+            return new AppVersionManager($driver->createRepository());
         });
     }
 
@@ -76,15 +76,17 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         $this->app->afterResolving('blade.compiler', static function (BladeCompiler $blade) {
             $blade->directive('app_version', static function (): string {
-                return "<?php echo resolve('" . ManagerInterface::class . "')->formatted(); ?>";
+                return \sprintf('<?php echo resolve(\'%s\')->version(); ?>', ManagerInterface::class);
             });
 
             $blade->directive('app_build', static function (): string {
-                return "<?php echo resolve('" . ManagerInterface::class . "')->build(); ?>";
+                return \sprintf('<?php echo resolve(\'%s\')->repository()->getBuild(); ?>', ManagerInterface::class);
             });
 
-            $blade->directive('app_version_hash', static function ($length = 6): string {
-                return "<?php echo resolve('" . ManagerInterface::class . "')->hashed({$length}); ?>";
+            $blade->directive('app_version_hash', static function ($length = null): string {
+                return \sprintf('<?php echo resolve(\'%s\')->hashed(%d); ?>', ManagerInterface::class, empty($length)
+                    ? 6 // default
+                    : (int) $length);
             });
         });
     }

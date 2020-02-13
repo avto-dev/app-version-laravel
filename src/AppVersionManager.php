@@ -34,14 +34,27 @@ class AppVersionManager implements AppVersionManagerInterface
             $this->repository->getPath() ?? 0,
         ]);
 
-        if ($this->repository->getBuild() !== null) {
-            $version .= "-{$this->repository->getBuild()}";
+        $build = $this->repository->getBuild();
+
+        if (\is_string($build) && $build !== '') {
+            $version .= "-{$build}";
         }
 
         return $version;
     }
 
-    //formatted(string $format = "{major}.{minor}.{path}[-{build_with_meta}]")
+    /**
+     * {@inheritdoc}
+     */
+    public function formatted(string $format = '{major}.{minor}.{path}-{build}'): string
+    {
+        return \str_replace(['{major}', '{minor}', '{path}', '{build}'], [
+            $this->repository->getMajor() ?? 0,
+            $this->repository->getMinor() ?? 0,
+            $this->repository->getPath() ?? 0,
+            $this->repository->getBuild() ?? '',
+        ], $format);
+    }
 
     /**
      * {@inheritdoc}

@@ -122,13 +122,13 @@ class FileRepository implements RepositoryInterface
      */
     protected function setVersionInfo(Version $version): void
     {
-        $as_string = (string) $version;
+        $formatted = $version->format();
 
         if ($version->isValid() !== true) {
-            throw new InvalidArgumentException("Wrong version value ({$as_string}) cannot be written");
+            throw new InvalidArgumentException("Wrong version value ({$formatted}) cannot be written");
         }
 
-        if ($this->file_system->put($this->file_location, $as_string, true) <= 0) {
+        if ($this->file_system->put($this->file_location, $formatted, true) <= 0) {
             throw new \RuntimeException("File [{$this->file_location}] cannot be written");
         }
     }

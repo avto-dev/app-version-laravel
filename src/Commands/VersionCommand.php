@@ -13,19 +13,14 @@ use AvtoDev\AppVersion\Repositories\RepositoryInterface;
 class VersionCommand extends \Illuminate\Console\Command
 {
     protected const
-        OPTION_GET_SEGMENT = 'get-segment';
-    protected const
-        OPTION_SET_BUILD = 'set-build';
-    protected const
+        OPTION_GET_SEGMENT = 'get-segment',
+        OPTION_SET_BUILD = 'set-build',
         OPTION_SET_VERSION = 'set-version';
 
     protected const
-        SEGMENT_MAJOR = 'major';
-    protected const
-        SEGMENT_MINOR = 'minor';
-    protected const
-        SEGMENT_PATH = 'path';
-    protected const
+        SEGMENT_MAJOR = 'major',
+        SEGMENT_MINOR = 'minor',
+        SEGMENT_PATH = 'path',
         SEGMENT_BUILD = 'build';
 
     /**
@@ -55,13 +50,15 @@ class VersionCommand extends \Illuminate\Console\Command
 
         // Get single version segment
         if (\is_string($segment = $this->option(static::OPTION_GET_SEGMENT))) {
-            $this->output->writeln($this->getVersionSegment($segment, $repository));
+            /** @var string $segment */
+            $this->output->writeln((string) $this->getVersionSegment($segment, $repository));
 
             return 0;
         }
 
         // Complex version values set
         if (\is_string($version = $this->option(static::OPTION_SET_VERSION))) {
+            /** @var string $version */
             $this->setNewVersionRaw($version, $repository);
             $this->info('New version value is set!');
 
@@ -69,6 +66,7 @@ class VersionCommand extends \Illuminate\Console\Command
         }
 
         if (\is_string($build = $this->option(static::OPTION_SET_BUILD))) {
+            /** @var string $build */
             $repository->setBuild($build);
             $this->comment("Build version value successfully set to '{$build}'");
         }
@@ -121,10 +119,15 @@ class VersionCommand extends \Illuminate\Console\Command
             throw new InvalidArgumentException("Wrong version value ({$raw_version}) passed");
         }
 
-        $repository->setMajor($version->getMajor());
-        $repository->setMinor($version->getMinor());
-        $repository->setPath($version->getPath());
-        $repository->setBuild($version->getBuild());
+        $repository->setMajor((int) $version->getMajor());
+        $repository->setMinor((int) $version->getMinor());
+        $repository->setPath((int) $version->getPath());
+
+        $build = $version->getBuild();
+
+        if (\is_string($build)) {
+            $repository->setBuild($build);
+        }
     }
 
     /**

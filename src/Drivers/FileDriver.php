@@ -37,7 +37,7 @@ class FileDriver implements DriverInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(): RepositoryInterface
+    public function createRepository(): RepositoryInterface
     {
         return new FileRepository($this->file_location, $this->filesystem);
     }

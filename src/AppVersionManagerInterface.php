@@ -21,11 +21,20 @@ interface AppVersionManagerInterface
     public function hashed(int $length = 6): string;
 
     /**
-     * Get formatted version value (e.g.: `1.0.0-beta+build.1`, `0.0.1`).
+     * Get strict-formatted version value (e.g.: `1.0.0-beta+build.1`, `0.0.1`).
      *
      * Format: `{major}.{minor}.{path}[-{build_with_meta}]`
      *
      * @return string
      */
     public function version(): string;
+
+    /**
+     * Get version value using user-defined format. Allowed tokens: `{major}`, `{minor}`, `{path}` and `{build}`.
+     *
+     * @param string $format
+     *
+     * @return string
+     */
+    public function formatted(string $format = '{major}.{minor}.{path}-{build}'): string;
 }

@@ -43,7 +43,7 @@ class ConfigFileDriver implements DriverInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(): RepositoryInterface
+    public function createRepository(): RepositoryInterface
     {
         return new ConfigFileRepository($this->config, $this->build_file_location, $this->filesystem);
     }

@@ -229,13 +229,13 @@ class VersionTest extends AbstractTestCase
     /**
      * @return void
      */
-    public function testToStringCasting(): void
+    public function testFormatting(): void
     {
         $data_sets = [
             '0.0.4'                                                  => [0, 0, 4, null],
             '0.0.0-0'                                                => [0, 0, 0, '0'],
             '1.2.3'                                                  => [1, 2, 3, null],
-            '10.20.30'                                               => [10, 20, 30, null],
+            '10.20.30'                                               => [10, 20, 30, ''],
             '1.1.2-prerelease+meta'                                  => [1, 1, 2, 'prerelease+meta'],
             '1.1.2-meta'                                             => [1, 1, 2, 'meta'],
             '1.1.2-meta-valid'                                       => [1, 1, 2, 'meta-valid'],
@@ -256,7 +256,7 @@ class VersionTest extends AbstractTestCase
             '1.2.3-SNAPSHOT-123'                                     => [1, 2, 3, 'SNAPSHOT-123'],
             '1.0.0'                                                  => [1, 0, 0, null],
             '2.0.0'                                                  => [2, 0, 0, null],
-            '1.1.7'                                                  => [1, 1, 7, null],
+            '1.1.7'                                                  => [1, 1, 7, ''],
             '2.0.0-build.1848'                                       => [2, 0, 0, 'build.1848'],
             '2.0.1-alpha.1227'                                       => [2, 0, 1, 'alpha.1227'],
             '1.0.0-alpha+beta'                                       => [1, 0, 0, 'alpha+beta'],
@@ -277,7 +277,7 @@ class VersionTest extends AbstractTestCase
                 ->setPath($value[2])
                 ->setBuild($value[3]);
 
-            $this->assertSame($expected, (string) $version);
+            $this->assertSame($expected, $version->format());
         }
     }
 }

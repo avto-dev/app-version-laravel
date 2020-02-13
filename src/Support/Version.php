@@ -49,16 +49,6 @@ final class Version
     }
 
     /**
-     * Get version in string representation.
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->format();
-    }
-
-    /**
      * Create a new version instance using rav version string representation.
      *
      * @param string $raw_value
@@ -86,7 +76,7 @@ final class Version
 
         \preg_match($regexp, \trim($raw_value), $matches);
 
-        return new self(
+        return new static(
             isset($matches['major']) && \filter_var($matches['major'], \FILTER_VALIDATE_INT) !== false
                 ? (int) $matches['major']
                 : null,
@@ -139,7 +129,7 @@ final class Version
     {
         $version = \implode('.', [$this->major ?? 0, $this->minor ?? 0, $this->path ?? 0]);
 
-        if ($this->build !== null) {
+        if (\is_string($this->build) && $this->build !== '') {
             $version .= "-{$this->build}";
         }
 

@@ -4,6 +4,9 @@ namespace AvtoDev\AppVersion\Drivers;
 
 use AvtoDev\AppVersion\Repositories\RepositoryInterface;
 
+/**
+ * Dependencies injection using constructor is allowed in classes, that implements this interface.
+ */
 interface DriverInterface
 {
     /**
@@ -11,5 +14,5 @@ interface DriverInterface
      *
      * @return RepositoryInterface
      */
-    public function __invoke(): RepositoryInterface;
+    public function createRepository(): RepositoryInterface;
 }

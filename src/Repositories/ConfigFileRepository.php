@@ -22,7 +22,7 @@ class ConfigFileRepository implements RepositoryInterface
     protected $build_file_location;
 
     /**
-     * @var Filesystem|null
+     * @var Filesystem
      */
     protected $file_system;
 
