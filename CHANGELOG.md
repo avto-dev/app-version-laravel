@@ -89,15 +89,12 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 ### Changed
 
 - Composer dependencies clean-up
-
-### Updated
-
 - Source and tests a little bit refactored
 - Blade directives use contract instead abstract container bind alias
 - Abstract tests bootstrapper class removed
 - PHPUnit HTML coverage report disabled by default ([container errors](https://github.com/laravel/framework/issues/10808) after `composer update --no-interaction --prefer-lowest`)
 
-## v1.2
+## v1.2.0
 
 ### Fixed
 
@@ -107,7 +104,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 - Method `->clearCompiled()` removed *(without previous depreciation)*
 
-## v1.1
+## v1.1.0
 
 ### Added
 
