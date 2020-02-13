@@ -27,7 +27,7 @@ class NullRepository implements RepositoryInterface
     protected $build;
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getMajor(): ?int
     {
@@ -35,7 +35,7 @@ class NullRepository implements RepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function setMajor(int $major): void
     {
@@ -43,7 +43,7 @@ class NullRepository implements RepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getMinor(): ?int
     {
@@ -51,7 +51,7 @@ class NullRepository implements RepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function setMinor(int $minor): void
     {
@@ -59,7 +59,7 @@ class NullRepository implements RepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getPath(): ?int
     {
@@ -67,7 +67,7 @@ class NullRepository implements RepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function setPath(int $path): void
     {
@@ -75,7 +75,7 @@ class NullRepository implements RepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getBuild(): ?string
     {
@@ -83,7 +83,7 @@ class NullRepository implements RepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function setBuild(string $build): void
     {

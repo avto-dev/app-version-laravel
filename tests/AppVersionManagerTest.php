@@ -19,7 +19,7 @@ class AppVersionManagerTest extends AbstractTestCase
     protected $manager;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {

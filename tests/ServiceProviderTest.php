@@ -149,21 +149,21 @@ class ServiceProviderTest extends AbstractTestCase
 
         $this->assertArrayHasKey('app_version', $custom_directives);
         $this->assertIsString($custom_directives['app_version']());
-        $this->assertEquals(
+        $this->assertSame(
             "Application version: {$manager->formatted()}",
             $view->make('stubs::app_version', [], [])->render()
         );
 
         $this->assertArrayHasKey('app_build', $custom_directives);
         $this->assertIsString($custom_directives['app_build']());
-        $this->assertEquals(
+        $this->assertSame(
             "Build version: {$manager->repository()->getBuild()}",
             $view->make('stubs::app_build', [], [])->render()
         );
 
         $this->assertArrayHasKey('app_version_hash', $custom_directives);
         $this->assertIsString($custom_directives['app_version_hash']());
-        $this->assertEquals(
+        $this->assertSame(
             "Application version hash: {$manager->hashed()}, 16 = {$manager->hashed(16)}",
             $view->make('stubs::app_version_hash', [], [])->render()
         );

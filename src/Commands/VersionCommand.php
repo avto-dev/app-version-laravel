@@ -14,13 +14,13 @@ class VersionCommand extends \Illuminate\Console\Command
 {
     protected const
         OPTION_GET_SEGMENT = 'get-segment',
-        OPTION_SET_BUILD = 'set-build',
+        OPTION_SET_BUILD   = 'set-build',
         OPTION_SET_VERSION = 'set-version';
 
     protected const
         SEGMENT_MAJOR = 'major',
         SEGMENT_MINOR = 'minor',
-        SEGMENT_PATH = 'path',
+        SEGMENT_PATH  = 'path',
         SEGMENT_BUILD = 'build';
 
     /**
