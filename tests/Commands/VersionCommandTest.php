@@ -9,7 +9,6 @@ use InvalidArgumentException;
 use Illuminate\Contracts\Console\Kernel;
 use AvtoDev\AppVersion\AppVersionManager;
 use AvtoDev\AppVersion\Tests\AbstractTestCase;
-use Illuminate\Foundation\Testing\PendingCommand;
 
 /**
  * @covers \AvtoDev\AppVersion\Commands\VersionCommand
