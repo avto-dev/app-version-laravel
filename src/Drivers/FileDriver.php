@@ -35,7 +35,7 @@ class FileDriver implements DriverInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function __invoke(): RepositoryInterface
     {

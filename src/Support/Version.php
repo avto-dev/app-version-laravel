@@ -49,6 +49,16 @@ final class Version
     }
 
     /**
+     * Get version in string representation.
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->format();
+    }
+
+    /**
      * Create a new version instance using rav version string representation.
      *
      * @param string $raw_value
@@ -118,16 +128,6 @@ final class Version
         }
 
         return true;
-    }
-
-    /**
-     * Get version in string representation.
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->format();
     }
 
     /**
