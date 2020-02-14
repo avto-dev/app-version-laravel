@@ -70,6 +70,24 @@ class ServiceProviderTest extends AbstractTestCase
     }
 
     /**
+     * @covers ::registerManager
+     *
+     * @return void
+     */
+    public function testExceptionThrownWhenSetWrongDriverClass(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessageRegExp('~Driver.+must.+implements.+DriverInterface~');
+
+        /** @var ConfigRepository $config */
+        $config = $this->app->make(ConfigRepository::class);
+
+        $config->set('version.driver', \stdClass::class);
+
+        $this->app->make(ManagerInterface::class);
+    }
+
+    /**
      * @covers ::registerArtisanCommands
      * @covers ::register
      *
