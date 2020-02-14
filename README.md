@@ -11,7 +11,7 @@
 [![Downloads count][badge_downloads_count]][link_packagist]
 [![License][badge_license]][link_license]
 
-![screenshot](https://hsto.org/webt/1k/1o/hb/1k1ohba9ap2oy5e0kq4t0rulpls.png)
+![screenshot](https://hsto.org/webt/jl/ec/1y/jlec1yfz16_6cgmjp7fjv9krrro.png)
 
 > Picture taken from `antonioribeiro/version` repository
 
@@ -35,34 +35,29 @@ After that you should "publish" configuration file (`./config/version.php`) usin
 $ php artisan vendor:publish --provider="AvtoDev\\AppVersion\\ServiceProvider"
 ```
 
-And don't forget to add next line into your `composer.json` file:
-
-```json
-{
-    "scripts": {
-        "post-autoload-dump": [
-            "@php artisan version --refresh"
-        ]
-    }
-}
-```
-
 ## Usage
 
-For application performance and sharing access to the version values - they stored not only in configuration file, but in `./storage/app/APP_VERSION` and `./storage/app/APP_BUILD` also (**not** under git, of course).
+This package provides application version manager (`AppVersionManager`) and:
 
-> You should remember to execute `php artisan version --refresh` command after manual version changing in configuration file.
+- Version value repositories _(abstraction layer above version data)_
+- Repository drivers _(also known as "factories" - they creates configured repository instance)_
 
-Of course, you can set own paths to these files and use your own format (`1.0.0-beta` or `ver. 1.0.0 (build beta)`, for example).
+> You can write your own implementations, and use them (only correct configuration is required).
 
-If you wanna get access to the version manager using DI - just request `AvtoDev\AppVersion\Contracts\AppVersionManagerContract`:
+Built-in "storage" types:
+
+- Plain file with version definition;
+- Application configuration file (`version.config` by default);
+- `CHANGELOG.md` file (extracts last defined version value).
+
+If you wanna get access to the version manager using DI - just request `AvtoDev\AppVersion\AppVersionManagerInterface`:
 
 ```php
-<?php declare(strict_types = 1);
+<?php
 
 namespace App\Console\Commands;
 
-use AvtoDev\AppVersion\Contracts\AppVersionManagerInterface;
+use AvtoDev\AppVersion\AppVersionManagerInterface;
 
 class SomeCommand extends \Illuminate\Console\Command
 {
@@ -82,19 +77,19 @@ class SomeCommand extends \Illuminate\Console\Command
      */
     public function handle(AppVersionManagerInterface $manager): void
     {
-        $manager->formatted(); // 1.0.0-alpha2
+        $manager->version(); // e.g.: 1.0.0-alpha2
     }
 }
 ```
 
 ### Artisan commands
 
-Command signature            | Description
----------------------------- | -----------------------------
-`version`                    | Shows application version
-`version --build`            | Shown only build value
-`version --set-build=alpha2` | Set build value `alpha2`
-`version --refresh`          | Refresh build values in files
+Command signature                               | Description
+----------------------------------------------- | -----------------------------
+`version`                                       | Shows application version
+`version --get-segment=major/minor/patch/build` | Shown only major/minor/patch/build version value
+`version --set-build=alpha2`                    | Set build value `alpha2`
+`version --set-version=1.2.3-alpha`             | Complex version setter
 
 ### Blade
 
@@ -104,18 +99,6 @@ Blade compiler allows next directives:
 Application version: @app_version
 Build version: @app_build
 Application version hash: @app_version_hash
-```
-
-### Helpers
-
-Also you can use next helpers:
-
-```php
-<?php
-
-app_version(); // 1.0.0-alpha2
-app_build(); // alpha2
-app_version_hash(); // 965c6f
 ```
 
 ### Testing

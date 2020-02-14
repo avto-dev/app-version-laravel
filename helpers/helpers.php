@@ -12,6 +12,8 @@ if (! \function_exists('app_version')) {
      * Format: `{major}.{minor}.{path}[-{build_with_meta}]`
      *
      * @return string
+     *
+     * @deprecated Will be remove since v4.x
      */
     function app_version(): string
     {
@@ -27,6 +29,8 @@ if (! \function_exists('app_build')) {
      * Get build metadata (only) value.
      *
      * @return string|null
+     *
+     * @deprecated Will be remove since v4.x
      */
     function app_build(): ?string
     {
@@ -44,6 +48,8 @@ if (! \function_exists('app_version_hash')) {
      * @param int $length
      *
      * @return string
+     *
+     * @deprecated Will be remove since v4.x
      */
     function app_version_hash($length = 6): string
     {

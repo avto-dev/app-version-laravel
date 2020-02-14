@@ -94,6 +94,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     /**
      * Register package helpers.
      *
+     * @deprecated Will be remove since v4.x
+     *
      * @return void
      */
     protected function registerHelpers(): void

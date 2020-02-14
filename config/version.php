@@ -6,8 +6,7 @@ return [
     | Repository Driver Class
     |--------------------------------------------------------------------------
     |
-    | Driver creates repository instance (using invoking) for accessing to the
-    | version data.
+    | Driver creates repository instance for accessing to the version data.
     |
     | Feel free to create your own driver!
     |
@@ -72,13 +71,13 @@ return [
     |
     | Version reading can be implemented using `CHANGELOG.md` file (that
     | follows `https://keepachangelog.com/` recommendations). This feature
-    | requires `Repository\ChangelogFileRepository` using and reads latest
+    | requires `Repository\ChangelogFileRepository`, and reads latest
     | valid version from header.
     |
     | Version value setters cannot be used in this case.
     |
     | Allowed keys:
-    |   - `path` (path to the file with version value)
+    |   - `path` (path to the `CHANGELOG.md` file)
     |
     */
 
