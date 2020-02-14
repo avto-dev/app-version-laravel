@@ -6,7 +6,9 @@ namespace AvtoDev\AppVersion;
 
 use Illuminate\View\Compilers\BladeCompiler;
 use Illuminate\Contracts\Container\Container;
-use AvtoDev\AppVersion\Contracts\AppVersionManagerContract;
+use AvtoDev\AppVersion\Drivers\DriverInterface;
+use Illuminate\Contracts\Config\Repository as ConfigRepository;
+use AvtoDev\AppVersion\AppVersionManagerInterface as ManagerInterface;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -27,7 +29,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public static function getConfigPath(): string
     {
-        return env('APP_VERSION_CONFIG_PATH', __DIR__ . '/config/version.php');
+        return __DIR__ . '/../config/version.php';
     }
 
     /**
@@ -39,7 +41,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         $this->initializeConfigs();
 
-        $this->registerAppVersionManager();
+        $this->registerManager();
         $this->registerHelpers();
         $this->registerBlade();
 
@@ -53,10 +55,18 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      *
      * @return void
      */
-    protected function registerAppVersionManager(): void
+    protected function registerManager(): void
     {
-        $this->app->singleton(AppVersionManagerContract::class, function (Container $app): AppVersionManagerContract {
-            return new AppVersionManager($app->make('config')->get(static::getConfigRootKeyName()));
+        $this->app->singleton(ManagerInterface::class, static function (Container $app): ManagerInterface {
+            /** @var ConfigRepository $config */
+            $config = $app->make(ConfigRepository::class);
+            $driver = $app->make($config->get(static::getConfigRootKeyName() . '.driver'));
+
+            if ($driver instanceof DriverInterface) {
+                return new AppVersionManager($driver->createRepository());
+            }
+
+            throw new \RuntimeException('Driver must implements [' . DriverInterface::class . '] interface');
         });
     }
 
@@ -67,17 +77,19 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function registerBlade(): void
     {
-        $this->app->afterResolving('blade.compiler', function (BladeCompiler $blade) {
-            $blade->directive('app_version', function (): string {
-                return "<?php echo resolve('" . AppVersionManagerContract::class . "')->formatted(); ?>";
+        $this->app->afterResolving('blade.compiler', static function (BladeCompiler $blade) {
+            $blade->directive('app_version', static function (): string {
+                return \sprintf('<?php echo resolve(\'%s\')->version(); ?>', ManagerInterface::class);
             });
 
-            $blade->directive('app_build', function (): string {
-                return "<?php echo resolve('" . AppVersionManagerContract::class . "')->build(); ?>";
+            $blade->directive('app_build', static function (): string {
+                return \sprintf('<?php echo resolve(\'%s\')->repository()->getBuild(); ?>', ManagerInterface::class);
             });
 
-            $blade->directive('app_version_hash', function ($length = 6): string {
-                return "<?php echo resolve('" . AppVersionManagerContract::class . "')->hashed({$length}); ?>";
+            $blade->directive('app_version_hash', static function ($length = null): string {
+                return \sprintf('<?php echo resolve(\'%s\')->hashed(%d); ?>', ManagerInterface::class, empty($length)
+                    ? 6 // default
+                    : (int) $length);
             });
         });
     }
@@ -85,11 +97,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     /**
      * Register package helpers.
      *
+     * @deprecated Will be remove since v4.x
+     *
      * @return void
      */
     protected function registerHelpers(): void
     {
-        require_once __DIR__ . '/helpers.php';
+        require_once __DIR__ . '/../helpers/helpers.php';
     }
 
     /**
@@ -102,7 +116,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->mergeConfigFrom(static::getConfigPath(), static::getConfigRootKeyName());
 
         $this->publishes([
-            realpath(static::getConfigPath()) => config_path(basename(static::getConfigPath())),
+            \realpath(static::getConfigPath()) => config_path(basename(static::getConfigPath())),
         ], 'config');
     }
 

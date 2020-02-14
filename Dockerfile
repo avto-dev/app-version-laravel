@@ -1,10 +1,11 @@
 FROM composer:1.8.6 AS composer
 
-FROM php:7.2.0-alpine
+FROM php:7.1.3-alpine
 
 ENV \
     COMPOSER_ALLOW_SUPERUSER="1" \
-    COMPOSER_HOME="/tmp/composer"
+    COMPOSER_HOME="/tmp/composer" \
+    PS1="\[\033[1;32m\]\[\033[1;36m\][\u@docker] \[\033[1;34m\]\w\[\033[0;35m\] \[\033[1;36m\]# \[\033[0m\]"
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
@@ -12,7 +13,7 @@ RUN set -xe \
     && apk add --no-cache binutils git curl \
     && apk add --no-cache --virtual .build-deps autoconf pkgconf make g++ gcc \
     # install xdebug (for testing with code coverage), but not enable it
-    && pecl install xdebug-2.7.2 \
+    && pecl install xdebug-2.9.1 \
     && apk del .build-deps \
     && mkdir /src ${COMPOSER_HOME} \
     && composer global require 'hirak/prestissimo' --no-interaction --no-suggest --prefer-dist \

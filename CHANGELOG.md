@@ -4,6 +4,45 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## v3.0.0
+
+### Added
+
+- PHP `7.4` supports ang tests running
+- Method `->repository(): RepositoryInterface` in `AvtoDev\AppVersion\AppVersionManager`
+- Interfaces:
+  - `AvtoDev\AppVersion\Drivers\DriverInterface`
+  - `AvtoDev\AppVersion\Repositories\RepositoryInterface`
+- Artisan command `version` supports new arguments - `--get-segment`, `--set-version`
+- Drivers _(repository factories)_:
+  - `AvtoDev\AppVersion\Drivers\ChangelogFileDriver`
+  - `AvtoDev\AppVersion\Drivers\ConfigFileDriver`
+  - `AvtoDev\AppVersion\Drivers\FileDriver`
+- Repositories:
+  - `AvtoDev\AppVersion\Repositories\ChangelogFileRepository`
+  - `AvtoDev\AppVersion\Repositories\ConfigFileRepository`
+  - `AvtoDev\AppVersion\Repositories\FileRepository`
+  - `AvtoDev\AppVersion\Repositories\NullRepository`
+
+### Changed
+
+- Config file location (`./src/config/version.php` &rarr; `./config/version.php`)
+- Config file structure (totally)
+- Minimal `symfony/console` version now is `^4.4` _(reason: <https://github.com/symfony/symfony/issues/32750>)_
+- `->formatted()` method signature to `->formatted(string $format)` in `AvtoDev\AppVersion\AppVersionManager`
+- Interface `AvtoDev\AppVersion\Contracts\AppVersionManagerContract` &rarr; `AvtoDev\AppVersion\AppVersionManagerInterface`
+
+### Removed
+
+- Facade `AvtoDev\AppVersion\AppVersionFacade`
+- Environment `APP_VERSION_CONFIG_PATH` supports
+- Methods `->major()`, `->minor()`, `->patch()`, `->build()`, `->setBuild()`, `->refresh()` from `AvtoDev\AppVersion\AppVersionManager`
+- Artisan command `version` argument `--refresh`
+
+### Deprecated
+
+- Helpers `app_version`, `app_build` and `app_version_hash`
+
 ## v2.1.0
 
 ### Changed
@@ -74,15 +113,12 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 ### Changed
 
 - Composer dependencies clean-up
-
-### Updated
-
 - Source and tests a little bit refactored
 - Blade directives use contract instead abstract container bind alias
 - Abstract tests bootstrapper class removed
 - PHPUnit HTML coverage report disabled by default ([container errors](https://github.com/laravel/framework/issues/10808) after `composer update --no-interaction --prefer-lowest`)
 
-## v1.2
+## v1.2.0
 
 ### Fixed
 
@@ -92,7 +128,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 - Method `->clearCompiled()` removed *(without previous depreciation)*
 
-## v1.1
+## v1.1.0
 
 ### Added
 
