@@ -64,4 +64,25 @@ return [
 
         'build_file' => storage_path('app/APP_BUILD'),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Changelog File Repository Settings
+    |--------------------------------------------------------------------------
+    |
+    | Version reading can be implemented using `CHANGELOG.md` file (that
+    | follows `https://keepachangelog.com/` recommendations). This feature
+    | requires `Repository\ChangelogFileRepository` using and reads latest
+    | valid version from header.
+    |
+    | Version value setters cannot be used in this case.
+    |
+    | Allowed keys:
+    |   - `path` (path to the file with version value)
+    |
+    */
+
+    'changelog' => [
+        'path' => base_path('CHANGELOG.md'),
+    ],
 ];

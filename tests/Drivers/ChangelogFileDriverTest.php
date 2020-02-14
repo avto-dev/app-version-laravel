@@ -7,16 +7,16 @@ namespace AvtoDev\AppVersion\Tests\Drivers;
 use Mockery as m;
 use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
-use AvtoDev\AppVersion\Drivers\FileDriver;
 use AvtoDev\AppVersion\Tests\AbstractTestCase;
 use AvtoDev\AppVersion\Drivers\DriverInterface;
-use AvtoDev\AppVersion\Repositories\FileRepository;
+use AvtoDev\AppVersion\Drivers\ChangelogFileDriver;
+use AvtoDev\AppVersion\Repositories\ChangelogFileRepository;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 
 /**
- * @covers \AvtoDev\AppVersion\Drivers\FileDriver
+ * @covers \AvtoDev\AppVersion\Drivers\ChangelogFileDriver
  */
-class FileDriverTest extends AbstractTestCase
+class ChangelogFileDriverTest extends AbstractTestCase
 {
     /**
      * @return void
@@ -25,7 +25,7 @@ class FileDriverTest extends AbstractTestCase
     {
         $this->assertInstanceOf(
             DriverInterface::class,
-            new FileDriver($this->app->make(ConfigRepository::class), new Filesystem)
+            new ChangelogFileDriver($this->app->make(ConfigRepository::class), new Filesystem)
         );
     }
 
@@ -37,7 +37,7 @@ class FileDriverTest extends AbstractTestCase
         /** @var m\MockInterface|ConfigRepository $config_mock */
         $config_mock = m::mock(ConfigRepository::class)
             ->expects('get')
-            ->withArgs(['version.file.path'])
+            ->withArgs(['version.changelog.path'])
             ->once()
             ->andReturn($file_location = Str::random())
             ->getMock();
@@ -47,13 +47,13 @@ class FileDriverTest extends AbstractTestCase
             ->expects('get')
             ->once()
             ->withArgs([$file_location, true])
-            ->andReturn('foo')
+            ->andReturn("# Changelog\n## v1.2.3\n### Changes\n- WIP\n")
             ->getMock();
 
-        $driver = new FileDriver($config_mock, $fs_mock);
+        $driver = new ChangelogFileDriver($config_mock, $fs_mock);
 
-        $this->assertInstanceOf(FileRepository::class, $repository = $driver->createRepository());
+        $this->assertInstanceOf(ChangelogFileRepository::class, $repository = $driver->createRepository());
 
-        $repository->getBuild();
+        $repository->getMajor();
     }
 }

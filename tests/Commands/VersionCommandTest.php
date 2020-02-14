@@ -162,7 +162,7 @@ class VersionCommandTest extends AbstractTestCase
         /** @var Kernel $kernel */
         $kernel = $this->app->make(Kernel::class);
 
-        // do NOT use `$this->>artisan(...)`
+        // do NOT use `$this->artisan(...)`
         $result = $kernel->call('version', $parameters);
 
         $this->assertSame($expected_exit_code, $result);

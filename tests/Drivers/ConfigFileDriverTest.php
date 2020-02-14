@@ -39,11 +39,25 @@ class ConfigFileDriverTest extends AbstractTestCase
             ->expects('get')
             ->withArgs(['version.config.build_file'])
             ->once()
-            ->andReturn(Str::random())
+            ->andReturn($file_location = Str::random())
             ->getMock();
 
-        $driver = new ConfigFileDriver($config_mock, new Filesystem);
+        /** @var m\MockInterface|Filesystem $fs_mock */
+        $fs_mock = m::mock(Filesystem::class)
+            ->expects('exists')
+            ->once()
+            ->andReturnTrue()
+            ->getMock()
+            ->expects('get')
+            ->once()
+            ->withArgs([$file_location, true])
+            ->andReturn('foo')
+            ->getMock();
 
-        $this->assertInstanceOf(ConfigFileRepository::class, $driver->createRepository());
+        $driver = new ConfigFileDriver($config_mock, $fs_mock);
+
+        $this->assertInstanceOf(ConfigFileRepository::class, $repository = $driver->createRepository());
+
+        $repository->getBuild();
     }
 }
