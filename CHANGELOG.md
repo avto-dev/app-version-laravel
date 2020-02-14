@@ -8,17 +8,40 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 ### Added
 
-- PHP `7.4` supports
+- PHP `7.4` supports ang tests running
+- Method `->repository(): RepositoryInterface` in `AvtoDev\AppVersion\AppVersionManager`
+- Interfaces:
+  - `AvtoDev\AppVersion\Drivers\DriverInterface`
+  - `AvtoDev\AppVersion\Repositories\RepositoryInterface`
+- Artisan command `version` supports new arguments - `--get-segment`, `--set-version`
+- Drivers _(repository factories)_:
+  - `AvtoDev\AppVersion\Drivers\ChangelogFileDriver`
+  - `AvtoDev\AppVersion\Drivers\ConfigFileDriver`
+  - `AvtoDev\AppVersion\Drivers\FileDriver`
+- Repositories:
+  - `AvtoDev\AppVersion\Repositories\ChangelogFileRepository`
+  - `AvtoDev\AppVersion\Repositories\ConfigFileRepository`
+  - `AvtoDev\AppVersion\Repositories\FileRepository`
+  - `AvtoDev\AppVersion\Repositories\NullRepository`
 
 ### Changed
 
 - Config file location (`./src/config/version.php` &rarr; `./config/version.php`)
+- Config file structure (totally)
 - Minimal `symfony/console` version now is `^4.4` _(reason: <https://github.com/symfony/symfony/issues/32750>)_
+- `->formatted()` method signature to `->formatted(string $format)` in `AvtoDev\AppVersion\AppVersionManager`
+- Interface `AvtoDev\AppVersion\Contracts\AppVersionManagerContract` &rarr; `AvtoDev\AppVersion\AppVersionManagerInterface`
 
 ### Removed
 
 - Facade `AvtoDev\AppVersion\AppVersionFacade`
 - Environment `APP_VERSION_CONFIG_PATH` supports
+- Methods `->major()`, `->minor()`, `->patch()`, `->build()`, `->setBuild()`, `->refresh()` from `AvtoDev\AppVersion\AppVersionManager`
+- Artisan command `version` argument `--refresh`
+
+### Deprecated
+
+- Helpers `app_version`, `app_build` and `app_version_hash`
 
 ## v2.1.0
 
