@@ -29,7 +29,6 @@ class ChangelogFileRepositoryTest extends AbstractTestCase
         ];
 
         foreach ($values as $version_string => $value) {
-
             $content = <<<EOF
 # Changelog
 
@@ -97,7 +96,7 @@ EOF;
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessageRegExp('~Cannot extract latest version~i');
 
-        $content = <<<EOF
+        $content = <<<'EOF'
 # Changelog
 
 ## unreleased
