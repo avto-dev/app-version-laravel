@@ -23,7 +23,7 @@ install:
   - if [[ $setup = 'basic'  ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest; fi
   - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable; fi
   - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-lowest; fi
-  - if [[ $laravel != 'default' ]]; then travis_retry composer require --dev --update-with-dependencies --prefer-dist --no-interaction --no-suggest laravel/laravel "$laravel"; fi
+  - if [[ $laravel != 'default' ]]; then travis_retry composer require --dev --update-with-all-dependencies --prefer-dist --no-interaction --no-suggest laravel/laravel "$laravel"; fi
   - composer info | grep -e laravel/laravel -e phpunit/phpunit -e phpstan/phpstan
 
 script:
