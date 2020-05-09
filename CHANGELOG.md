@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## UNRELEASED
+
+### Changed
+
+- Do not throws an exception when file does not exist in `FileRepository` (uses fallback version `0.0.0` instead)
+
 ## v3.0.0
 
 ### Added

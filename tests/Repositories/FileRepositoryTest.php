@@ -317,12 +317,9 @@ class FileRepositoryTest extends AbstractTestCase
     /**
      * @return void
      */
-    public function testGetMajorThrowsExceptionOnFilesystemGet(): void
+    public function testGetMajorReturnZeroOnFilesystemGet(): void
     {
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~not exist~i');
-
-        (new FileRepository(Str::random(), $this->getFilesystemMockWithGetError()))->getMajor();
+        $this->assertSame(0, (new FileRepository(Str::random(), $this->getFilesystemMockWithGetError()))->getMajor());
     }
 
     /**
@@ -339,12 +336,9 @@ class FileRepositoryTest extends AbstractTestCase
     /**
      * @return void
      */
-    public function testGetMinorThrowsExceptionOnFilesystemGet(): void
+    public function testGetMinorReturnZeroOnFilesystemGet(): void
     {
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~not exist~i');
-
-        (new FileRepository(Str::random(), $this->getFilesystemMockWithGetError()))->getMinor();
+        $this->assertSame(0, (new FileRepository(Str::random(), $this->getFilesystemMockWithGetError()))->getMinor());
     }
 
     /**
@@ -361,12 +355,9 @@ class FileRepositoryTest extends AbstractTestCase
     /**
      * @return void
      */
-    public function testGetPatchThrowsExceptionOnFilesystemGet(): void
+    public function testGetPatchReturnZeroOnFilesystemGet(): void
     {
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~not exist~i');
-
-        (new FileRepository(Str::random(), $this->getFilesystemMockWithGetError()))->getPatch();
+        $this->assertSame(0, (new FileRepository(Str::random(), $this->getFilesystemMockWithGetError()))->getPatch());
     }
 
     /**
@@ -383,12 +374,9 @@ class FileRepositoryTest extends AbstractTestCase
     /**
      * @return void
      */
-    public function testGetBuildThrowsExceptionOnFilesystemGet(): void
+    public function testGetBuildReturnNullOnFilesystemGet(): void
     {
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~not exist~i');
-
-        (new FileRepository(Str::random(), $this->getFilesystemMockWithGetError()))->getBuild();
+        $this->assertNull((new FileRepository(Str::random(), $this->getFilesystemMockWithGetError()))->getBuild());
     }
 
     /**

@@ -106,7 +106,7 @@ class FileRepository implements RepositoryInterface
         try {
             $content = $this->file_system->get($this->file_location, true);
         } catch (\Illuminate\Contracts\Filesystem\FileNotFoundException $e) {
-            throw new \RuntimeException("File does not exist at path [{$this->file_location}]");
+            $content = '0.0.0'; // File does not exist, use fallback
         }
 
         return Version::parse($content);
