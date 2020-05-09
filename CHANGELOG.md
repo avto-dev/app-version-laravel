@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 ### Changed
 
 - Do not throws an exception when file does not exist in `FileRepository` (uses fallback version `0.0.0` instead)
+- Maximal `illuminate/*` packages version now is `7.*`
 
 ## v3.0.0
 
