@@ -13,14 +13,19 @@ use AvtoDev\AppVersion\Repositories\RepositoryInterface;
 class VersionCommand extends \Illuminate\Console\Command
 {
     protected const
-        OPTION_GET_SEGMENT = 'get-segment',
-        OPTION_SET_BUILD   = 'set-build',
+        OPTION_GET_SEGMENT = 'get-segment';
+    protected const
+        OPTION_SET_BUILD   = 'set-build';
+    protected const
         OPTION_SET_VERSION = 'set-version';
 
     protected const
-        SEGMENT_MAJOR = 'major',
-        SEGMENT_MINOR = 'minor',
-        SEGMENT_PATCH = 'patch',
+        SEGMENT_MAJOR = 'major';
+    protected const
+        SEGMENT_MINOR = 'minor';
+    protected const
+        SEGMENT_PATCH = 'patch';
+    protected const
         SEGMENT_BUILD = 'build';
 
     /**
