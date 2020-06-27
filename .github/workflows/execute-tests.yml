@@ -73,7 +73,7 @@ jobs: # Docs: <https://git.io/JvxXE>
 
       - name: Install specific laravel version
         if: matrix.laravel != 'default'
-        run: composer require --dev --update-with-dependencies --prefer-dist --no-suggest --ansi laravel/laravel "${{ matrix.laravel }}"
+        run: composer require --dev --update-with-all-dependencies --prefer-dist --no-suggest --ansi laravel/laravel "${{ matrix.laravel }}"
 
       - name: Show most important packages versions
         run: composer info | grep -e laravel -e phpunit -e phpstan
