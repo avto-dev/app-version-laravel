@@ -1,4 +1,4 @@
-name: Execute tests
+name: tests
 
 on:
   push:
@@ -7,74 +7,91 @@ on:
     tags-ignore:
       - '**'
   pull_request:
+  schedule:
+    - cron: '0 0 * * 0' # once in a week, docs: <https://git.io/JvxXE#onschedule>
 
-jobs: # Docs: <https://help.github.com/en/articles/workflow-syntax-for-github-actions>
-  tests:
-    name: PHP ${{ matrix.php }}, ${{ matrix.setup }} setup
+jobs: # Docs: <https://git.io/JvxXE>
+  php:
+    name: PHP ${{ matrix.php }}, ${{ matrix.setup }} setup, laravel ${{ matrix.laravel }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
-        setup: ['basic', 'lowest']
-        php: ['7.1', '7.2', '7.3', '7.4']
+        setup: [basic, lowest]
+        laravel: [default]
+        coverage: [yes]
+        php: ['7.2', '7.3', '7.4']
         include:
-          - php: '7.1'
-            setup: 'basic'
-            coverage: 'true'
-          - php: '7.4'
-            setup: 'basic'
-            coverage: 'true'
+          - php: '7.3'
+            setup: basic
+            coverage: no
+            laravel: '~5.6.0'
+          - php: '7.3'
+            setup: basic
+            coverage: no
+            laravel: '~5.7.0'
+          - php: '7.3'
+            setup: basic
+            coverage: no
+            laravel: '~5.8.0'
+          - php: '7.3'
+            setup: basic
+            coverage: no
+            laravel: '^6.0'
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
 
       - name: Setup PHP, with composer and extensions
-        uses: shivammathur/setup-php@master # Action page: <https://github.com/shivammathur/setup-php>
+        uses: shivammathur/setup-php@v2 # Action page: <https://github.com/shivammathur/setup-php>
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring # definition is required for php 7.4
+          extensions: mbstring
 
-      - name: Get Composer Cache Directory # Docs: <https://github.com/actions/cache/blob/master/examples.md#php---composer>
+      - name: Get Composer Cache Directory # Docs: <https://git.io/JfAKn#php---composer>
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-      - name: Cache dependencies # Docs: <https://github.com/actions/cache/blob/master/examples.md#php---composer>
-        uses: actions/cache@v1
+      - name: Cache dependencies # Docs: <https://git.io/JfAKn#php---composer>
+        uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-composer-${{ matrix.setup }}-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer 'hirak/prestissimo' package
-        run: composer global require hirak/prestissimo --update-no-dev
+        run: composer global require hirak/prestissimo --update-no-dev --no-progress --ansi
 
       - name: Install lowest Composer dependencies
         if: matrix.setup == 'lowest'
-        run: composer update --prefer-dist --no-interaction --no-suggest --prefer-lowest
+        run: composer update --prefer-dist --no-suggest --prefer-lowest --ansi
 
       - name: Install basic Composer dependencies
         if: matrix.setup == 'basic'
-        run: composer update --prefer-dist --no-interaction --no-suggest
+        run: composer update --prefer-dist --no-suggest --ansi
+
+      - name: Install specific laravel version
+        if: matrix.laravel != 'default'
+        run: composer require --dev --update-with-dependencies --prefer-dist --no-suggest --ansi laravel/laravel "${{ matrix.laravel }}"
 
       - name: Show most important packages versions
-        run: composer info | grep -e laravel/laravel -e phpunit/phpunit -e phpstan/phpstan
+        run: composer info | grep -e laravel -e phpunit -e phpstan
 
       - name: Execute tests
-        if: matrix.coverage != 'true'
+        if: matrix.coverage != 'yes'
         run: composer test
 
       - name: Execute tests with code coverage
-        if: matrix.coverage == 'true'
+        if: matrix.coverage == 'yes'
         run: composer test-cover
 
       - uses: codecov/codecov-action@v1 # Docs: <https://github.com/codecov/codecov-action>
-        if: matrix.coverage == 'true'
+        if: matrix.coverage == 'yes'
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage/clover.xml
+          flags: php
           fail_ci_if_error: false
 
   lint-changelog:
@@ -83,8 +100,6 @@ jobs: # Docs: <https://help.github.com/en/articles/workflow-syntax-for-github-ac
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
 
       - name: Lint changelog file
         uses: docker://avtodev/markdown-lint:v1 # Action page: <https://github.com/avto-dev/markdown-lint>
