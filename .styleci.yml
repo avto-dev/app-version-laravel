@@ -1,5 +1,7 @@
 preset: laravel
 
+risky: true
+
 enabled:
   - strict
   - align_double_arrow
@@ -13,7 +15,6 @@ enabled:
   - phpdoc_annotation_without_dot
   - phpdoc_order
   - phpdoc_separation
-  - phpdoc_return_self_reference
   - align_equals
   - concat_with_spaces
   - length_ordered_imports
