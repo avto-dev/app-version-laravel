@@ -77,7 +77,7 @@ class ServiceProviderTest extends AbstractTestCase
     public function testExceptionThrownWhenSetWrongDriverClass(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageMatches('~Driver.+must.+implements.+DriverInterface~');
+        $this->expectExceptionMessageRegExp('~Driver.+must.+implements.+DriverInterface~');
 
         /** @var ConfigRepository $config */
         $config = $this->app->make(ConfigRepository::class);
