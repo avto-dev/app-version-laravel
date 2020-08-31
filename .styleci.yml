@@ -7,6 +7,7 @@ enabled:
   - align_double_arrow
   - dir_constant
   - linebreak_after_opening_tag
+  - mb_str_functions
   - no_short_echo_tag
   - non_printable_character
   - ordered_class_elements
@@ -18,13 +19,6 @@ enabled:
   - align_equals
   - concat_with_spaces
   - length_ordered_imports
-  - const_visibility_required
-  - native_constant_invocation
-  - php_unit_construct
-  - php_unit_set_up_tear_down_visibility
-  - php_unit_strict
-  - php_unit_test_class_requires_covers
-  - php_unit_expectation
 
 disabled:
   - unalign_equals

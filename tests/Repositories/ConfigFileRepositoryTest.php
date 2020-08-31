@@ -69,7 +69,7 @@ class ConfigFileRepositoryTest extends AbstractTestCase
     public function testSetMajor(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageMatches('~cannot set major~i');
+        $this->expectExceptionMessageRegExp('~cannot set major~i');
 
         $this->repository->setMajor(\random_int(1, 100));
     }
@@ -95,7 +95,7 @@ class ConfigFileRepositoryTest extends AbstractTestCase
     public function testSetMinor(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageMatches('~cannot set minor~i');
+        $this->expectExceptionMessageRegExp('~cannot set minor~i');
 
         $this->repository->setMinor(\random_int(1, 100));
     }
@@ -121,7 +121,7 @@ class ConfigFileRepositoryTest extends AbstractTestCase
     public function testSetPatch(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageMatches('~cannot set patch~i');
+        $this->expectExceptionMessageRegExp('~cannot set patch~i');
 
         $this->repository->setPatch(\random_int(1, 100));
     }
@@ -203,7 +203,7 @@ class ConfigFileRepositoryTest extends AbstractTestCase
             ->expects('put')
             ->withArgs([$build_location = Str::random(), $value = Str::random(), true])
             ->once()
-            ->andReturn(\strlen($value))
+            ->andReturn(\mb_strlen($value))
             ->getMock()
             ->expects('exists')
             ->once()
@@ -252,7 +252,7 @@ class ConfigFileRepositoryTest extends AbstractTestCase
     public function testSetBuildThrowsExceptionOnPuttingError(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageMatches('~cannot be written~i');
+        $this->expectExceptionMessageRegExp('~cannot be written~i');
 
         /** @var m\MockInterface|Filesystem $fs_mock */
         $fs_mock = m::mock(Filesystem::class)
