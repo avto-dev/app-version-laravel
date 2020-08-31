@@ -203,7 +203,7 @@ class ConfigFileRepositoryTest extends AbstractTestCase
             ->expects('put')
             ->withArgs([$build_location = Str::random(), $value = Str::random(), true])
             ->once()
-            ->andReturn(\strlen($value))
+            ->andReturn(\mb_strlen($value))
             ->getMock()
             ->expects('exists')
             ->once()
