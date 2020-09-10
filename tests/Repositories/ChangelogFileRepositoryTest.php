@@ -94,7 +94,7 @@ EOF;
     public function testExceptionThrowsWhenVersionHeaderCannotBeExtracted(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~Cannot extract latest version~i');
+        $this->expectExceptionMessageMatches('~Cannot extract latest version~i');
 
         $content = <<<'EOF'
 # Changelog
@@ -155,7 +155,7 @@ EOF;
     public function testSetMajorAlwaysThrowsException(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~cannot set major~i');
+        $this->expectExceptionMessageMatches('~cannot set major~i');
 
         (new ChangelogFileRepository(Str::random()))->setMajor(\random_int(1, 100));
     }
@@ -166,7 +166,7 @@ EOF;
     public function testSetMinorAlwaysThrowsException(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~cannot set minor~i');
+        $this->expectExceptionMessageMatches('~cannot set minor~i');
 
         (new ChangelogFileRepository(Str::random()))->setMinor(\random_int(1, 100));
     }
@@ -177,7 +177,7 @@ EOF;
     public function testSetPatchAlwaysThrowsException(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~cannot set patch~i');
+        $this->expectExceptionMessageMatches('~cannot set patch~i');
 
         (new ChangelogFileRepository(Str::random()))->setPatch(\random_int(1, 100));
     }
@@ -188,7 +188,7 @@ EOF;
     public function testSetBuildAlwaysThrowsException(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~cannot set build~i');
+        $this->expectExceptionMessageMatches('~cannot set build~i');
 
         (new ChangelogFileRepository(Str::random()))->setBuild(Str::random());
     }
@@ -199,7 +199,7 @@ EOF;
     public function testGetMajorThrowsExceptionOnFilesystemGet(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~not exist~i');
+        $this->expectExceptionMessageMatches('~not exist~i');
 
         (new ChangelogFileRepository(Str::random(), $this->getFilesystemMockWithGetError()))->getMajor();
     }
@@ -210,7 +210,7 @@ EOF;
     public function testGetMinorThrowsExceptionOnFilesystemGet(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~not exist~i');
+        $this->expectExceptionMessageMatches('~not exist~i');
 
         (new ChangelogFileRepository(Str::random(), $this->getFilesystemMockWithGetError()))->getMinor();
     }
@@ -221,7 +221,7 @@ EOF;
     public function testGetPatchThrowsExceptionOnFilesystemGet(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~not exist~i');
+        $this->expectExceptionMessageMatches('~not exist~i');
 
         (new ChangelogFileRepository(Str::random(), $this->getFilesystemMockWithGetError()))->getPatch();
     }
@@ -232,7 +232,7 @@ EOF;
     public function testGetBuildThrowsExceptionOnFilesystemGet(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~not exist~i');
+        $this->expectExceptionMessageMatches('~not exist~i');
 
         (new ChangelogFileRepository(Str::random(), $this->getFilesystemMockWithGetError()))->getBuild();
     }
