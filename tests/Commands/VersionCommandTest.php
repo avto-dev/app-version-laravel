@@ -89,7 +89,7 @@ class VersionCommandTest extends AbstractTestCase
     public function testExceptionThrownWhenWrongSegmentRequested(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('~unknown.+segment~i');
+        $this->expectExceptionMessageMatches('~unknown.+segment~i');
 
         $this->execute(['--get-segment' => Str::random()]);
     }
@@ -121,7 +121,7 @@ class VersionCommandTest extends AbstractTestCase
     public function testExceptionThrownWhenWrongVersionSet(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('~wrong.+version~i');
+        $this->expectExceptionMessageMatches('~wrong.+version~i');
 
         $this->execute(['--set-version' => Str::random()]);
     }

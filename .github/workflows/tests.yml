@@ -26,19 +26,7 @@ jobs: # Docs: <https://git.io/JvxXE>
           - php: '7.3'
             setup: basic
             coverage: no
-            laravel: '~5.6.0'
-          - php: '7.3'
-            setup: basic
-            coverage: no
-            laravel: '~5.7.0'
-          - php: '7.3'
-            setup: basic
-            coverage: no
-            laravel: '~5.8.0'
-          - php: '7.3'
-            setup: basic
-            coverage: no
-            laravel: '^6.0'
+            laravel: '^7.0'
     steps:
       - name: Check out code
         uses: actions/checkout@v2

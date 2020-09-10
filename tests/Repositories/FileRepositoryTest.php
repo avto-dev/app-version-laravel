@@ -328,7 +328,7 @@ class FileRepositoryTest extends AbstractTestCase
     public function testSetMajorThrowsExceptionOnFilesystemPutError(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~cannot be written~i');
+        $this->expectExceptionMessageMatches('~cannot be written~i');
 
         (new FileRepository(Str::random(), $this->getFilesystemMockWithPutError()))->setMajor(\random_int(1, 100));
     }
@@ -347,7 +347,7 @@ class FileRepositoryTest extends AbstractTestCase
     public function testSetMinorThrowsExceptionOnFilesystemPutError(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~cannot be written~i');
+        $this->expectExceptionMessageMatches('~cannot be written~i');
 
         (new FileRepository(Str::random(), $this->getFilesystemMockWithPutError()))->setMinor(\random_int(1, 100));
     }
@@ -366,7 +366,7 @@ class FileRepositoryTest extends AbstractTestCase
     public function testSetPatchThrowsExceptionOnFilesystemPutError(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~cannot be written~i');
+        $this->expectExceptionMessageMatches('~cannot be written~i');
 
         (new FileRepository(Str::random(), $this->getFilesystemMockWithPutError()))->setPatch(\random_int(1, 100));
     }
@@ -385,7 +385,7 @@ class FileRepositoryTest extends AbstractTestCase
     public function testSetBuildThrowsExceptionOnFilesystemPutError(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~cannot be written~i');
+        $this->expectExceptionMessageMatches('~cannot be written~i');
 
         (new FileRepository(Str::random(), $this->getFilesystemMockWithPutError()))->setBuild(Str::random());
     }

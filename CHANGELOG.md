@@ -4,10 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
-## UNRELEASED
+## v3.2.0
 
 ### Changed
 
+- Laravel `8.x` is supported now
+- Minimal Laravel version now is `6.0` (Laravel `5.5` LTS got last security update August 30th, 2020)
 - CI completely moved from "Travis CI" to "Github Actions" _(travis builds disabled)_
 - Minimal required PHP version now is `7.2`
 
