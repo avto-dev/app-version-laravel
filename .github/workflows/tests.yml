@@ -36,6 +36,7 @@ jobs: # Docs: <https://git.io/JvxXE>
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring
+          tools: composer:v1 # TODO update composer up to v2
 
       - name: Get Composer Cache Directory # Docs: <https://git.io/JfAKn#php---composer>
         id: composer-cache
