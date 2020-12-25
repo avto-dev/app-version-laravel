@@ -13,7 +13,7 @@ on:
 jobs: # Docs: <https://git.io/JvxXE>
   php:
     name: PHP ${{ matrix.php }}, ${{ matrix.setup }} setup, laravel ${{ matrix.laravel }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     timeout-minutes: 10
     strategy:
       fail-fast: false
@@ -21,7 +21,7 @@ jobs: # Docs: <https://git.io/JvxXE>
         setup: [basic, lowest]
         laravel: [default]
         coverage: [yes]
-        php: ['7.2', '7.3', '7.4']
+        php: ['7.3', '7.4', '8.0']
         include:
           - php: '7.3'
             setup: basic
@@ -49,20 +49,17 @@ jobs: # Docs: <https://git.io/JvxXE>
           key: ${{ runner.os }}-composer-${{ matrix.setup }}-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Install Composer 'hirak/prestissimo' package
-        run: composer global require hirak/prestissimo --update-no-dev --no-progress --ansi
-
       - name: Install lowest Composer dependencies
         if: matrix.setup == 'lowest'
-        run: composer update --prefer-dist --no-suggest --prefer-lowest --ansi
+        run: composer update --prefer-dist --prefer-lowest --ansi
 
       - name: Install basic Composer dependencies
         if: matrix.setup == 'basic'
-        run: composer update --prefer-dist --no-suggest --ansi
+        run: composer update --prefer-dist --ansi
 
       - name: Install specific laravel version
         if: matrix.laravel != 'default'
-        run: composer require --dev --update-with-all-dependencies --prefer-dist --no-suggest --ansi laravel/laravel "${{ matrix.laravel }}"
+        run: composer require --dev --update-with-all-dependencies --prefer-dist --ansi laravel/laravel "${{ matrix.laravel }}"
 
       - name: Show most important packages versions
         run: composer info | grep -e laravel -e phpunit -e phpstan
@@ -73,6 +70,8 @@ jobs: # Docs: <https://git.io/JvxXE>
 
       - name: Execute tests with code coverage
         if: matrix.coverage == 'yes'
+        env:
+          XDEBUG_MODE: coverage
         run: composer test-cover
 
       - uses: codecov/codecov-action@v1 # Docs: <https://github.com/codecov/codecov-action>
@@ -85,7 +84,7 @@ jobs: # Docs: <https://git.io/JvxXE>
 
   lint-changelog:
     name: Lint changelog file
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
