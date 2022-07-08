@@ -238,7 +238,7 @@ class ConfigFileRepositoryTest extends AbstractTestCase
             try {
                 $this->repository->setBuild($value);
             } catch (InvalidArgumentException $e) {
-                $this->assertRegExp('~Wrong build value~i', $e->getMessage());
+                $this->assertMatchesRegularExpression('~Wrong build value~i', $e->getMessage());
                 $catch_count++;
             }
         }

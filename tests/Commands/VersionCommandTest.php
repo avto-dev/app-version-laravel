@@ -36,7 +36,7 @@ class VersionCommandTest extends AbstractTestCase
      */
     public function testExecutionWithHelpArgument(): void
     {
-        $this->assertRegExp('~display.+app.+version~i', $this->execute(['--help']));
+        $this->assertMatchesRegularExpression('~display.+app.+version~i', $this->execute(['--help']));
     }
 
     /**
@@ -104,7 +104,7 @@ class VersionCommandTest extends AbstractTestCase
         $this->assertNotSame($patch = \random_int(140, 159), $this->manager->repository()->getPatch());
         $this->assertNotSame($build = Str::random(), $this->manager->repository()->getBuild());
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '~new.+version.+set~i',
             $this->execute(['--set-version' => " v{$major}.{$minor}.{$patch}-{$build}\n\r\t"])
         );
@@ -133,7 +133,7 @@ class VersionCommandTest extends AbstractTestCase
     {
         $this->assertNotSame($build = Str::random(), $this->manager->repository()->getBuild());
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '~build.+set~i',
             $this->execute(['--set-build' => " {$build}\n\r\t"])
         );

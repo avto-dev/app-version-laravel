@@ -84,7 +84,7 @@ class AppVersionManagerTest extends AbstractTestCase
      */
     public function testHashed(): void
     {
-        $this->assertRegExp('~[a-z0-9]{5}~', $this->manager->hashed(5));
+        $this->assertMatchesRegularExpression('~[a-z0-9]{5}~', $this->manager->hashed(5));
 
         $this->assertSame(6, \mb_strlen($this->manager->hashed()));
         $this->assertSame(8, \mb_strlen($this->manager->hashed(8)));
