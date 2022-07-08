@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 ### Added
 
-- Support Laravel `9.x`
+- Laravel `9.x` is supported now
 
 ## v3.3.0
 
