@@ -306,7 +306,7 @@ class FileRepositoryTest extends AbstractTestCase
             try {
                 $repository->setBuild($value);
             } catch (\InvalidArgumentException $e) {
-                $this->assertRegExp('~Wrong.*version~i', $e->getMessage());
+                $this->assertMatchesRegularExpression('~Wrong.*version~i', $e->getMessage());
                 $catch_count++;
             }
         }
