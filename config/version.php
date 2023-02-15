@@ -56,10 +56,10 @@ return [
     */
 
     'config' => [
-        'major' => (int) env('APP_VERSION_MAJOR', 1),
-        'minor' => (int) env('APP_VERSION_MINOR', 0),
-        'patch' => (int) env('APP_VERSION_PATCH', 0),
-        'build' => (string) env('APP_VERSION_BUILD', 0),
+        'major' => env('APP_VERSION_MAJOR', 1),
+        'minor' => env('APP_VERSION_MINOR', 0),
+        'patch' => env('APP_VERSION_PATCH', 0),
+        'build' => env('APP_VERSION_BUILD', 0),
 
         'build_file' => storage_path('app/APP_BUILD'),
     ],

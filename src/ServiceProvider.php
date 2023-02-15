@@ -60,7 +60,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->app->singleton(ManagerInterface::class, static function (Container $app): ManagerInterface {
             /** @var ConfigRepository $config */
             $config = $app->make(ConfigRepository::class);
-            $driver = $app->make($config->get(static::getConfigRootKeyName() . '.driver'));
+
+            /** @var string $driver_name */
+            $driver_name = $config->get(static::getConfigRootKeyName() . '.driver');
+
+            $driver = $app->make($driver_name);
 
             if ($driver instanceof DriverInterface) {
                 return new AppVersionManager($driver->createRepository());

@@ -35,7 +35,9 @@ class ConfigFileDriver implements DriverInterface
      */
     public function __construct(ConfigRepository $config, Filesystem $filesystem)
     {
-        $this->build_file_location = (string) $config->get(ServiceProvider::getConfigRootKeyName() . '.config.build_file');
+        /** @var string|null $build_file */
+        $build_file                = $config->get(ServiceProvider::getConfigRootKeyName() . '.config.build_file');
+        $this->build_file_location = (string) $build_file;
         $this->config              = $config;
         $this->filesystem          = $filesystem;
     }

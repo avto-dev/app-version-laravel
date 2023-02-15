@@ -30,7 +30,9 @@ class FileDriver implements DriverInterface
      */
     public function __construct(ConfigRepository $config, Filesystem $filesystem)
     {
-        $this->file_location = (string) $config->get(ServiceProvider::getConfigRootKeyName() . '.file.path');
+        /** @var string|null $file_path */
+        $file_path           = $config->get(ServiceProvider::getConfigRootKeyName() . '.file.path');
+        $this->file_location = (string) $file_path;
         $this->filesystem    = $filesystem;
     }
 

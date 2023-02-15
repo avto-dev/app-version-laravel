@@ -2,19 +2,13 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="./tests/bootstrap.php"
-         backupGlobals="false"
-         backupStaticAttributes="false"
          colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
          forceCoversAnnotation="true"
-         stopOnFailure="false">
+>
 
     <testsuites>
         <testsuite name="Unit">
-            <directory suffix="Test.php">./tests</directory>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
 
@@ -29,7 +23,7 @@
         <report>
             <clover outputFile="./coverage/clover.xml"/>
             <html outputDirectory="./coverage/html"/>
-            <text outputFile="php://stdout" showUncoveredFiles="false"/>
+            <text outputFile="php://stdout"/>
             <xml outputDirectory="./coverage/xml"/>
         </report>
     </coverage>
