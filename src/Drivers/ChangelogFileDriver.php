@@ -30,7 +30,9 @@ class ChangelogFileDriver implements DriverInterface
      */
     public function __construct(ConfigRepository $config, Filesystem $filesystem)
     {
-        $this->file_location = (string) $config->get(ServiceProvider::getConfigRootKeyName() . '.changelog.path');
+        /** @var string|null $changelog_path */
+        $changelog_path      = $config->get(ServiceProvider::getConfigRootKeyName() . '.changelog.path');
+        $this->file_location = (string) $changelog_path;
         $this->filesystem    = $filesystem;
     }
 

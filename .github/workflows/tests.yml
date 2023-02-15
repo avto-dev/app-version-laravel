@@ -13,7 +13,7 @@ on:
 jobs: # Docs: <https://git.io/JvxXE>
   php:
     name: PHP ${{ matrix.php }}, ${{ matrix.setup }} setup, laravel ${{ matrix.laravel }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     strategy:
       fail-fast: false
@@ -21,29 +21,24 @@ jobs: # Docs: <https://git.io/JvxXE>
         setup: [basic, lowest]
         laravel: [default]
         coverage: [yes]
-        php: ['7.3', '7.4', '8.0']
-        include:
-          - php: '7.3'
-            setup: basic
-            coverage: no
-            laravel: '^7.0'
+        php: ['8.0', '8.1', '8.2']
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 # Action page: <https://github.com/shivammathur/setup-php>
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring
-          tools: composer:v1 # TODO update composer up to v2
+          tools: composer:v2
 
       - name: Get Composer Cache Directory # Docs: <https://git.io/JfAKn#php---composer>
         id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        run: echo "dir=dir::$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache dependencies # Docs: <https://git.io/JfAKn#php---composer>
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ matrix.setup }}-${{ hashFiles('**/composer.json') }}
@@ -74,7 +69,7 @@ jobs: # Docs: <https://git.io/JvxXE>
           XDEBUG_MODE: coverage
         run: composer test-cover
 
-      - uses: codecov/codecov-action@v1 # Docs: <https://github.com/codecov/codecov-action>
+      - uses: codecov/codecov-action@v3 # Docs: <https://github.com/codecov/codecov-action>
         if: matrix.coverage == 'yes'
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -84,10 +79,10 @@ jobs: # Docs: <https://git.io/JvxXE>
 
   lint-changelog:
     name: Lint changelog file
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Lint changelog file
         uses: docker://avtodev/markdown-lint:v1 # Action page: <https://github.com/avto-dev/markdown-lint>
