@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
          bootstrap="./tests/bootstrap.php"
-         colors="true"
-         forceCoversAnnotation="true"
->
-
+         colors="true">
     <testsuites>
         <testsuite name="Unit">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
-
-    <coverage includeUncoveredFiles="false" processUncoveredFiles="true">
+    <coverage includeUncoveredFiles="false">
         <include>
             <directory suffix=".php">./src</directory>
         </include>
