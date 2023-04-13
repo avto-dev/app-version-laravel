@@ -84,12 +84,12 @@ class SomeCommand extends \Illuminate\Console\Command
 
 ### Artisan commands
 
-Command signature                               | Description
------------------------------------------------ | -----------------------------
-`version`                                       | Shows application version
-`version --get-segment=major/minor/patch/build` | Shown only major/minor/patch/build version value
-`version --set-build=alpha2`                    | Set build value `alpha2`
-`version --set-version=1.2.3-alpha`             | Complex version setter
+| Command signature                               | Description                                       |
+|-------------------------------------------------|---------------------------------------------------|
+| `version`                                       | Shows application version                         |
+| `version --get-segment=major/minor/patch/build` | Shown only major/minor/patch/build version value  |
+| `version --set-build=alpha2`                    | Set build value `alpha2`                          |
+| `version --set-version=1.2.3-alpha`             | Complex version setter                            |
 
 ### Blade
 
