@@ -11,7 +11,7 @@
 [![Downloads count][badge_downloads_count]][link_packagist]
 [![License][badge_license]][link_license]
 
-![screenshot](https://hsto.org/webt/jl/ec/1y/jlec1yfz16_6cgmjp7fjv9krrro.png)
+![screenshot](https://habrastorage.org/webt/eo/xv/6r/eoxv6rk__16eb7vminjsrh15nqo.png)
 
 > Picture taken from `antonioribeiro/version` repository
 
