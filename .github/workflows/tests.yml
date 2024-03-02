@@ -5,72 +5,92 @@ on:
     branches:
       - master
     tags-ignore:
-      - '**'
+      - **
   pull_request:
   schedule:
-    - cron: '0 0 * * 0' # once in a week, docs: <https://git.io/JvxXE#onschedule>
+    - cron: '0 0 * * 0'
 
-jobs: # Docs: <https://git.io/JvxXE>
+jobs:
   php:
     name: PHP ${{ matrix.php }}, ${{ matrix.setup }} setup, laravel ${{ matrix.laravel }}
+
+
     runs-on: ubuntu-latest
+
     timeout-minutes: 10
+
     strategy:
       fail-fast: false
       matrix:
         setup: [basic, lowest]
-        laravel: [default]
-        coverage: [yes]
+        laravel: ['11.0', default]
+        coverage: ['yes']
         php: ['8.0', '8.1', '8.2']
+        exclude:
+          - laravel: '11.0'
+            php: '8.0'
+          - laravel: '11.0'
+            php: '8.1'
+
+
     steps:
       - name: Check out code
         uses: actions/checkout@v3
 
+
       - name: Setup PHP, with composer and extensions
-        uses: shivammathur/setup-php@v2 # Action page: <https://github.com/shivammathur/setup-php>
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring
           tools: composer:v2
 
-      - name: Get Composer Cache Directory # Docs: <https://git.io/JfAKn#php---composer>
+
+      - name: Get Composer Cache Directory
         id: composer-cache
         run: echo "dir=dir::$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
-      - name: Cache dependencies # Docs: <https://git.io/JfAKn#php---composer>
+
+      - name: Cache dependencies
         uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ matrix.setup }}-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
 
+
       - name: Install lowest Composer dependencies
-        if: matrix.setup == 'lowest'
+        if: "matrix.setup == 'lowest'"
         run: composer update --prefer-dist --prefer-lowest --ansi
 
+
       - name: Install basic Composer dependencies
-        if: matrix.setup == 'basic'
+        if: "matrix.setup == 'basic'"
         run: composer update --prefer-dist --ansi
 
+
       - name: Install specific laravel version
-        if: matrix.laravel != 'default'
+        if: "matrix.laravel != 'default'"
         run: composer require --dev --update-with-all-dependencies --prefer-dist --ansi laravel/laravel "${{ matrix.laravel }}"
+
 
       - name: Show most important packages versions
         run: composer info | grep -e laravel -e phpunit -e phpstan
 
+
       - name: Execute tests
-        if: matrix.coverage != 'yes'
+        if: "matrix.coverage != 'yes'"
         run: composer test
 
+
       - name: Execute tests with code coverage
-        if: matrix.coverage == 'yes'
+        if: "matrix.coverage == 'yes'"
         env:
           XDEBUG_MODE: coverage
         run: composer test-cover
 
-      - uses: codecov/codecov-action@v3 # Docs: <https://github.com/codecov/codecov-action>
-        if: matrix.coverage == 'yes'
+      - uses: codecov/codecov-action@v3
+        if: "matrix.coverage == 'yes'"
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage/clover.xml
@@ -79,14 +99,19 @@ jobs: # Docs: <https://git.io/JvxXE>
 
   lint-changelog:
     name: Lint changelog file
+
+
     runs-on: ubuntu-latest
+
+
     steps:
       - name: Check out code
         uses: actions/checkout@v3
 
+
       - name: Lint changelog file
-        uses: docker://avtodev/markdown-lint:v1 # Action page: <https://github.com/avto-dev/markdown-lint>
+        uses: docker://avtodev/markdown-lint:v1
         with:
-          rules: '/lint/rules/changelog.js'
-          config: '/lint/config/changelog.yml'
-          args: './CHANGELOG.md'
+          rules: /lint/rules/changelog.js
+          config: /lint/config/changelog.yml
+          args: ./CHANGELOG.md
