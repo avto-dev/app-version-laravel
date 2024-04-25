@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
-         bootstrap="./tests/bootstrap.php"
-         colors="true">
-    <testsuites>
-        <testsuite name="Unit">
-            <directory>./tests</directory>
-        </testsuite>
-    </testsuites>
-    <coverage includeUncoveredFiles="false">
-        <include>
-            <directory suffix=".php">./src</directory>
-        </include>
-        <exclude>
-            <directory>./vendor</directory>
-            <directory>./tests</directory>
-        </exclude>
-        <report>
-            <clover outputFile="./coverage/clover.xml"/>
-            <html outputDirectory="./coverage/html"/>
-            <text outputFile="php://stdout"/>
-            <xml outputDirectory="./coverage/xml"/>
-        </report>
-    </coverage>
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         bootstrap="./tests/bootstrap.php" colors="true">
+  <testsuites>
+    <testsuite name="Unit">
+      <directory>./tests</directory>
+    </testsuite>
+  </testsuites>
+  <coverage includeUncoveredFiles="false">
+    <report>
+      <clover outputFile="./coverage/clover.xml"/>
+      <html outputDirectory="./coverage/html"/>
+      <text outputFile="php://stdout"/>
+      <xml outputDirectory="./coverage/xml"/>
+    </report>
+  </coverage>
+  <source>
+    <include>
+      <directory suffix=".php">./src</directory>
+    </include>
+    <exclude>
+      <directory>./vendor</directory>
+      <directory>./tests</directory>
+    </exclude>
+  </source>
 </phpunit>
