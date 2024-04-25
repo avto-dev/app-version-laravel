@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AppVersion\Tests;
 
-use App\Console\Kernel;
 use AvtoDev\AppVersion\ServiceProvider;
+use Illuminate\Contracts\Console\Kernel;
 use AvtoDev\AppVersion\AppVersionManager;
 use Illuminate\View\Compilers\BladeCompiler;
 use AvtoDev\AppVersion\Commands\VersionCommand;
