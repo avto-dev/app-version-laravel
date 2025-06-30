@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## Unreleased
+
+### Added
+
+- Laravel `12.x` support
+- Using `docker` with `compose` plugin instead of `docker-compose` for test environment
+
 ## v3.7.0
 
 ### Added
