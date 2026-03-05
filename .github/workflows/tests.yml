@@ -8,41 +8,50 @@ on:
       - '**'
   pull_request:
   schedule:
-    - cron: '0 0 * * 0' # once in a week, docs: <https://git.io/JvxXE#onschedule>
+    - cron: '0 0 * * 0'
 
-jobs: # Docs: <https://git.io/JvxXE>
+jobs:
   php:
     name: PHP ${{ matrix.php }}, ${{ matrix.setup }} setup, laravel ${{ matrix.laravel }}
+
     runs-on: ubuntu-latest
+
     timeout-minutes: 10
+
     strategy:
       fail-fast: false
       matrix:
         setup: [basic, lowest]
-        laravel: [default]
-        coverage: [yes]
+        laravel: ['13.0', default]
+        coverage: ['yes']
         php: ['8.2', '8.3']
         include:
           - php: '8.2'
-            setup: [basic, lowest]
+            setup:
+              - basic
+              - lowest
             coverage: no
-            laravel: '^10.0'
+            laravel: ^10.0
+        exclude:
+          - laravel: '13.0'
+            php: '8.2'
+
     steps:
       - name: Check out code
         uses: actions/checkout@v4
 
       - name: Setup PHP, with composer and extensions
-        uses: shivammathur/setup-php@v2 # Action page: <https://github.com/shivammathur/setup-php>
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring
           tools: composer:v2
 
-      - name: Get Composer Cache Directory # Docs: <https://git.io/JfAKn#php---composer>
+      - name: Get Composer Cache Directory
         id: composer-cache
         run: echo "output_dir=dir::$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
-      - name: Cache dependencies # Docs: <https://git.io/JfAKn#php---composer>
+      - name: Cache dependencies
         uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.output_dir }}
@@ -74,7 +83,7 @@ jobs: # Docs: <https://git.io/JvxXE>
           XDEBUG_MODE: coverage
         run: composer test-cover
 
-      - uses: codecov/codecov-action@v4 # Docs: <https://github.com/codecov/codecov-action>
+      - uses: codecov/codecov-action@v4
         if: matrix.coverage == 'yes'
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -84,14 +93,16 @@ jobs: # Docs: <https://git.io/JvxXE>
 
   lint-changelog:
     name: Lint changelog file
+
     runs-on: ubuntu-latest
+
     steps:
       - name: Check out code
         uses: actions/checkout@v4
 
       - name: Lint changelog file
-        uses: docker://avtodev/markdown-lint:v1 # Action page: <https://github.com/avto-dev/markdown-lint>
+        uses: docker://avtodev/markdown-lint:v1
         with:
-          rules: '/lint/rules/changelog.js'
-          config: '/lint/config/changelog.yml'
-          args: './CHANGELOG.md'
+          rules: /lint/rules/changelog.js
+          config: /lint/config/changelog.yml
+          args: ./CHANGELOG.md
