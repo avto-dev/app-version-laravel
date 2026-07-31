@@ -21,15 +21,10 @@ jobs: # Docs: <https://git.io/JvxXE>
         setup: [basic, lowest]
         laravel: [default]
         coverage: [yes]
-        php: ['8.2', '8.3']
-        include:
-          - php: '8.2'
-            setup: [basic, lowest]
-            coverage: no
-            laravel: '^10.0'
+        php: ['8.2', '8.3', '8.4', '8.5']        
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 # Action page: <https://github.com/shivammathur/setup-php>
@@ -43,7 +38,7 @@ jobs: # Docs: <https://git.io/JvxXE>
         run: echo "output_dir=dir::$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache dependencies # Docs: <https://git.io/JfAKn#php---composer>
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ${{ steps.composer-cache.outputs.output_dir }}
           key: ${{ runner.os }}-composer-${{ matrix.setup }}-${{ hashFiles('**/composer.json') }}
@@ -74,11 +69,11 @@ jobs: # Docs: <https://git.io/JvxXE>
           XDEBUG_MODE: coverage
         run: composer test-cover
 
-      - uses: codecov/codecov-action@v4 # Docs: <https://github.com/codecov/codecov-action>
+      - uses: codecov/codecov-action@v7 # Docs: <https://github.com/codecov/codecov-action>
         if: matrix.coverage == 'yes'
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage/clover.xml
+          files: ./coverage/clover.xml
           flags: php
           fail_ci_if_error: false
 
@@ -87,7 +82,7 @@ jobs: # Docs: <https://git.io/JvxXE>
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Lint changelog file
         uses: docker://avtodev/markdown-lint:v1 # Action page: <https://github.com/avto-dev/markdown-lint>
